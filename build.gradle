@@ -19,7 +19,7 @@ dependencies {
         exclude module: "opus-java"
     }
     compile("ch.qos.logback:logback-classic:1.2.3")
-    compile("org.json:json:20201115")
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 compileJava.options.encoding = 'UTF-8'
