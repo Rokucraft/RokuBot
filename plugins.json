@@ -1,0 +1,15 @@
+[
+    {
+        "name": "AdvancedBan",
+        "updateLink": "https://www.spigotmc.org/resources/advancedban.8695/",
+        "currentVersion": "2.3.0",
+        "latestVersion": "2.3.0"
+    },
+    {
+        "name": "AdvancedRegionMarket",
+        "updateLink": "https://www.spigotmc.org/resources/advancedregionmarket.58732/",
+        "currentVersion": "3.2.8",
+        "latestVersion": "3.2.8",
+        "wikiLink": "https://github.com/alex9849/advanced-region-market/wiki"
+    }
+]
