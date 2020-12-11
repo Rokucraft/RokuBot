@@ -5,32 +5,25 @@ import io.github.aikovdp.RokuBot.module.PluginCommands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
+import java.util.Properties;
 
 public class Main {
 
     public static String prefix = "!";
 
     public static void main(String[] arguments) throws Exception {
-        JDA api = JDABuilder.createDefault("Nzg2MTg4NDQzODcyNTI2Mzc3.X9CxCw.eDOW67G5H9mAtlPfUVOTmkMQ7OA")
+        Properties settingsProperties = new Properties();
+        Reader reader = new FileReader("settings.properties");
+        settingsProperties.load(reader);
+        String token = settingsProperties.getProperty("botToken");
+
+        JDA api = JDABuilder.createDefault(token)
                 .addEventListeners(new Commands())
                 .addEventListeners(new PluginCommands())
                 .build();
-
-        Gson gson = new Gson();
-        Reader reader = new FileReader("plugins.json");
-        Plugin[] pluginList = gson.fromJson(reader, Plugin[].class);
-
-        for (Plugin plugin : pluginList) {
-            if (plugin.name.equalsIgnoreCase("AdvancedBan")) {
-                System.out.println("Name: " + plugin.name);
-                System.out.println("Download: " + plugin.downloadURL);
-                System.out.println("Docs: " + plugin.docsURL);
-            }
-        }
-
     }
-
-
 }
