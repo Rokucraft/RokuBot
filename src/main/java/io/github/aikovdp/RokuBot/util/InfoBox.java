@@ -10,12 +10,12 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-public class RepoUtil {
+public class InfoBox {
     public String infoTitle;
     public String infoURL;
     public String infoContent;
 
-    public RepoUtil(String repoName, String filePath, String title) throws IOException {
+    public InfoBox(String repoName, String filePath, String title) throws IOException {
 
         GHRepository rokuRepo = Main.github.getRepository(repoName);
         InputStream referenceContents = rokuRepo.getFileContent(filePath).read();

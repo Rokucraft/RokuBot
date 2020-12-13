@@ -17,9 +17,9 @@ public class EmbedUtil {
     public static EmbedBuilder createGHInfoEmbed(String filePath, String title) {
         try {
             EmbedBuilder builder = createInfoEmbed();
-            RepoUtil repoUtil = new RepoUtil("Rokucraft/Rokucraft", filePath, title);
-            builder.setTitle(repoUtil.infoTitle, repoUtil.infoURL);
-            builder.setDescription(repoUtil.infoContent);
+            InfoBox infoBox = new InfoBox("Rokucraft/Rokucraft", filePath, title);
+            builder.setTitle(infoBox.infoTitle, infoBox.infoURL);
+            builder.setDescription(infoBox.infoContent);
             return builder;
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,6 +35,16 @@ public class EmbedUtil {
         builder.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4e6.png");
         builder.setFooter("Click the title for more information");
 
+        return builder;
+    }
+
+    public static EmbedBuilder createIssuesEmbed(String issueList) {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle("Open Issues");
+        builder.setDescription(issueList);
+        builder.setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png");
+        builder.setColor(0x56d364);
+        builder.setFooter("");
         return builder;
     }
 

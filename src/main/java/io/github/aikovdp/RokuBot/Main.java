@@ -4,10 +4,10 @@ import io.github.aikovdp.RokuBot.module.PluginCommands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.*;
 
 import java.io.*;
+import java.util.List;
 import java.util.Properties;
 
 public class Main {
@@ -15,6 +15,8 @@ public class Main {
     public static String prefix = "!";
     public static JDA api;
     public static GitHub github;
+    public static List<GHIssue> openIssues;
+    public static GHRepository rokuRepo;
 
     public static void main(String[] arguments) throws Exception {
         Properties settingsProperties = new Properties();
@@ -29,6 +31,13 @@ public class Main {
                 .build();
 
         github = GitHubBuilder.fromPropertyFile("github.properties").build();
+        rokuRepo = Main.github.getRepository("Rokucraft/Rokucraft");
+
+        try {
+            openIssues = rokuRepo.getIssues(GHIssueState.OPEN);
+        } catch (IOException ignored) {
+            // This error wil be thrown if there are no open issues, so the List can remain empty
+        }
 
     }
 }
