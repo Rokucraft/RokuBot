@@ -2,7 +2,10 @@ package io.github.aikovdp.RokuBot.util;
 
 
 import com.google.gson.Gson;
+import io.github.aikovdp.RokuBot.Main;
 import io.github.aikovdp.RokuBot.Plugin;
+import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.requests.RestAction;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,5 +22,11 @@ public class PluginUtil {
             }
         }
         return null;
+    }
+
+    public static String getInvite(String inviteCode) {
+        RestAction<Invite> inviteRestAction = Invite.resolve(Main.api, inviteCode, false);
+        Invite invite = inviteRestAction.complete();
+        return invite.getUrl();
     }
 }

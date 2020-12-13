@@ -2,6 +2,8 @@ package io.github.aikovdp.RokuBot.module;
 
 import io.github.aikovdp.RokuBot.Main;
 import io.github.aikovdp.RokuBot.Plugin;
+import io.github.aikovdp.RokuBot.util.EmbedUtil;
+import io.github.aikovdp.RokuBot.util.PluginUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -9,10 +11,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.io.FileNotFoundException;
-
-import static io.github.aikovdp.RokuBot.util.EmbedUtil.createErrorEmbed;
-import static io.github.aikovdp.RokuBot.util.EmbedUtil.createPluginEmbed;
-import static io.github.aikovdp.RokuBot.util.PluginUtil.getPlugin;
 
 public class PluginCommands extends ListenerAdapter {
     @Override
@@ -26,9 +24,9 @@ public class PluginCommands extends ListenerAdapter {
         if(content.startsWith("!plugin")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             try {
-                Plugin plugin = getPlugin(args[1]);
+                Plugin plugin = PluginUtil.getPlugin(args[1]);
                 if (plugin != null) {
-                    EmbedBuilder pluginEmbed = createPluginEmbed();
+                    EmbedBuilder pluginEmbed = EmbedUtil.createPluginEmbed();
                     pluginEmbed.setTitle(plugin.name);
                     pluginEmbed.addField("Download Link", plugin.downloadURL, true);
                     pluginEmbed.addField("Documentation", plugin.docsURL, false);
@@ -38,7 +36,7 @@ public class PluginCommands extends ListenerAdapter {
                     channel.sendMessage(pluginEmbed.build()).queue();
                     pluginEmbed.clear();
                 } else {
-                    EmbedBuilder errorEmbed = createErrorEmbed();
+                    EmbedBuilder errorEmbed = EmbedUtil.createErrorEmbed();
                     errorEmbed.addField("❌ Plugin not found", " \n**Usage: **`" + Main.prefix + "plugin <name>`", true);
 
                     channel.sendMessage(errorEmbed.build()).queue();

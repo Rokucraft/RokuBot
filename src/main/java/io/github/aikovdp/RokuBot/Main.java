@@ -1,19 +1,20 @@
 package io.github.aikovdp.RokuBot;
 
-import com.google.gson.Gson;
 import io.github.aikovdp.RokuBot.module.PluginCommands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.Properties;
 
 public class Main {
 
     public static String prefix = "!";
+    public static JDA api;
+    public static GitHub github;
 
     public static void main(String[] arguments) throws Exception {
         Properties settingsProperties = new Properties();
@@ -21,9 +22,13 @@ public class Main {
         settingsProperties.load(reader);
         String token = settingsProperties.getProperty("botToken");
 
-        JDA api = JDABuilder.createDefault(token)
+        api = JDABuilder.createDefault(token)
+                .setActivity(Activity.playing("with Amelia's feelings"))
                 .addEventListeners(new Commands())
                 .addEventListeners(new PluginCommands())
                 .build();
+
+        github = GitHubBuilder.fromPropertyFile("github.properties").build();
+
     }
 }

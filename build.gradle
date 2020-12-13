@@ -20,6 +20,9 @@ dependencies {
     }
     compile("ch.qos.logback:logback-classic:1.2.3")
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    // https://mvnrepository.com/artifact/org.kohsuke/github-api
+    compile group: 'org.kohsuke', name: 'github-api', version: '1.117'
 }
 
 compileJava.options.encoding = 'UTF-8'
