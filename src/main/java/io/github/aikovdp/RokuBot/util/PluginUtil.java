@@ -1,21 +1,20 @@
 package io.github.aikovdp.RokuBot.util;
 
 
-import com.google.gson.Gson;
-import io.github.aikovdp.RokuBot.Main;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.aikovdp.RokuBot.Plugin;
-import net.dv8tion.jda.api.entities.Invite;
-import net.dv8tion.jda.api.requests.RestAction;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 
 public class PluginUtil {
     public static Plugin getPlugin(String pluginName) throws FileNotFoundException {
-        Gson gson = new Gson();
-        Reader reader = new FileReader("plugins.json");
-        Plugin[] pluginList = gson.fromJson(reader, Plugin[].class);
+        ObjectMapper mapper = new ObjectMapper();
+        Plugin[] pluginList = new Plugin[0];
+        try {
+            pluginList = mapper.readValue(new File("plugins.json"), Plugin[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         for (Plugin plugin : pluginList) {
             if (plugin.name.equalsIgnoreCase(pluginName)) {
                 return plugin;
@@ -24,9 +23,5 @@ public class PluginUtil {
         return null;
     }
 
-    public static String getInvite(String inviteCode) {
-        RestAction<Invite> inviteRestAction = Invite.resolve(Main.api, inviteCode, false);
-        Invite invite = inviteRestAction.complete();
-        return invite.getUrl();
-    }
+
 }

@@ -19,6 +19,9 @@ public class PluginCommands extends ListenerAdapter {
         Message message = event.getMessage();
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
+        String avatarURL = event.getAuthor().getAvatarUrl();
+        System.out.println(message.getAuthor().getName());
+        System.out.println(avatarURL);
 
 
         if(content.startsWith("!plugin")) {
@@ -29,9 +32,10 @@ public class PluginCommands extends ListenerAdapter {
                     EmbedBuilder pluginEmbed = EmbedUtil.createPluginEmbed();
                     pluginEmbed.setTitle(plugin.name);
                     pluginEmbed.addField("Download Link", plugin.downloadURL, true);
-                    pluginEmbed.addField("Documentation", plugin.docsURL, false);
+                    // pluginEmbed.addField("Documentation", plugin.docsURL, false);
 
-                    pluginEmbed.setAuthor("Plugin Info", "", event.getAuthor().getAvatarUrl());
+                    pluginEmbed.setFooter("Plugin Info", event.getAuthor().getAvatarUrl());
+                    System.out.println(event.getAuthor().getAvatarUrl());
 
                     channel.sendMessage(pluginEmbed.build()).queue();
                     pluginEmbed.clear();

@@ -33,7 +33,7 @@ public class InfoBox {
         }
         String[] cutText = finalText.split("\\r?\\n", 2);
 
-        infoContent = cutText[1].replace("*", "•");
+        infoContent = cutText[1];
 
         if (cutText[0].contains(": ")) {
             String[] titleArray = cutText[0].split(": ");

@@ -119,6 +119,42 @@ public class Commands extends ListenerAdapter {
 
         }
 
+        if(content.startsWith(Main.prefix + "reference")) {
+            response = new EmbedBuilder().setTitle("Game Engineer Reference");
+            try {
+                response.setTitle("Game Engineer Reference", Main.rokuRepo.getFileContent("game-engineer-reference.md").getHtmlUrl());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            response.setDescription("The Game Engineer Reference document contains all sort of useful information for GEs. " +
+                    "All Game Engineers should read through this at least once.");
+            response.setColor(0x0FFFFF);
+            response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4da.png");
+            response.setFooter("Click the title to open the document", message.getAuthor().getAvatarUrl());
+        }
+
+        if(content.startsWith(Main.prefix + "questions")) {
+            response = createGHInfoEmbed("asking-questions.md", "On the Subject of");
+            try {
+                response.setTitle("On the Subject of Asking Questions", Main.rokuRepo.getFileContent("asking-questions.md").getHtmlUrl());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2753.png");
+            response.setFooter("Click the title to open the document", message.getAuthor().getAvatarUrl());
+        }
+
+        if(content.startsWith(Main.prefix + "symbols")) {
+            response = createGHInfoEmbed("symbols.md", "List of Symbols");
+            try {
+                response.setTitle("List of Symbols", Main.rokuRepo.getFileContent("symbols.md").getHtmlUrl());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/269c.png");
+            response.setFooter("Click the title to open the list", message.getAuthor().getAvatarUrl());
+        }
+
         if (response != null) {
             channel.sendMessage(response.build()).queue();
             response.clear();
