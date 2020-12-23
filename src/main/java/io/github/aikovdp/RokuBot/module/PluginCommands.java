@@ -2,6 +2,7 @@ package io.github.aikovdp.RokuBot.module;
 
 import io.github.aikovdp.RokuBot.Main;
 import io.github.aikovdp.RokuBot.Plugin;
+import io.github.aikovdp.RokuBot.Settings;
 import io.github.aikovdp.RokuBot.util.EmbedUtil;
 import io.github.aikovdp.RokuBot.util.PluginUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -17,11 +18,9 @@ public class PluginCommands extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
         Message message = event.getMessage();
+        if (!Settings.staffCategoryIDs.contains(message.getCategory().getId())) return;
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
-        String avatarURL = event.getAuthor().getAvatarUrl();
-        System.out.println(message.getAuthor().getName());
-        System.out.println(avatarURL);
 
 
         if(content.startsWith("!plugin")) {
@@ -35,13 +34,12 @@ public class PluginCommands extends ListenerAdapter {
                     // pluginEmbed.addField("Documentation", plugin.docsURL, false);
 
                     pluginEmbed.setFooter("Plugin Info", event.getAuthor().getAvatarUrl());
-                    System.out.println(event.getAuthor().getAvatarUrl());
 
                     channel.sendMessage(pluginEmbed.build()).queue();
                     pluginEmbed.clear();
                 } else {
                     EmbedBuilder errorEmbed = EmbedUtil.createErrorEmbed();
-                    errorEmbed.addField("❌ Plugin not found", " \n**Usage: **`" + Main.prefix + "plugin <name>`", true);
+                    errorEmbed.addField("❌ Plugin not found", " \n**Usage: **`" + Settings.prefix + "plugin <name>`", true);
 
                     channel.sendMessage(errorEmbed.build()).queue();
                     errorEmbed.clear();

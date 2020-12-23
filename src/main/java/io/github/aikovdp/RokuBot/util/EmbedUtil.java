@@ -9,7 +9,6 @@ public class EmbedUtil {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(0x0FFFFF);
         builder.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png");
-        builder.setFooter("Click the title for more information");
 
         return builder;
     }
@@ -20,6 +19,7 @@ public class EmbedUtil {
             InfoBox infoBox = new InfoBox("Rokucraft/Rokucraft", filePath, title);
             builder.setTitle(infoBox.infoTitle, infoBox.infoURL);
             builder.setDescription(infoBox.infoContent);
+            builder.setFooter("Click the title for more information");
             return builder;
         } catch (IOException e) {
             e.printStackTrace();

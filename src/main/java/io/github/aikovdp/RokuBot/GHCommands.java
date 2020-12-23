@@ -13,50 +13,51 @@ import java.io.IOException;
 
 import static io.github.aikovdp.RokuBot.util.EmbedUtil.*;
 
-public class Commands extends ListenerAdapter {
+public class GHCommands extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
         if (event.getAuthor().isBot()) return;
         Message message = event.getMessage();
+        if (!Settings.staffCategoryIDs.contains(message.getCategory().getId())) return;
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
         EmbedBuilder response = null;
 
         // GAME ENGINEER REFERENCE
         // Semantic Versioning
-        if(content.startsWith(Main.prefix + "semver")) {
+        if (content.startsWith(Settings.prefix + "semver")) {
             response = createGHInfoEmbed("game-engineer-reference.md", "Semantic Versioning");
         }
 
         // Keep a Changelog
-        if(content.startsWith(Main.prefix + "changelog")) {
+        if (content.startsWith(Settings.prefix + "changelog")) {
             response = createGHInfoEmbed("game-engineer-reference.md", "Keep a Changelog");
         }
 
         // Material Names
-        if(content.startsWith(Main.prefix + "material")) {
+        if (content.startsWith(Settings.prefix + "material")) {
             response = createGHInfoEmbed("game-engineer-reference.md", "Material Names");
         }
 
         // Binary Search
-        if(content.startsWith(Main.prefix + "binarysearch")) {
+        if (content.startsWith(Settings.prefix + "binarysearch")) {
             response = createGHInfoEmbed("game-engineer-reference.md", "Binary Search");
         }
 
         // The "It Works" Fallacy
-        if(content.startsWith(Main.prefix + "itworks")) {
+        if (content.startsWith(Settings.prefix + "itworks")) {
             response = createGHInfoEmbed("game-engineer-reference.md", "The \"It Works\" Fallacy");
         }
 
         // ASKING QUESTIONS
         // The XY Problem
-        if(content.startsWith(Main.prefix + "xy")) {
+        if (content.startsWith(Settings.prefix + "xy")) {
             response = createGHInfoEmbed("asking-questions.md", "The XY Problem");
         }
 
         // Don't ask to ask
-        if(content.startsWith(Main.prefix + "ask")) {
+        if (content.startsWith(Settings.prefix + "ask")) {
             response = createGHInfoEmbed("asking-questions.md", "Don't ask to ask");
             response.setDescription("> Every now and then, in online chat rooms I hang around in, someone pops in and says something in the lines of,\n" +
                     "> ```\n" +
@@ -83,7 +84,7 @@ public class Commands extends ListenerAdapter {
         }
 
         // Open Issues
-        if(content.startsWith(Main.prefix + "issues")) {
+        if (content.startsWith(Settings.prefix + "issues")) {
             String[] args = content.split("\\s+");
 
             if (Main.openIssues.isEmpty()) {
@@ -99,7 +100,7 @@ public class Commands extends ListenerAdapter {
 
             else {
                 try {
-                    GHLabel label = Main.rokuRepo.getLabel(args[1]);
+                    GHLabel label = Main.defaultRepo.getLabel(args[1]);
                     String issueList = IssueUtil.getIssueList(label);
                     if (issueList.isEmpty()) {
                         response = createErrorEmbed().setTitle("No Open Issues with label `" + label.getName() + "`");
@@ -108,7 +109,6 @@ public class Commands extends ListenerAdapter {
                     } else {
                         response = createIssuesEmbed(issueList);
                         response.setTitle("Open issues with label `" + label.getName() + "`");
-                        System.out.println(label.getColor());
                         response.setColor(Integer.parseInt(label.getColor(), 16));
                     }
                 } catch (IOException e) {
@@ -119,10 +119,10 @@ public class Commands extends ListenerAdapter {
 
         }
 
-        if(content.startsWith(Main.prefix + "reference")) {
+        if (content.startsWith(Settings.prefix + "reference")) {
             response = new EmbedBuilder().setTitle("Game Engineer Reference");
             try {
-                response.setTitle("Game Engineer Reference", Main.rokuRepo.getFileContent("game-engineer-reference.md").getHtmlUrl());
+                response.setTitle("Game Engineer Reference", Main.defaultRepo.getFileContent("game-engineer-reference.md").getHtmlUrl());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -133,10 +133,10 @@ public class Commands extends ListenerAdapter {
             response.setFooter("Click the title to open the document", message.getAuthor().getAvatarUrl());
         }
 
-        if(content.startsWith(Main.prefix + "questions")) {
+        if (content.startsWith(Settings.prefix + "questions")) {
             response = createGHInfoEmbed("asking-questions.md", "On the Subject of");
             try {
-                response.setTitle("On the Subject of Asking Questions", Main.rokuRepo.getFileContent("asking-questions.md").getHtmlUrl());
+                response.setTitle("On the Subject of Asking Questions", Main.defaultRepo.getFileContent("asking-questions.md").getHtmlUrl());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -144,10 +144,10 @@ public class Commands extends ListenerAdapter {
             response.setFooter("Click the title to open the document", message.getAuthor().getAvatarUrl());
         }
 
-        if(content.startsWith(Main.prefix + "symbols")) {
+        if (content.startsWith(Settings.prefix + "symbols")) {
             response = createGHInfoEmbed("symbols.md", "List of Symbols");
             try {
-                response.setTitle("List of Symbols", Main.rokuRepo.getFileContent("symbols.md").getHtmlUrl());
+                response.setTitle("List of Symbols", Main.defaultRepo.getFileContent("symbols.md").getHtmlUrl());
             } catch (IOException e) {
                 e.printStackTrace();
             }
