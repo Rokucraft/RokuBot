@@ -1,9 +1,11 @@
-package io.github.aikovdp.RokuBot;
+package io.github.aikovdp.RokuBot.commands;
 
+import io.github.aikovdp.RokuBot.Main;
+import io.github.aikovdp.RokuBot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static io.github.aikovdp.RokuBot.util.EmbedUtil.createErrorEmbed;
@@ -11,7 +13,7 @@ import static io.github.aikovdp.RokuBot.util.EmbedUtil.createInfoEmbed;
 
 public class BaseCommands extends ListenerAdapter {
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
         Message message = event.getMessage();
         String content = message.getContentRaw();
@@ -28,7 +30,14 @@ public class BaseCommands extends ListenerAdapter {
                     Main.botOwner.getAvatarUrl());
 
             if (Settings.staffCategoryIDs.contains(message.getCategory().getId())) {
-                response.addField("Plugin Commands", "Coming soon!", false);
+                response.addField("Plugin Commands",
+                        ":octopus: `" + Settings.prefix + "plugin <name>` shows all info for the named plugin\n" +
+                                ":lizard: `" + Settings.prefix + "version <name>` shows version info for the named plugin\n" +
+                                ":giraffe: `" + Settings.prefix + "download <name>` shows the download link for the named plugin\n" +
+                                ":owl: `" + Settings.prefix + "docs <name>` shows documentation links for the named plugin\n" +
+                                ":sloth: `" + Settings.prefix + "dependencies <name>` lists dependencies for the named plugin\n" +
+                                ":door: `" + Settings.prefix + "discord <name>` shows a discord invite for the named plugin",
+                        false);
                 response.addField("GitHub Commands",
                         ":exclamation: `" + Settings.prefix + "issues [label]` lists all issues (with the specified label)\n" +
                                 ":books: `" + Settings.prefix + "reference` shows a link to the GE reference\n" +
@@ -37,10 +46,10 @@ public class BaseCommands extends ListenerAdapter {
                         false);
             }
             response.addField("Utility Commands",
-                    "  • `" + Settings.prefix + "java` shows a download link for Java\n" +
-                            "  • `" + Settings.prefix + "optifine` shows a download link for OptiFine\n" +
-                            "  • `" + Settings.prefix + "invite [water|earth|fire|air]` shows a discord invite link for the named nation\n" +
-                            "  • `" + Settings.prefix + "cracks` shows information about cracked clients",
+                    "• `" + Settings.prefix + "invite [water|earth|fire|air]` shows a discord invite link for the named nation\n" +
+                            "• `" + Settings.prefix + "optifine` shows a download link for OptiFine\n" +
+                            "• `" + Settings.prefix + "java` shows a download link for Java\n" +
+                            "• `" + Settings.prefix + "cracks` shows information about cracked clients",
                     false);
         }
 

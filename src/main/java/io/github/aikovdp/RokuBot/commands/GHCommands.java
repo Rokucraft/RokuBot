@@ -1,10 +1,12 @@
-package io.github.aikovdp.RokuBot;
+package io.github.aikovdp.RokuBot.commands;
 
+import io.github.aikovdp.RokuBot.Main;
+import io.github.aikovdp.RokuBot.Settings;
 import io.github.aikovdp.RokuBot.util.IssueUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kohsuke.github.GHLabel;
 
@@ -15,7 +17,7 @@ import static io.github.aikovdp.RokuBot.util.EmbedUtil.*;
 
 public class GHCommands extends ListenerAdapter {
     @Override
-    public void onMessageReceived(MessageReceivedEvent event)
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event)
     {
         if (event.getAuthor().isBot()) return;
         Message message = event.getMessage();

@@ -29,15 +29,6 @@ public class EmbedUtil {
         }
     }
 
-    public static EmbedBuilder createPluginEmbed() {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setColor(0xFF7F00);
-        builder.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4e6.png");
-        builder.setFooter("Click the title for more information");
-
-        return builder;
-    }
-
     public static EmbedBuilder createIssuesEmbed(String issueList) {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle("Open Issues");
