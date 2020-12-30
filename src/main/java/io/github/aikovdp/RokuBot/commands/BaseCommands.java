@@ -1,5 +1,6 @@
 package io.github.aikovdp.RokuBot.commands;
 
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import io.github.aikovdp.RokuBot.Main;
 import io.github.aikovdp.RokuBot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -12,6 +13,13 @@ import static io.github.aikovdp.RokuBot.util.EmbedUtil.createErrorEmbed;
 import static io.github.aikovdp.RokuBot.util.EmbedUtil.createInfoEmbed;
 
 public class BaseCommands extends ListenerAdapter {
+
+    EventWaiter waiter;
+
+    public BaseCommands(EventWaiter waiter) {
+        this.waiter = waiter;
+    }
+
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
@@ -105,6 +113,14 @@ public class BaseCommands extends ListenerAdapter {
             } else {
                 channel.sendMessage("https://discord.gg/7WNFu3v").queue();
             }
+        }
+
+        if (content.toLowerCase().startsWith("all my homies ")) {
+            channel.sendMessage("who").queue();
+            waiter.waitForEvent(GuildMessageReceivedEvent.class,
+                    e -> e.getAuthor().equals(event.getAuthor())
+                            && e.getChannel().equals(event.getChannel()),
+                    e -> channel.sendMessage("asked").queue());
         }
 
         if (response != null) {

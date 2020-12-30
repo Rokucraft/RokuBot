@@ -1,5 +1,6 @@
 package io.github.aikovdp.RokuBot;
 
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import io.github.aikovdp.RokuBot.commands.BaseCommands;
 import io.github.aikovdp.RokuBot.commands.GHCommands;
 import io.github.aikovdp.RokuBot.commands.PluginCommands;
@@ -24,9 +25,12 @@ public class Main {
 
         Settings.load();
 
+        EventWaiter waiter = new EventWaiter();
+
         api = JDABuilder.createDefault(Settings.botToken)
                 .setActivity(Activity.playing("Rokucraft"))
-                .addEventListeners(new BaseCommands())
+                .addEventListeners(waiter)
+                .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new PluginCommands())
                 .build();
