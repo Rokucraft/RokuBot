@@ -44,7 +44,7 @@ public class BaseCommands extends ListenerAdapter {
                                 ":giraffe: `" + Settings.prefix + "download <name>` shows the download link for the named plugin\n" +
                                 ":owl: `" + Settings.prefix + "docs <name>` shows documentation links for the named plugin\n" +
                                 ":sloth: `" + Settings.prefix + "dependencies <name>` lists dependencies for the named plugin\n" +
-                                ":door: `" + Settings.prefix + "discord <name>` shows a discord invite for the named plugin",
+                                ":snail: `" + Settings.prefix + "discord <name>` shows a discord invite for the named plugin",
                         false);
                 response.addField("GitHub Commands",
                         ":exclamation: `" + Settings.prefix + "issues [label]` lists all issues (with the specified label)\n" +
