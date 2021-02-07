@@ -1,5 +1,6 @@
 package io.github.aikovdp.RokuBot.util;
 
+import io.github.aikovdp.RokuBot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class EmbedUtil {
 
     public static EmbedBuilder createIssuesEmbed(String issueList) {
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle("Open Issues");
+        builder.setTitle("Open Issues", Main.defaultRepo.getHtmlUrl() + "/issues");
         builder.setDescription(issueList);
         builder.setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png");
         builder.setColor(0x56d364);

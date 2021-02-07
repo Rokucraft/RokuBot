@@ -70,11 +70,12 @@ public class BaseCommands extends ListenerAdapter {
 
         if (content.startsWith(Settings.prefix + "optifine")) {
             response = createInfoEmbed();
-            response.setTitle("Download OptiFine", "https://optifine.net/adloadx?f=OptiFine_1.13.2_HD_U_F5.jar");
+            String optiFineURL = "https://optifine.net/adloadx?f=OptiFine_1.16.5_HD_U_G6.jar";
+            response.setTitle("Download OptiFine", optiFineURL);
             response.setDescription("Using OptiFine on our server is highly recommended. " +
                     "Not only will it greatly improve your performance, but you will also be able to see many more of our custom models and textures. \n" +
-                    "You can download the 1.13.2 version here:\n" +
-                    "https://optifine.net/adloadx?f=OptiFine_1.13.2_HD_U_F5.jar");
+                    "You can download the 1.16.5 version here:\n" +
+                    optiFineURL);
         }
 
         if (content.startsWith(Settings.prefix + "cracks")) {
