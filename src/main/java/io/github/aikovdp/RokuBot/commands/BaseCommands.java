@@ -124,6 +124,10 @@ public class BaseCommands extends ListenerAdapter {
                     e -> channel.sendMessage("asked").queue());
         }
 
+        if (content.toLowerCase().startsWith(Settings.prefix + "tias")) {
+            channel.sendMessage("https://tryitands.ee/").queue();
+        }
+
         if (response != null) {
             channel.sendMessage(response.build()).queue();
             response.clear();

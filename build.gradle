@@ -5,7 +5,7 @@ plugins {
 
 mainClassName = 'io.github.aikovdp.RokuBot.Main'
 
-version '1.2.2'
+version '1.3'
 def jdaVersion = '4.2.0_168'
 
 sourceCompatibility = targetCompatibility = 1.8
