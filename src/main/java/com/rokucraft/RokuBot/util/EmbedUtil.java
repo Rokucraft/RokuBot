@@ -1,6 +1,6 @@
-package io.github.aikovdp.RokuBot.util;
+package com.rokucraft.RokuBot.util;
 
-import io.github.aikovdp.RokuBot.Main;
+import com.rokucraft.RokuBot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.io.IOException;

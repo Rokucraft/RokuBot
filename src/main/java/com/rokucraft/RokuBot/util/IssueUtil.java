@@ -1,6 +1,6 @@
-package io.github.aikovdp.RokuBot.util;
+package com.rokucraft.RokuBot.util;
 
-import io.github.aikovdp.RokuBot.Main;
+import com.rokucraft.RokuBot.Main;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHLabel;

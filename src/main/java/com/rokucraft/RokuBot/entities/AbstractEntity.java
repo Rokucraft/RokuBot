@@ -1,6 +1,6 @@
-package io.github.aikovdp.RokuBot.entities;
+package com.rokucraft.RokuBot.entities;
 
-import io.github.aikovdp.RokuBot.Settings;
+import com.rokucraft.RokuBot.Settings;
 import net.dv8tion.jda.api.entities.Category;
 
 import java.util.List;

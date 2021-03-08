@@ -1,9 +1,9 @@
-package io.github.aikovdp.RokuBot;
+package com.rokucraft.RokuBot;
 
-import io.github.aikovdp.RokuBot.entities.AbstractEntity;
-import io.github.aikovdp.RokuBot.entities.DiscordInvite;
-import io.github.aikovdp.RokuBot.entities.Plugin;
-import io.github.aikovdp.RokuBot.entities.TextCommand;
+import com.rokucraft.RokuBot.entities.AbstractEntity;
+import com.rokucraft.RokuBot.entities.DiscordInvite;
+import com.rokucraft.RokuBot.entities.Plugin;
+import com.rokucraft.RokuBot.entities.TextCommand;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.jackson.JacksonConfigurationLoader;
 

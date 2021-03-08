@@ -3,7 +3,7 @@ plugins {
     id'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-mainClassName = 'io.github.aikovdp.RokuBot.Main'
+mainClassName = 'com.rokucraft.RokuBot.Main'
 
 version '2.0-SNAPSHOT-b1'
 def jdaVersion = '4.2.0_168'

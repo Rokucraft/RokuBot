@@ -1,9 +1,9 @@
-package io.github.aikovdp.RokuBot;
+package com.rokucraft.RokuBot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import io.github.aikovdp.RokuBot.commands.BaseCommands;
-import io.github.aikovdp.RokuBot.commands.GHCommands;
-import io.github.aikovdp.RokuBot.commands.PluginCommands;
+import com.rokucraft.RokuBot.commands.BaseCommands;
+import com.rokucraft.RokuBot.commands.GHCommands;
+import com.rokucraft.RokuBot.commands.PluginCommands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;

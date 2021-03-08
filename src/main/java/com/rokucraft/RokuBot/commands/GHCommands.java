@@ -1,8 +1,8 @@
-package io.github.aikovdp.RokuBot.commands;
+package com.rokucraft.RokuBot.commands;
 
-import io.github.aikovdp.RokuBot.Main;
-import io.github.aikovdp.RokuBot.Settings;
-import io.github.aikovdp.RokuBot.util.IssueUtil;
+import com.rokucraft.RokuBot.Main;
+import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.util.IssueUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -10,10 +10,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kohsuke.github.GHLabel;
 
-
 import java.io.IOException;
 
-import static io.github.aikovdp.RokuBot.util.EmbedUtil.*;
+import static com.rokucraft.RokuBot.util.EmbedUtil.*;
 
 public class GHCommands extends ListenerAdapter {
     @Override

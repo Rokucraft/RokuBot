@@ -1,10 +1,10 @@
-package io.github.aikovdp.RokuBot.commands;
+package com.rokucraft.RokuBot.commands;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import io.github.aikovdp.RokuBot.Main;
-import io.github.aikovdp.RokuBot.Settings;
-import io.github.aikovdp.RokuBot.entities.DiscordInvite;
-import io.github.aikovdp.RokuBot.entities.TextCommand;
+import com.rokucraft.RokuBot.Main;
+import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.entities.DiscordInvite;
+import com.rokucraft.RokuBot.entities.TextCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -12,8 +12,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import static io.github.aikovdp.RokuBot.util.EmbedUtil.createErrorEmbed;
-import static io.github.aikovdp.RokuBot.util.EmbedUtil.createInfoEmbed;
+import static com.rokucraft.RokuBot.util.EmbedUtil.createErrorEmbed;
+import static com.rokucraft.RokuBot.util.EmbedUtil.createInfoEmbed;
 
 public class BaseCommands extends ListenerAdapter {
 

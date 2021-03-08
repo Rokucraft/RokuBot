@@ -1,9 +1,9 @@
-package io.github.aikovdp.RokuBot.commands;
+package com.rokucraft.RokuBot.commands;
 
-import io.github.aikovdp.RokuBot.Settings;
-import io.github.aikovdp.RokuBot.entities.DiscordInvite;
-import io.github.aikovdp.RokuBot.entities.Plugin;
-import io.github.aikovdp.RokuBot.util.EmbedUtil;
+import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.entities.DiscordInvite;
+import com.rokucraft.RokuBot.entities.Plugin;
+import com.rokucraft.RokuBot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
