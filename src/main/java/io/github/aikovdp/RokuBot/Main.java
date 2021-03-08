@@ -6,10 +6,11 @@ import io.github.aikovdp.RokuBot.commands.GHCommands;
 import io.github.aikovdp.RokuBot.commands.PluginCommands;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.User;
 import org.kohsuke.github.*;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
@@ -24,6 +25,9 @@ public class Main {
     public static void main(String[] arguments) throws Exception {
 
         Settings.load();
+        Settings.loadTextCommands();
+        Settings.loadDiscordInvites();
+        Settings.loadPlugins();
 
         EventWaiter waiter = new EventWaiter();
 
