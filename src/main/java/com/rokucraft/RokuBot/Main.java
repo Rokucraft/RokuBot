@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Main {
 
-    public static JDA api;
+    public static JDA jda;
     public static GitHub github;
     public static List<GHIssue> openIssues;
     public static GHRepository defaultRepo;
@@ -31,7 +31,7 @@ public class Main {
 
         EventWaiter waiter = new EventWaiter();
 
-        api = JDABuilder.createDefault(Settings.botToken)
+        jda = JDABuilder.createDefault(Settings.botToken)
                 .setActivity(Activity.playing("Rokucraft"))
                 .addEventListeners(waiter)
                 .addEventListeners(new BaseCommands(waiter))
@@ -39,16 +39,15 @@ public class Main {
                 .addEventListeners(new PluginCommands())
                 .build();
 
-        botOwner = api.retrieveUserById(OWNER_ID).complete();
-
+        botOwner = jda.retrieveUserById(OWNER_ID).complete();
 
         github = new GitHubBuilder().withOAuthToken(Settings.gitHubOAuth, Settings.gitHubLogin).build();
         defaultRepo = github.getRepository(Settings.defaultRepoName);
 
         try {
             openIssues = defaultRepo.getIssues(GHIssueState.OPEN);
-        } catch (IOException ignored) {
-            // This error wil be thrown if there are no open issues, so the List can remain empty
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
