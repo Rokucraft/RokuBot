@@ -27,7 +27,7 @@ public class Plugin extends AbstractEntity {
     }
 
     public String getDependencies() {
-        if (dependencies != null) {
+        if (dependencies.length != 0) {
             return String.join(", ", dependencies);
         } else return null;
     }

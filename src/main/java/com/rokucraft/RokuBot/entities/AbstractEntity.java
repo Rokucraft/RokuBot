@@ -14,6 +14,10 @@ public abstract class AbstractEntity {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String[] getAliases() {
         return aliases;
     }
@@ -31,12 +35,13 @@ public abstract class AbstractEntity {
 
     public static <T extends AbstractEntity> AbstractEntity find(String name, List<T> abstractEntityList) {
         if (abstractEntityList != null) {
+            name = name.toLowerCase();
             for (AbstractEntity entity : abstractEntityList) {
-                if (name.startsWith(entity.getName())) {
+                if (name.startsWith(entity.getName().toLowerCase())) {
                     return entity;
                 }
                 for (String alias : entity.getAliases()) {
-                    if (name.startsWith(alias)) {
+                    if (name.startsWith(alias.toLowerCase())) {
                         return entity;
                     }
                 }
