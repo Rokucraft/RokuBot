@@ -14,10 +14,6 @@ public abstract class AbstractEntity {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String[] getAliases() {
         return aliases;
     }
