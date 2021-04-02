@@ -27,6 +27,7 @@ public class Main {
         Settings.load();
         Settings.loadTextCommands();
         Settings.loadDiscordInvites();
+        Settings.loadRepositories();
         Settings.loadPlugins();
 
         EventWaiter waiter = new EventWaiter();

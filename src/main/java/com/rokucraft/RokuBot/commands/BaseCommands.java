@@ -96,6 +96,7 @@ public class BaseCommands extends ListenerAdapter {
             Settings.load();
             Settings.loadTextCommands();
             Settings.loadDiscordInvites();
+            Settings.loadRepositories();
             Settings.loadPlugins();
             EmbedBuilder response = new EmbedBuilder().setColor(0x00FF00).setTitle("Successfully reloaded!");
             channel.sendMessage(response.build()).queue();

@@ -2,10 +2,12 @@ package com.rokucraft.RokuBot.commands;
 
 import com.rokucraft.RokuBot.Main;
 import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.entities.Repository;
 import com.rokucraft.RokuBot.util.IssueUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kohsuke.github.GHIssue;
@@ -153,6 +155,25 @@ public class GHCommands extends ListenerAdapter {
             } catch (NumberFormatException ignored) {
                 // Not a parsable int, so the user didn't ask for an issue
             }
+        }
+
+        if (content.startsWith(Settings.prefix + "repo") || content.startsWith(Settings.prefix + "source")) {
+            String[] args = content.split("\\s+");
+            if (args.length == 1) {
+                channel.sendMessage(Repository.find("default").getRepositoryUrl()).queue();
+            } else {
+                Repository repository = Repository.find(args[1]);
+                if (repository != null) {
+                    channel.sendMessage(repository.getRepositoryUrl()).queue();
+                } else {
+                    MessageEmbed errorEmbed = createErrorEmbed()
+                            .setTitle("Repository `" + args[1] + "` not found!")
+                            .setDescription("Usage: `" + Settings.prefix + "repository [name]`")
+                            .build();
+                    channel.sendMessage(errorEmbed).queue();
+                }
+            }
+            return;
         }
 
         if (content.startsWith(Settings.prefix + "reference")) {

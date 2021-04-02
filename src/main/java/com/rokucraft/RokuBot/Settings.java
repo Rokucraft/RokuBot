@@ -1,9 +1,6 @@
 package com.rokucraft.RokuBot;
 
-import com.rokucraft.RokuBot.entities.AbstractEntity;
-import com.rokucraft.RokuBot.entities.DiscordInvite;
-import com.rokucraft.RokuBot.entities.Plugin;
-import com.rokucraft.RokuBot.entities.TextCommand;
+import com.rokucraft.RokuBot.entities.*;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.jackson.JacksonConfigurationLoader;
 
@@ -25,6 +22,7 @@ public class Settings {
     public static List<TextCommand> textCommandList;
     public static List<DiscordInvite> discordInviteList;
     public static List<Plugin> pluginList;
+    public static List<Repository> repositoryList;
 
     public static void load() {
         File settingsFile = new File("settings.json").getAbsoluteFile();
@@ -64,11 +62,18 @@ public class Settings {
         discordInviteList = loadEntities("discordinvites.json", DiscordInvite.class);
     }
 
+    public static void loadRepositories() {
+        repositoryList = loadEntities("repositories.json", Repository.class);
+    }
+
     public static void loadPlugins() {
         pluginList = loadEntities("plugins.json", Plugin.class);
         for (Plugin plugin : pluginList) {
             if (plugin.getDiscordInviteCode() != null) {
                 new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode());
+            }
+            if (plugin.getRepositoryUrl() != null) {
+                new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl());
             }
         }
     }

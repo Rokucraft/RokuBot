@@ -11,6 +11,7 @@ public class Plugin extends AbstractEntity {
     private String latestVersion;
     private String downloadUrl;
     private String docsUrl;
+    private String repositoryUrl;
     private String discordInviteCode;
     private String[] dependencies;
 
@@ -42,6 +43,10 @@ public class Plugin extends AbstractEntity {
 
     public String getDocsUrl() {
         return docsUrl;
+    }
+
+    public String getRepositoryUrl() {
+        return repositoryUrl;
     }
 
     public String getCurrentVersion() {
