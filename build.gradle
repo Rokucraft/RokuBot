@@ -11,6 +11,7 @@ def jdaVersion = '4.2.1_253'
 sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
+    jcenter()
     mavenCentral()
     maven {
         url 'https://m2.dv8tion.net/releases'
