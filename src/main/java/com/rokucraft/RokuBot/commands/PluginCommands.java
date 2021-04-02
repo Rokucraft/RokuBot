@@ -49,6 +49,9 @@ public class PluginCommands extends ListenerAdapter {
                 if (plugin.getDocsUrl() != null) {
                     response.addField("Documentation", plugin.getDocsUrl(), true);
                 }
+                if (plugin.getRepositoryUrl() != null) {
+                    response.addField("Repository", plugin.getRepositoryUrl(), true);
+                }
                 if (plugin.getDependencies() != null) {
                     response.addField("Dependencies", plugin.getDependencies(), false);
                 }
