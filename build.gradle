@@ -6,13 +6,16 @@ plugins {
 mainClassName = 'com.rokucraft.RokuBot.Main'
 
 version '2.0-SNAPSHOT-b3'
-def jdaVersion = '4.2.0_168'
+def jdaVersion = '4.2.1_253'
 
 sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
-    jcenter()
     mavenCentral()
+    maven {
+        url 'https://m2.dv8tion.net/releases'
+        name 'm2-dv8tion'
+    }
 }
 
 dependencies {
