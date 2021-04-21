@@ -23,6 +23,7 @@ public class Settings {
     public static List<DiscordInvite> discordInviteList;
     public static List<Plugin> pluginList;
     public static List<Repository> repositoryList;
+    public static List<MarkdownSection> markdownSectionList;
 
     public static void load() {
         File settingsFile = new File("settings.json").getAbsoluteFile();
@@ -76,6 +77,10 @@ public class Settings {
                 new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl());
             }
         }
+    }
+
+    public static void loadMarkdownSections() {
+        markdownSectionList = loadEntities("markdownsections.json", MarkdownSection.class);
     }
 
     private static <T extends AbstractEntity> List<T> loadEntities(String pathname, Class<T> tClass) {

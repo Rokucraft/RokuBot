@@ -3,8 +3,6 @@ package com.rokucraft.RokuBot.util;
 import com.rokucraft.RokuBot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 
-import java.io.IOException;
-
 public class EmbedUtil {
     public static EmbedBuilder createInfoEmbed() {
         EmbedBuilder builder = new EmbedBuilder();
@@ -12,22 +10,6 @@ public class EmbedUtil {
         builder.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png");
 
         return builder;
-    }
-
-    public static EmbedBuilder createGHInfoEmbed(String filePath, String title) {
-        try {
-            EmbedBuilder builder = createInfoEmbed();
-            InfoBox infoBox = new InfoBox("Rokucraft/Rokucraft", filePath, title);
-            builder.setTitle(infoBox.infoTitle, infoBox.infoURL);
-            builder.setDescription(infoBox.infoContent);
-            builder.setFooter("Click the title for more information");
-            return builder;
-        } catch (IOException e) {
-            e.printStackTrace();
-            EmbedBuilder builder = createErrorEmbed();
-            builder.setTitle("❌ Couldn't find info");
-            return builder;
-        }
     }
 
     public static EmbedBuilder createIssuesEmbed(String issueList) {
