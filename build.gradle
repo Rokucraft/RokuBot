@@ -5,10 +5,10 @@ plugins {
 
 mainClassName = 'com.rokucraft.RokuBot.Main'
 
-version '2.0-SNAPSHOT-b4'
+version '2.0-SNAPSHOT-b5'
 def jdaVersion = '4.2.1_253'
 
-sourceCompatibility = targetCompatibility = 1.8
+sourceCompatibility = targetCompatibility = 11
 
 repositories {
     jcenter()
@@ -29,6 +29,11 @@ dependencies {
     implementation group: 'org.kohsuke', name: 'github-api', version: '1.127'
     implementation 'org.spongepowered:configurate-jackson:4.0.0'
     implementation 'com.jagrosh:jda-utilities-commons:3.0.5'
+}
+
+shadowJar {
+    archiveClassifier.set(null)
+    minimize()
 }
 
 compileJava.options.encoding = 'UTF-8'
