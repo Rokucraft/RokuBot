@@ -1,11 +1,11 @@
 plugins {
     id'application'
-    id'com.github.johnrengelman.shadow' version '6.1.0'
+    id'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 mainClassName = 'com.rokucraft.RokuBot.Main'
 
-version '2.0-SNAPSHOT-b5'
+version '2.0-SNAPSHOT'
 def jdaVersion = '4.2.1_253'
 
 sourceCompatibility = targetCompatibility = 11
