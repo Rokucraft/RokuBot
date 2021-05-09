@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.RokuBot.Main;
 import com.rokucraft.RokuBot.Settings;
 import com.rokucraft.RokuBot.entities.DiscordInvite;
+import com.rokucraft.RokuBot.entities.Rule;
 import com.rokucraft.RokuBot.entities.TextCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -66,6 +67,7 @@ public class BaseCommands extends ListenerAdapter {
 
             response.addField("Utility Commands",
                     "• `" + Settings.prefix + "invite [name]` shows a discord invite link for the named nation\n" +
+                            "• `" + Settings.prefix + "rule [1-" + Settings.rulesList.size() + "]` shows the requested rule\n" +
                             textCommandsHelp,
                     false);
             channel.sendMessage(response.build()).queue();
@@ -92,12 +94,29 @@ public class BaseCommands extends ListenerAdapter {
             return;
         }
 
+        if (content.startsWith(Settings.prefix + "rule")) {
+            String[] args = content.split("\\s+");
+            MessageEmbed response;
+            try {
+                    Rule rule = Settings.rulesList.get(Integer.parseInt(args[1]) - 1);
+                    response = rule.toEmbed();
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    response = createErrorEmbed()
+                            .setTitle("Usage:")
+                            .setDescription("`" + Settings.prefix + "rule [1-" + Settings.rulesList.size() + "]`")
+                            .build();
+            }
+            channel.sendMessage(response).queue();
+        }
+
         if (content.startsWith(Settings.prefix + "reload") && Settings.staffCategoryIDs.contains(message.getCategory().getId())) {
             Settings.load();
             Settings.loadTextCommands();
             Settings.loadDiscordInvites();
             Settings.loadRepositories();
             Settings.loadPlugins();
+            Settings.loadMarkdownSections();
+            Settings.loadRules();
             EmbedBuilder response = new EmbedBuilder().setColor(0x00FF00).setTitle("Successfully reloaded!");
             channel.sendMessage(response.build()).queue();
         }

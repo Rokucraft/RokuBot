@@ -24,6 +24,7 @@ public class Settings {
     public static List<Plugin> pluginList;
     public static List<Repository> repositoryList;
     public static List<MarkdownSection> markdownSectionList;
+    public static List<Rule> rulesList;
 
     public static void load() {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
@@ -77,6 +78,10 @@ public class Settings {
 
     public static void loadMarkdownSections() {
         markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);
+    }
+
+    public static void loadRules() {
+        rulesList = loadEntities("rules", Rule.class);
     }
 
     private static <T extends AbstractEntity> List<T> loadEntities(String entitytype, Class<T> tClass) {

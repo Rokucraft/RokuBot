@@ -30,6 +30,7 @@ public class Main {
         Settings.loadRepositories();
         Settings.loadPlugins();
         Settings.loadMarkdownSections();
+        Settings.loadRules();
 
         EventWaiter waiter = new EventWaiter();
 
