@@ -1,16 +1,16 @@
 package com.rokucraft.RokuBot;
 
 import com.rokucraft.RokuBot.entities.*;
-import org.spongepowered.configurate.BasicConfigurationNode;
-import org.spongepowered.configurate.jackson.JacksonConfigurationLoader;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 public class Settings {
 
-    private static BasicConfigurationNode root;
+    private static CommentedConfigurationNode root;
 
     public static String botToken;
     public static String botActivity;
@@ -26,28 +26,22 @@ public class Settings {
     public static List<MarkdownSection> markdownSectionList;
 
     public static void load() {
-        File settingsFile = new File("settings.json").getAbsoluteFile();
-
-        final JacksonConfigurationLoader loader = JacksonConfigurationLoader.builder().path(settingsFile.toPath()).build();
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Path.of("settings.yml"))
+                .build();
 
         try {
-            if (settingsFile.exists()) {
-                root = loader.load();
-            } else {
-                settingsFile.getParentFile().mkdirs();
-                settingsFile.createNewFile();
+            root = loader.load();
 
-            }
             botToken = root.node("botToken").getString();
             prefix = root.node("prefix").getString("!");
             botActivity = root.node("botActivity").getString("Rokucraft");
             staffCategoryIDs = root.node("staffCategoryIDs").getList(String.class);
             gitHubLogin = root.node("gitHubLogin").getString();
             gitHubOAuth = root.node("gitHubOAuth").getString();
-            defaultRepoName = root.node("repositories", "default").getString();
-
+            defaultRepoName = root.node("defaultRepository").getString();
         } catch (IOException e) {
-            System.err.println("An error occurred while loading this configuration: " + e.getMessage());
+            System.err.println("An error occurred while loading settings: " + e.getMessage());
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }
@@ -56,54 +50,49 @@ public class Settings {
     }
 
     public static void loadTextCommands() {
-        textCommandList = loadEntities("textcommands.json", TextCommand.class);
+        textCommandList = loadEntities("text-commands", TextCommand.class);
     }
 
     public static void loadDiscordInvites() {
-        discordInviteList = loadEntities("discordinvites.json", DiscordInvite.class);
+        discordInviteList = loadEntities("discord-invites", DiscordInvite.class);
     }
 
     public static void loadRepositories() {
-        repositoryList = loadEntities("repositories.json", Repository.class);
+        repositoryList = loadEntities("repositories", Repository.class);
     }
 
     public static void loadPlugins() {
-        pluginList = loadEntities("plugins.json", Plugin.class);
-        for (Plugin plugin : pluginList) {
-            if (plugin.getDiscordInviteCode() != null) {
-                new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode());
-            }
-            if (plugin.getRepositoryUrl() != null) {
-                new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl());
+        pluginList = loadEntities("plugins", Plugin.class);
+        if (pluginList != null) {
+            for (Plugin plugin : pluginList) {
+                if (plugin.getDiscordInviteCode() != null) {
+                    new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode());
+                }
+                if (plugin.getRepositoryUrl() != null) {
+                    new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl());
+                }
             }
         }
     }
 
     public static void loadMarkdownSections() {
-        markdownSectionList = loadEntities("markdownsections.json", MarkdownSection.class);
+        markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);
     }
 
-    private static <T extends AbstractEntity> List<T> loadEntities(String pathname, Class<T> tClass) {
-        File entitiesFile = new File(pathname).getAbsoluteFile();
-
-        final JacksonConfigurationLoader loader = JacksonConfigurationLoader.builder().path(entitiesFile.toPath()).build();
+    private static <T extends AbstractEntity> List<T> loadEntities(String entitytype, Class<T> tClass) {
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Path.of(entitytype + ".yml"))
+                .build();
 
         try {
-            if (entitiesFile.exists()) {
-                root = loader.load();
-            } else {
-                entitiesFile.getParentFile().mkdirs();
-                entitiesFile.createNewFile();
-            }
-            return root.getList(tClass);
-
+            root = loader.load();
+            return root.node(entitytype).getList(tClass);
         } catch (IOException e) {
-            System.err.println("An error occurred while loading this configuration: " + e.getMessage());
+            System.err.println("An error occurred while loading " + entitytype + ": " + e.getMessage());
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }
-            System.exit(1);
+            return null;
         }
-        return null;
     }
 }

@@ -26,8 +26,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
-    implementation group: 'org.kohsuke', name: 'github-api', version: '1.127'
-    implementation 'org.spongepowered:configurate-jackson:4.0.0'
+    implementation group: 'org.kohsuke', name: 'github-api', version: '1.128'
+    implementation 'org.spongepowered:configurate-yaml:4.1.1'
     implementation 'com.jagrosh:jda-utilities-commons:3.0.5'
 }
 
