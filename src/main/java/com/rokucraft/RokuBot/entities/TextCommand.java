@@ -99,13 +99,9 @@ public class TextCommand extends AbstractEntity {
             builder.setColor(embed.getColor())
                     .setTitle(embed.getTitle(), embed.getUrl())
                     .setDescription(embed.getDescription())
+                    .setThumbnail(embed.getThumbnailUrl())
                     .setImage(embed.getImageUrl());
 
-            if (embed.getThumbnailUrl() != null) {
-                builder.setThumbnail(embed.getThumbnailUrl());
-            } else {
-                builder.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png");
-            }
             messageBuilder.setEmbed(builder.build());
         }
         channel.sendMessage(messageBuilder.build()).queue();

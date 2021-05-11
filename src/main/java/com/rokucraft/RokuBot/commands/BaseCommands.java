@@ -67,7 +67,7 @@ public class BaseCommands extends ListenerAdapter {
 
             response.addField("Utility Commands",
                     "• `" + Settings.prefix + "invite [name]` shows a discord invite link for the named nation\n" +
-                            "• `" + Settings.prefix + "rule [1-" + Settings.rulesList.size() + "]` shows the requested rule\n" +
+                            "• `" + Settings.prefix + "rule <1-" + Settings.rulesList.size() + ">` shows the requested rule\n" +
                             textCommandsHelp,
                     false);
             channel.sendMessage(response.build()).queue();
@@ -103,7 +103,7 @@ public class BaseCommands extends ListenerAdapter {
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
                     response = createErrorEmbed()
                             .setTitle("Usage:")
-                            .setDescription("`" + Settings.prefix + "rule [1-" + Settings.rulesList.size() + "]`")
+                            .setDescription("`" + Settings.prefix + "rule <1-" + Settings.rulesList.size() + ">`")
                             .build();
             }
             channel.sendMessage(response).queue();
