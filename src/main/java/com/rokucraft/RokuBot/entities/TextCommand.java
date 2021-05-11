@@ -39,6 +39,7 @@ public class TextCommand extends AbstractEntity {
             private String thumbnailUrl;
             private String description;
             private String imageUrl;
+            private int color;
 
             public String getTitle() {
                 return title;
@@ -59,6 +60,15 @@ public class TextCommand extends AbstractEntity {
             public String getImageUrl() {
                 return imageUrl;
             }
+
+            public int getColor() {
+                return color;
+            }
+
+            public void setColor(int color) {
+                this.color = color;
+            }
+
         }
     }
 
@@ -83,8 +93,10 @@ public class TextCommand extends AbstractEntity {
         messageBuilder.setContent(content);
 
         if (hasEmbed) {
+
+            if (embed.getColor() == 0) {embed.setColor(0x0FFFFF);}
             EmbedBuilder builder = new EmbedBuilder();
-            builder.setColor(0x0FFFFF)
+            builder.setColor(embed.getColor())
                     .setTitle(embed.getTitle(), embed.getUrl())
                     .setDescription(embed.getDescription())
                     .setImage(embed.getImageUrl());
