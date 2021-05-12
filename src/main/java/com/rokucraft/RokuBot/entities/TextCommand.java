@@ -39,7 +39,8 @@ public class TextCommand extends AbstractEntity {
             private String thumbnailUrl;
             private String description;
             private String imageUrl;
-            private int color;
+            private int color = 0x0FFFFF;
+            private Footer footer;
 
             public String getTitle() {
                 return title;
@@ -65,10 +66,23 @@ public class TextCommand extends AbstractEntity {
                 return color;
             }
 
-            public void setColor(int color) {
-                this.color = color;
+            public Footer getFooter() {
+                return footer;
             }
 
+            @ConfigSerializable
+            public static class Footer {
+                private String text;
+                private String iconUrl;
+
+                public String getText() {
+                    return text;
+                }
+
+                public String getIconUrl() {
+                    return iconUrl;
+                }
+            }
         }
     }
 
@@ -93,14 +107,13 @@ public class TextCommand extends AbstractEntity {
         messageBuilder.setContent(content);
 
         if (hasEmbed) {
-
-            if (embed.getColor() == 0) {embed.setColor(0x0FFFFF);}
             EmbedBuilder builder = new EmbedBuilder();
             builder.setColor(embed.getColor())
                     .setTitle(embed.getTitle(), embed.getUrl())
                     .setDescription(embed.getDescription())
                     .setThumbnail(embed.getThumbnailUrl())
-                    .setImage(embed.getImageUrl());
+                    .setImage(embed.getImageUrl())
+                    .setFooter(embed.getFooter().getText(), embed.getFooter().getIconUrl());
 
             messageBuilder.setEmbed(builder.build());
         }
