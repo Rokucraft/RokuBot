@@ -7,8 +7,6 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 public class Plugin extends AbstractEntity {
     private String resourceUrl;
     private String description;
-    private String currentVersion;
-    private String latestVersion;
     private String downloadUrl;
     private String docsUrl;
     private String repositoryUrl;
@@ -47,13 +45,5 @@ public class Plugin extends AbstractEntity {
 
     public String getRepositoryUrl() {
         return repositoryUrl;
-    }
-
-    public String getCurrentVersion() {
-        return currentVersion;
-    }
-
-    public String getLatestVersion() {
-        return latestVersion;
     }
 }

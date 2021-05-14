@@ -35,14 +35,6 @@ public class PluginCommands extends ListenerAdapter {
                 if (plugin.getDescription() != null) {
                     response.setDescription(plugin.getDescription());
                 }
-                if (plugin.getCurrentVersion() != null){
-                    response.addField("Current Version", plugin.getCurrentVersion(), true);
-
-                    if (plugin.getCurrentVersion().equals(plugin.getLatestVersion())) {response.setColor(0x00ff00);}
-                }
-                if (plugin.getLatestVersion() != null) {
-                    response.addField("Latest Version", plugin.getLatestVersion(), true);
-                }
                 if (plugin.getDownloadUrl() != null) {
                     response.addField("Download Link", plugin.getDownloadUrl(), false);
                 }
@@ -63,34 +55,6 @@ public class PluginCommands extends ListenerAdapter {
                 response = EmbedUtil.createErrorEmbed();
                 response.addField("❌ Plugin not found",
                         "**Usage: **`" + args[0] + " <name>`", true);
-            }
-        }
-
-        if(content.startsWith(Settings.prefix + "version")) {
-            String[] args = event.getMessage().getContentRaw().split("\\s+");
-            Plugin plugin = Plugin.find(args[1]);
-            if (plugin != null && (plugin.getLatestVersion() != null || plugin.getCurrentVersion() != null)) {
-                response = new EmbedBuilder();
-                response.setColor(0xFF7F00);
-                response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f98e.png");
-                response.setFooter("Plugin Version", event.getAuthor().getAvatarUrl());
-
-                response.setTitle(plugin.getName() + " Version", plugin.getResourceUrl());
-                if (plugin.getCurrentVersion() != null){
-                    response.addField("Current Version", plugin.getCurrentVersion(), true);
-                    if (plugin.getCurrentVersion().equals(plugin.getLatestVersion())) {response.setColor(0x00ff00);}
-                }
-                if (plugin.getLatestVersion() != null) {
-                    response.addField("Latest Version", plugin.getLatestVersion(), true);
-                }
-            } else {
-                response = EmbedUtil.createErrorEmbed();
-                if (plugin == null) {
-                    response.addField("❌ Plugin not found",
-                            "**Usage: **`" + args[0] + " <name>`", true);
-                } else {
-                    response.setDescription("❌ Could not find versions for " + plugin.getName());
-                }
             }
         }
 
