@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import static com.rokucraft.RokuBot.Constants.GREEN;
+
 
 public class PluginCommands extends ListenerAdapter {
     @Override
@@ -27,7 +29,7 @@ public class PluginCommands extends ListenerAdapter {
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null) {
                 response = new EmbedBuilder();
-                response.setColor(0xFF7F00);
+                response.setColor(GREEN);
                 response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f419.png");
                 response.setFooter("Plugin Info", event.getAuthor().getAvatarUrl());
 
@@ -63,7 +65,7 @@ public class PluginCommands extends ListenerAdapter {
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDownloadUrl() != null) {
                 response = new EmbedBuilder();
-                response.setColor(0x00ff00);
+                response.setColor(GREEN);
                 response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f992.png");
                 response.setTitle("Download " + plugin.getName(), plugin.getResourceUrl());
                 response.setDescription("The latest version of **" + plugin.getName() + "** can be downloaded here:\n"
@@ -85,7 +87,7 @@ public class PluginCommands extends ListenerAdapter {
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDocsUrl() != null) {
                 response = new EmbedBuilder();
-                response.setColor(0x00ff00);
+                response.setColor(GREEN);
                 response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f989.png");
                 response.setTitle(plugin.getName() + " Documentation", plugin.getResourceUrl());
                 response.setDescription("The latest documentation for **" + plugin.getName() + "** can be found here:\n"
@@ -107,7 +109,7 @@ public class PluginCommands extends ListenerAdapter {
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDependencies() != null) {
                 response = new EmbedBuilder();
-                response.setColor(0x00ff00);
+                response.setColor(GREEN);
                 response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f9a5.png");
                 response.setTitle(plugin.getName() + " Dependencies", plugin.getResourceUrl());
                 response.setDescription("The dependencies for **" + plugin.getName() + "** are:\n"

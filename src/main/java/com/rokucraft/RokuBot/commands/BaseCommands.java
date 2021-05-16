@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import static com.rokucraft.RokuBot.Constants.GREEN;
 import static com.rokucraft.RokuBot.util.EmbedUtil.createErrorEmbed;
 import static com.rokucraft.RokuBot.util.EmbedUtil.createInfoEmbed;
 
@@ -117,7 +118,7 @@ public class BaseCommands extends ListenerAdapter {
             Settings.loadPlugins();
             Settings.loadMarkdownSections();
             Settings.loadRules();
-            EmbedBuilder response = new EmbedBuilder().setColor(0x00FF00).setTitle("Successfully reloaded!");
+            EmbedBuilder response = new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!");
             channel.sendMessage(response.build()).queue();
         }
 

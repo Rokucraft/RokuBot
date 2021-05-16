@@ -18,6 +18,8 @@ import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
 
+import static com.rokucraft.RokuBot.Constants.ISSUE_CLOSED_COLOR;
+import static com.rokucraft.RokuBot.Constants.ISSUE_OPEN_COLOR;
 import static com.rokucraft.RokuBot.util.EmbedUtil.createErrorEmbed;
 import static com.rokucraft.RokuBot.util.EmbedUtil.createIssuesEmbed;
 
@@ -39,7 +41,7 @@ public class GHCommands extends ListenerAdapter {
             if (Main.openIssues.isEmpty()) {
                 response = createErrorEmbed().setTitle("❌ No Open Issues");
                 response.setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png");
-                response.setColor(0xf85149);
+                response.setColor(ISSUE_CLOSED_COLOR);
             }
 
             else if (args.length == 1) {
@@ -54,7 +56,7 @@ public class GHCommands extends ListenerAdapter {
                     if (issueList.isEmpty()) {
                         response = createErrorEmbed().setTitle("No Open Issues with label `" + label.getName() + "`");
                         response.setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png");
-                        response.setColor(0xf85149);
+                        response.setColor(ISSUE_CLOSED_COLOR);
                     } else {
                         response = createIssuesEmbed(issueList);
                         response.setTitle("Open issues with label `" + label.getName() + "`");
@@ -76,7 +78,8 @@ public class GHCommands extends ListenerAdapter {
                 int id = Integer.parseInt(args[0].substring(1));
                 GHIssue issue = Main.defaultRepo.getIssue(id);
 
-                int color = (issue.getState() == GHIssueState.OPEN) ? 0x56d364 : 0xf85149;
+                int color = (issue.getState() == GHIssueState.OPEN) ? ISSUE_OPEN_COLOR : ISSUE_CLOSED_COLOR;
+
                 String thumbnailUrl = (issue.getState() == GHIssueState.OPEN) ? "https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png" : "https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png";
                 GHUser author = issue.getUser();
                 String authorName = (author.getName() == null) ? author.getLogin() : author.getName();

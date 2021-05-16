@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+import static com.rokucraft.RokuBot.Constants.BLUE;
 import static com.rokucraft.RokuBot.util.EmbedUtil.createErrorEmbed;
 
 @ConfigSerializable
@@ -36,7 +37,7 @@ public class MarkdownSection extends AbstractEntity {
         }
         try {
             builder = new EmbedBuilder()
-                    .setColor(0x0FFFFF)
+                    .setColor(BLUE)
                     .setTitle(title.replaceAll("#+ ", ""), url)
                     .setThumbnail(thumbnailUrl)
                     .setFooter(footer, footerIconUrl)

@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+import static com.rokucraft.RokuBot.Constants.BLUE;
+
 @ConfigSerializable
 public class TextCommand extends AbstractEntity {
     private String description;
@@ -39,7 +41,7 @@ public class TextCommand extends AbstractEntity {
             private String thumbnailUrl;
             private String description;
             private String imageUrl;
-            private int color = 0x0FFFFF;
+            private int color = BLUE;
             private Footer footer;
 
             public String getTitle() {
