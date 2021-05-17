@@ -28,15 +28,12 @@ public class PluginCommands extends ListenerAdapter {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null) {
-                response = new EmbedBuilder();
-                response.setColor(GREEN);
-                response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f419.png");
-                response.setFooter("Plugin Info", event.getAuthor().getAvatarUrl());
-
-                response.setTitle(plugin.getName(), plugin.getResourceUrl());
-                if (plugin.getDescription() != null) {
-                    response.setDescription(plugin.getDescription());
-                }
+                response = new EmbedBuilder()
+                        .setColor(GREEN)
+                        .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f419.png")
+                        .setFooter("Plugin Info", event.getAuthor().getAvatarUrl())
+                        .setTitle(plugin.getName(), plugin.getResourceUrl())
+                        .setDescription(plugin.getDescription());
                 if (plugin.getDownloadUrl() != null) {
                     response.addField("Download Link", plugin.getDownloadUrl(), false);
                 }
@@ -52,25 +49,24 @@ public class PluginCommands extends ListenerAdapter {
                 if (plugin.getDiscordInviteCode() != null) {
                     response.addField("Discord", DiscordInvite.find(plugin.getName()).getInviteUrl(), false);
                 }
-
             } else {
-                response = EmbedUtil.createErrorEmbed();
-                response.addField("❌ Plugin not found",
+                response = EmbedUtil.createErrorEmbed()
+                        .addField("❌ Plugin not found",
                         "**Usage: **`" + args[0] + " <name>`", true);
             }
         }
 
-        if(content.startsWith(Settings.prefix + "update") || content.startsWith(Settings.prefix + "download")) {
+        if(content.startsWith(Settings.prefix + "download")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDownloadUrl() != null) {
-                response = new EmbedBuilder();
-                response.setColor(GREEN);
-                response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f992.png");
-                response.setTitle("Download " + plugin.getName(), plugin.getResourceUrl());
-                response.setDescription("The latest version of **" + plugin.getName() + "** can be downloaded here:\n"
-                        + plugin.getDownloadUrl());
-                response.setFooter("Plugin Download Link", event.getAuthor().getAvatarUrl());
+                response = new EmbedBuilder()
+                        .setColor(GREEN)
+                        .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f992.png")
+                        .setTitle("Download " + plugin.getName(), plugin.getResourceUrl())
+                        .setDescription("The latest version of **" + plugin.getName() + "** can be downloaded here:\n"
+                                + plugin.getDownloadUrl())
+                        .setFooter("Plugin Download Link", event.getAuthor().getAvatarUrl());
             } else {
                 response = EmbedUtil.createErrorEmbed();
                 if (plugin == null) {
@@ -82,17 +78,17 @@ public class PluginCommands extends ListenerAdapter {
             }
         }
 
-        if(content.startsWith(Settings.prefix + "docs") || content.startsWith(Settings.prefix + "wiki")) {
+        if(content.startsWith(Settings.prefix + "docs")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDocsUrl() != null) {
-                response = new EmbedBuilder();
-                response.setColor(GREEN);
-                response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f989.png");
-                response.setTitle(plugin.getName() + " Documentation", plugin.getResourceUrl());
-                response.setDescription("The latest documentation for **" + plugin.getName() + "** can be found here:\n"
-                        + plugin.getDocsUrl());
-                response.setFooter("Plugin Documentation Link", event.getAuthor().getAvatarUrl());
+                response = new EmbedBuilder()
+                        .setColor(GREEN)
+                        .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f989.png")
+                        .setTitle(plugin.getName() + " Documentation", plugin.getResourceUrl())
+                        .setDescription("The latest documentation for **" + plugin.getName() + "** can be found here:\n"
+                                + plugin.getDocsUrl())
+                        .setFooter("Plugin Documentation Link", event.getAuthor().getAvatarUrl());
             } else {
                 response = EmbedUtil.createErrorEmbed();
                 if (plugin == null) {
@@ -108,13 +104,13 @@ public class PluginCommands extends ListenerAdapter {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDependencies() != null) {
-                response = new EmbedBuilder();
-                response.setColor(GREEN);
-                response.setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f9a5.png");
-                response.setTitle(plugin.getName() + " Dependencies", plugin.getResourceUrl());
-                response.setDescription("The dependencies for **" + plugin.getName() + "** are:\n"
-                        + plugin.getDependencies());
-                response.setFooter("Plugin Dependencies", event.getAuthor().getAvatarUrl());
+                response = new EmbedBuilder()
+                        .setColor(GREEN)
+                        .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f9a5.png")
+                        .setTitle(plugin.getName() + " Dependencies", plugin.getResourceUrl())
+                        .setDescription("The dependencies for **" + plugin.getName() + "** are:\n"
+                                + plugin.getDependencies())
+                        .setFooter("Plugin Dependencies", event.getAuthor().getAvatarUrl());
             } else {
                 response = EmbedUtil.createErrorEmbed();
                 if (plugin == null) {

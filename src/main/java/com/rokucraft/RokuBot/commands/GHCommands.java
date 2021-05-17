@@ -39,9 +39,10 @@ public class GHCommands extends ListenerAdapter {
             String[] args = content.split("\\s+");
 
             if (Main.openIssues.isEmpty()) {
-                response = createErrorEmbed().setTitle("❌ No Open Issues");
-                response.setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png");
-                response.setColor(ISSUE_CLOSED_COLOR);
+                response = createErrorEmbed()
+                        .setTitle("❌ No Open Issues")
+                        .setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png")
+                        .setColor(ISSUE_CLOSED_COLOR);
             }
 
             else if (args.length == 1) {
@@ -54,17 +55,17 @@ public class GHCommands extends ListenerAdapter {
                     GHLabel label = Main.defaultRepo.getLabel(args[1]);
                     String issueList = IssueUtil.getIssueList(label);
                     if (issueList.isEmpty()) {
-                        response = createErrorEmbed().setTitle("No Open Issues with label `" + label.getName() + "`");
-                        response.setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png");
-                        response.setColor(ISSUE_CLOSED_COLOR);
+                        response = createErrorEmbed()
+                                .setTitle("No Open Issues with label `" + label.getName() + "`")
+                                .setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png")
+                                .setColor(ISSUE_CLOSED_COLOR);
                     } else {
-                        response = createIssuesEmbed(issueList);
-                        response.setTitle("Open issues with label `" + label.getName() + "`");
-                        response.setColor(Integer.parseInt(label.getColor(), 16));
+                        response = createIssuesEmbed(issueList)
+                                .setTitle("Open issues with label `" + label.getName() + "`")
+                                .setColor(Integer.parseInt(label.getColor(), 16));
                     }
                 } catch (IOException e) {
-                    response = createErrorEmbed();
-                    response.setTitle("❌ Label `" + args[1] + "` does not exist");
+                    response = createErrorEmbed().setTitle("❌ Label `" + args[1] + "` does not exist");
                 }
             }
             channel.sendMessage(response.build()).queue();
