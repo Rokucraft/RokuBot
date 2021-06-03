@@ -99,8 +99,9 @@ public class BaseCommands extends ListenerAdapter {
             String[] args = content.split("\\s+");
             MessageEmbed response;
             try {
-                    Rule rule = Settings.rulesList.get(Integer.parseInt(args[1]) - 1);
-                    response = rule.toEmbed();
+                int index = Integer.parseInt(args[1]);
+                    Rule rule = Settings.rulesList.get(index - 1);
+                    response = rule.toEmbed(index);
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
                     response = createErrorEmbed()
                             .setTitle("Usage:")

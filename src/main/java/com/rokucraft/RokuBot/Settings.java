@@ -19,6 +19,7 @@ public class Settings {
     public static String gitHubLogin;
     public static String gitHubOAuth;
     public static String defaultRepoName;
+    public static String rulesFooter;
     public static List<TextCommand> textCommandList;
     public static List<DiscordInvite> discordInviteList;
     public static List<Plugin> pluginList;
@@ -41,6 +42,7 @@ public class Settings {
             gitHubLogin = root.node("gitHubLogin").getString();
             gitHubOAuth = root.node("gitHubOAuth").getString();
             defaultRepoName = root.node("defaultRepository").getString();
+            rulesFooter = root.node("rulesFooter").getString();
         } catch (IOException e) {
             System.err.println("An error occurred while loading settings: " + e.getMessage());
             if (e.getCause() != null) {
