@@ -33,7 +33,7 @@ public class BaseCommands extends ListenerAdapter {
         MessageChannel channel = event.getChannel();
 
         if (content.startsWith(Settings.prefix + "help")) {
-            String botNickname = event.getGuild().getMemberById(event.getJDA().getSelfUser().getId()).getNickname();
+            String botNickname = event.getGuild().getSelfMember().getNickname();
             String botName = botNickname != null ? botNickname : event.getJDA().getSelfUser().getName();
             EmbedBuilder response = createInfoEmbed();
             response.setTitle(botName + " Help");
