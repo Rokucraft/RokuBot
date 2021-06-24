@@ -1,9 +1,8 @@
 package com.rokucraft.RokuBot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.rokucraft.RokuBot.commands.BaseCommands;
-import com.rokucraft.RokuBot.commands.GHCommands;
-import com.rokucraft.RokuBot.commands.PluginCommands;
+import com.rokucraft.RokuBot.commands.*;
+import com.rokucraft.RokuBot.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -31,6 +30,7 @@ public class Main {
         Settings.loadPlugins();
         Settings.loadMarkdownSections();
         Settings.loadRules();
+        Settings.loadSlashMessageCommands();
 
         EventWaiter waiter = new EventWaiter();
 
@@ -40,7 +40,10 @@ public class Main {
                 .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new PluginCommands())
-                .build();
+                .addEventListeners(
+                        new SlashCommandListener(new RuleCommand(), new InviteCommand())
+                                .addCommands(Settings.slashMessageCommandList)
+                ).build();
 
         botOwner = jda.retrieveUserById(OWNER_ID).complete();
 

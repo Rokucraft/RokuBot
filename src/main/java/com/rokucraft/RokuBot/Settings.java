@@ -1,6 +1,12 @@
 package com.rokucraft.RokuBot;
 
+import com.rokucraft.RokuBot.commands.SlashMessageCommand;
 import com.rokucraft.RokuBot.entities.*;
+import com.rokucraft.RokuBot.serializers.MessageEmbedSerializer;
+import com.rokucraft.RokuBot.serializers.MessageSerializer;
+import com.rokucraft.RokuBot.serializers.SlashMessageCommandSerializer;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -26,6 +32,7 @@ public class Settings {
     public static List<Repository> repositoryList;
     public static List<MarkdownSection> markdownSectionList;
     public static List<Rule> rulesList;
+    public static List<SlashMessageCommand> slashMessageCommandList;
 
     public static void load() {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
@@ -86,10 +93,18 @@ public class Settings {
         rulesList = loadEntities("rules", Rule.class);
     }
 
-    private static <T extends AbstractEntity> List<T> loadEntities(String entitytype, Class<T> tClass) {
+    public static void loadSlashMessageCommands() {
+        slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
+    }
+
+    private static <T> List<T> loadEntities(String entitytype, Class<T> tClass) {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(Path.of(entitytype + ".yml"))
-                .build();
+                .defaultOptions(options -> options.serializers(
+                        builder -> builder.register(Message.class, MessageSerializer.INSTANCE)
+                                .register(MessageEmbed.class, MessageEmbedSerializer.INSTANCE)
+                                .register(SlashMessageCommand.class, SlashMessageCommandSerializer.INSTANCE)
+                )).build();
 
         try {
             root = loader.load();
