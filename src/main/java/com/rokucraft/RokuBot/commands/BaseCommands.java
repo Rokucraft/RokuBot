@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.RokuBot.Main;
 import com.rokucraft.RokuBot.Settings;
 import com.rokucraft.RokuBot.entities.DiscordInvite;
-import com.rokucraft.RokuBot.entities.Rule;
 import com.rokucraft.RokuBot.entities.TextCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -32,29 +31,26 @@ public class BaseCommands extends ListenerAdapter {
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
 
-        if (content.startsWith(Settings.prefix + "help")) {
+        if (content.startsWith(Settings.prefix + "help") && Settings.staffCategoryIDs.contains(message.getCategory().getId()))  {
             String botNickname = event.getGuild().getSelfMember().getNickname();
             String botName = botNickname != null ? botNickname : event.getJDA().getSelfUser().getName();
-            EmbedBuilder response = createInfoEmbed();
-            response.setTitle(botName + " Help");
-            response.setFooter("Made by " + Main.botOwner.getName(), Main.botOwner.getAvatarUrl());
-
-            if (Settings.staffCategoryIDs.contains(message.getCategory().getId())) {
-                response.addField("Plugin Commands",
+            EmbedBuilder response = createInfoEmbed()
+                    .setTitle(botName + " Help")
+                    .setFooter("Made by " + Main.botOwner.getName(), Main.botOwner.getAvatarUrl())
+                    .addField("Plugin Commands",
                         ":octopus: `" + Settings.prefix + "plugin <name>` shows all info for the named plugin\n" +
                                 ":lizard: `" + Settings.prefix + "version <name>` shows version info for the named plugin\n" +
                                 ":giraffe: `" + Settings.prefix + "download <name>` shows the download link for the named plugin\n" +
                                 ":owl: `" + Settings.prefix + "docs <name>` shows documentation links for the named plugin\n" +
                                 ":sloth: `" + Settings.prefix + "dependencies <name>` lists dependencies for the named plugin\n" +
                                 ":snail: `" + Settings.prefix + "invite <name>` shows a discord invite for the named plugin",
-                        false);
-                response.addField("GitHub Commands",
+                        false)
+                    .addField("GitHub Commands",
                         ":exclamation: `" + Settings.prefix + "issues [label]` lists all issues (with the specified label)\n" +
                                 ":books: `" + Settings.prefix + "reference` shows a link to the GE reference\n" +
                                 ":question: `" + Settings.prefix + "questions` shows a link to the asking-questions document\n" +
                                 ":fleur_de_lis: `" + Settings.prefix + "symbols` shows a link to the list with symbols",
                         false);
-            }
 
             StringBuilder textCommandsHelpBuilder = new StringBuilder();
             for (TextCommand textCommand : Settings.textCommandList) {
@@ -66,17 +62,14 @@ public class BaseCommands extends ListenerAdapter {
             }
             String textCommandsHelp = textCommandsHelpBuilder.toString();
 
-            response.addField("Utility Commands",
-                    "• `" + Settings.prefix + "invite [name]` shows a discord invite link for the named nation\n" +
-                            "• `" + Settings.prefix + "rule <1-" + Settings.rulesList.size() + ">` shows the requested rule\n" +
-                            textCommandsHelp,
-                    false);
+            response.addField("Utility Commands", textCommandsHelp, false);
+
             channel.sendMessage(response.build()).queue();
             response.clear();
             return;
         }
 
-        if (content.startsWith(Settings.prefix + "invite") || content.startsWith(Settings.prefix + "discord")) {
+        if (content.startsWith(Settings.prefix + "discord")) {
             String[] args = content.split("\\s+");
             if (args.length == 1) {
                 channel.sendMessage(DiscordInvite.find("default").getInviteUrl()).queue();
@@ -93,22 +86,6 @@ public class BaseCommands extends ListenerAdapter {
                 }
             }
             return;
-        }
-
-        if (content.startsWith(Settings.prefix + "rule")) {
-            String[] args = content.split("\\s+");
-            MessageEmbed response;
-            try {
-                int index = Integer.parseInt(args[1]);
-                    Rule rule = Settings.rulesList.get(index - 1);
-                    response = rule.toEmbed(index);
-            } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                    response = createErrorEmbed()
-                            .setTitle("Usage:")
-                            .setDescription("`" + Settings.prefix + "rule <1-" + Settings.rulesList.size() + ">`")
-                            .build();
-            }
-            channel.sendMessage(response).queue();
         }
 
         if (content.startsWith(Settings.prefix + "reload") && Settings.staffCategoryIDs.contains(message.getCategory().getId())) {
