@@ -6,7 +6,7 @@ plugins {
 mainClassName = 'com.rokucraft.RokuBot.Main'
 
 version '2.0-SNAPSHOT'
-def jdaVersion = '4.2.1_253'
+def jdaVersion = '4.3.0_277'
 
 sourceCompatibility = targetCompatibility = 11
 
