@@ -4,6 +4,8 @@ import com.rokucraft.RokuBot.Main;
 import com.rokucraft.RokuBot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kohsuke.github.GHRepository;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
@@ -26,10 +28,12 @@ public class MarkdownSection extends AbstractEntity {
     private String url;
     private String footer;
 
+    @Nullable
     public static MarkdownSection find(String name) {
         return (MarkdownSection) find(name, Settings.markdownSectionList);
     }
 
+    @NonNull
     public MessageEmbed toEmbed(String footerIconUrl) {
         EmbedBuilder builder;
         if (thumbnailUrl == null) {
@@ -50,6 +54,7 @@ public class MarkdownSection extends AbstractEntity {
         return builder.build();
     }
 
+    @Nullable
     public String getContents() throws IOException {
         GHRepository repository = Main.github.getRepository(repoName);
         InputStream inputStream = repository.getFileContent(filePath).read();

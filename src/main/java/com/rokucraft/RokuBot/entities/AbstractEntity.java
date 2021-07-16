@@ -2,6 +2,7 @@ package com.rokucraft.RokuBot.entities;
 
 import com.rokucraft.RokuBot.Settings;
 import net.dv8tion.jda.api.entities.Category;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
@@ -10,10 +11,12 @@ public abstract class AbstractEntity {
     String[] aliases;
     boolean staffOnly;
 
+    @Nullable
     public String getName() {
         return name;
     }
 
+    @Nullable
     public String[] getAliases() {
         return aliases;
     }
@@ -29,6 +32,7 @@ public abstract class AbstractEntity {
         return true;
     }
 
+    @Nullable
     public static <T extends AbstractEntity> AbstractEntity find(String name, List<T> abstractEntityList) {
         if (abstractEntityList != null) {
             name = name.toLowerCase();

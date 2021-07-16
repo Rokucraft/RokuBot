@@ -3,6 +3,7 @@ package com.rokucraft.RokuBot.entities;
 import com.rokucraft.RokuBot.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import static com.rokucraft.RokuBot.Constants.FUCHSIA;
@@ -11,6 +12,12 @@ import static com.rokucraft.RokuBot.Constants.FUCHSIA;
 public class Rule extends AbstractEntity {
     private String description;
 
+    /**
+     * Constructs a decorated {@link MessageEmbed} containing the rule
+     * @param index the index of the rule
+     * @return a decorated {@link MessageEmbed} containing the rule
+     */
+    @NonNull
     public MessageEmbed toEmbed(int index) {
          return new EmbedBuilder()
                  .setTitle(index + ". " + name)

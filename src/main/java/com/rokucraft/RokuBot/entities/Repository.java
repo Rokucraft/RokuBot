@@ -1,6 +1,7 @@
 package com.rokucraft.RokuBot.entities;
 
 import com.rokucraft.RokuBot.Settings;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
@@ -17,10 +18,12 @@ public class Repository extends AbstractEntity{
         Settings.repositoryList.add(this);
     }
 
+    @Nullable
     public String getRepositoryUrl() {
         return repositoryUrl;
     }
 
+    @Nullable
     public static Repository find(String name) {
         return (Repository) find(name, Settings.repositoryList);
     }
