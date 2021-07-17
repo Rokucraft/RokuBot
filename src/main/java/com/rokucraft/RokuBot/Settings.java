@@ -5,6 +5,7 @@ import com.rokucraft.RokuBot.entities.*;
 import com.rokucraft.RokuBot.serializers.MessageEmbedSerializer;
 import com.rokucraft.RokuBot.serializers.MessageSerializer;
 import com.rokucraft.RokuBot.serializers.SlashMessageCommandSerializer;
+import io.leangen.geantyref.TypeToken;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -13,6 +14,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 public class Settings {
 
@@ -33,6 +35,7 @@ public class Settings {
     public static List<MarkdownSection> markdownSectionList;
     public static List<Rule> rulesList;
     public static List<SlashMessageCommand> slashMessageCommandList;
+    public static Map<String, String> voiceChannelRoleMap;
 
     public static void load() {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
@@ -50,6 +53,7 @@ public class Settings {
             gitHubOAuth = root.node("gitHubOAuth").getString();
             defaultRepoName = root.node("defaultRepository").getString();
             rulesFooter = root.node("rulesFooter").getString();
+            voiceChannelRoleMap = root.node("voice-channel-roles").get(new TypeToken<Map<String, String>>(){});
         } catch (IOException e) {
             System.err.println("An error occurred while loading settings: " + e.getMessage());
             if (e.getCause() != null) {
