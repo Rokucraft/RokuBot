@@ -2,6 +2,7 @@ package com.rokucraft.RokuBot.serializers;
 
 import com.rokucraft.RokuBot.commands.SlashMessageCommand;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.interactions.components.Button;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -18,7 +19,8 @@ public class SlashMessageCommandSerializer implements TypeSerializer<SlashMessag
         return new SlashMessageCommand(
                 node.node("name").getString(),
                 node.node("description").getString(),
-                node.node("message").get(Message.class)
+                node.node("message").get(Message.class),
+                node.node("buttons").getList(Button.class)
         );
     }
 

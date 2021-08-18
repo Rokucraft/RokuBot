@@ -2,12 +2,14 @@ package com.rokucraft.RokuBot;
 
 import com.rokucraft.RokuBot.commands.SlashMessageCommand;
 import com.rokucraft.RokuBot.entities.*;
+import com.rokucraft.RokuBot.serializers.ButtonSerializer;
 import com.rokucraft.RokuBot.serializers.MessageEmbedSerializer;
 import com.rokucraft.RokuBot.serializers.MessageSerializer;
 import com.rokucraft.RokuBot.serializers.SlashMessageCommandSerializer;
 import io.leangen.geantyref.TypeToken;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.interactions.components.Button;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -108,6 +110,7 @@ public class Settings {
                         builder -> builder.register(Message.class, MessageSerializer.INSTANCE)
                                 .register(MessageEmbed.class, MessageEmbedSerializer.INSTANCE)
                                 .register(SlashMessageCommand.class, SlashMessageCommandSerializer.INSTANCE)
+                                .register(Button.class, ButtonSerializer.INSTANCE)
                 )).build();
 
         try {
