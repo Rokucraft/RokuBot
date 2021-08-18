@@ -4,6 +4,7 @@ import com.rokucraft.RokuBot.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
@@ -27,7 +28,12 @@ public class TextCommand extends AbstractEntity {
     }
 
     public void execute(MessageChannel channel) {
-        channel.sendMessage(getMessage()).setActionRow(buttons).queue();
+        MessageAction messageAction = channel.sendMessage(getMessage());
+        if (buttons.isEmpty()) {
+            messageAction.queue();
+        } else {
+            messageAction.setActionRow(buttons).queue();
+        }
     }
 
     @Nullable
