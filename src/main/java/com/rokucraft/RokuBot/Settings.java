@@ -38,6 +38,9 @@ public class Settings {
     public static List<Rule> rulesList;
     public static List<SlashMessageCommand> slashMessageCommandList;
     public static Map<String, String> voiceChannelRoleMap;
+    public static Map<String, String> welcomeChannelMap;
+    public static Map<String, String> muteRoleMap;
+    public static List<MessageEmbed> welcomeEmbeds;
 
     public static void load() {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
@@ -56,6 +59,7 @@ public class Settings {
             defaultRepoName = root.node("defaultRepository").getString();
             rulesFooter = root.node("rulesFooter").getString();
             voiceChannelRoleMap = root.node("voice-channel-roles").get(new TypeToken<Map<String, String>>(){});
+            welcomeChannelMap = root.node("welcome-channel-map").get(new TypeToken<Map<String, String>>() {});
         } catch (IOException e) {
             System.err.println("An error occurred while loading settings: " + e.getMessage());
             if (e.getCause() != null) {
@@ -101,6 +105,10 @@ public class Settings {
 
     public static void loadSlashMessageCommands() {
         slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
+    }
+
+    public static void loadWelcomeEmbeds() {
+        welcomeEmbeds = loadEntities("welcome-embeds", MessageEmbed.class);
     }
 
     private static <T> List<T> loadEntities(String entitytype, Class<T> tClass) {

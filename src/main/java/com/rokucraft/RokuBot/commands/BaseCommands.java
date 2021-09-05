@@ -32,10 +32,8 @@ public class BaseCommands extends ListenerAdapter {
         MessageChannel channel = event.getChannel();
 
         if (content.startsWith(Settings.prefix + "help") && Settings.staffCategoryIDs.contains(message.getCategory().getId()))  {
-            String botNickname = event.getGuild().getSelfMember().getNickname();
-            String botName = botNickname != null ? botNickname : event.getJDA().getSelfUser().getName();
             EmbedBuilder response = createInfoEmbed()
-                    .setTitle(botName + " Help")
+                    .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + Main.botOwner.getName(), Main.botOwner.getAvatarUrl())
                     .addField("Plugin Commands",
                         ":octopus: `" + Settings.prefix + "plugin <name>` shows all info for the named plugin\n" +
@@ -96,6 +94,7 @@ public class BaseCommands extends ListenerAdapter {
             Settings.loadPlugins();
             Settings.loadMarkdownSections();
             Settings.loadRules();
+            Settings.loadWelcomeEmbeds();
             EmbedBuilder response = new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!");
             channel.sendMessage(response.build()).queue();
         }

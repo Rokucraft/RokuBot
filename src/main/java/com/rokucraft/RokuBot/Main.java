@@ -3,11 +3,13 @@ package com.rokucraft.RokuBot;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.RokuBot.commands.*;
 import com.rokucraft.RokuBot.listeners.GuildVoiceListener;
+import com.rokucraft.RokuBot.listeners.JoinListener;
 import com.rokucraft.RokuBot.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.kohsuke.github.*;
 
 import java.io.IOException;
@@ -32,16 +34,19 @@ public class Main {
         Settings.loadMarkdownSections();
         Settings.loadRules();
         Settings.loadSlashMessageCommands();
+        Settings.loadWelcomeEmbeds();
 
         EventWaiter waiter = new EventWaiter();
 
         jda = JDABuilder.createDefault(Settings.botToken)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setActivity(Activity.playing("Rokucraft"))
                 .addEventListeners(waiter)
                 .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new PluginCommands())
                 .addEventListeners(new GuildVoiceListener())
+                .addEventListeners(new JoinListener())
                 .addEventListeners(
                         new SlashCommandListener(new RuleCommand(), new InviteCommand())
                                 .addCommands(Settings.slashMessageCommandList)
