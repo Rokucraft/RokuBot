@@ -1,6 +1,6 @@
 package com.rokucraft.RokuBot.commands;
 
-import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.config.Settings;
 import com.rokucraft.RokuBot.entities.Rule;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

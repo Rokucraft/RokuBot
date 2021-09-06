@@ -1,11 +1,11 @@
-package com.rokucraft.RokuBot;
+package com.rokucraft.RokuBot.config;
 
 import com.rokucraft.RokuBot.commands.SlashMessageCommand;
+import com.rokucraft.RokuBot.config.serializers.ButtonSerializer;
+import com.rokucraft.RokuBot.config.serializers.MessageEmbedSerializer;
+import com.rokucraft.RokuBot.config.serializers.MessageSerializer;
+import com.rokucraft.RokuBot.config.serializers.SlashMessageCommandSerializer;
 import com.rokucraft.RokuBot.entities.*;
-import com.rokucraft.RokuBot.serializers.ButtonSerializer;
-import com.rokucraft.RokuBot.serializers.MessageEmbedSerializer;
-import com.rokucraft.RokuBot.serializers.MessageSerializer;
-import com.rokucraft.RokuBot.serializers.SlashMessageCommandSerializer;
 import io.leangen.geantyref.TypeToken;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;

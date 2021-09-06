@@ -1,6 +1,6 @@
 package com.rokucraft.RokuBot.entities;
 
-import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.config.Settings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.interactions.components.Button;

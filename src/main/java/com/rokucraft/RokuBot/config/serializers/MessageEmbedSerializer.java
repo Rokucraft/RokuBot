@@ -1,4 +1,4 @@
-package com.rokucraft.RokuBot.serializers;
+package com.rokucraft.RokuBot.config.serializers;
 
 import com.rokucraft.RokuBot.Constants;
 import net.dv8tion.jda.api.EmbedBuilder;

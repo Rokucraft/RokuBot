@@ -2,6 +2,7 @@ package com.rokucraft.RokuBot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.RokuBot.commands.*;
+import com.rokucraft.RokuBot.config.Settings;
 import com.rokucraft.RokuBot.listeners.GuildVoiceListener;
 import com.rokucraft.RokuBot.listeners.JoinListener;
 import com.rokucraft.RokuBot.listeners.SlashCommandListener;

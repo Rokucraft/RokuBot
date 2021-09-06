@@ -2,7 +2,7 @@ package com.rokucraft.RokuBot.commands;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.RokuBot.Main;
-import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.config.Settings;
 import com.rokucraft.RokuBot.entities.DiscordInvite;
 import com.rokucraft.RokuBot.entities.TextCommand;
 import net.dv8tion.jda.api.EmbedBuilder;

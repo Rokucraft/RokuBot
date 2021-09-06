@@ -1,6 +1,6 @@
 package com.rokucraft.RokuBot.commands;
 
-import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.config.Settings;
 import com.rokucraft.RokuBot.entities.DiscordInvite;
 import com.rokucraft.RokuBot.entities.Plugin;
 import com.rokucraft.RokuBot.util.EmbedUtil;

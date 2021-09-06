@@ -1,4 +1,4 @@
-package com.rokucraft.RokuBot.serializers;
+package com.rokucraft.RokuBot.config.serializers;
 
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;

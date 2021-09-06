@@ -1,6 +1,6 @@
 package com.rokucraft.RokuBot.listeners;
 
-import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.config.Settings;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;

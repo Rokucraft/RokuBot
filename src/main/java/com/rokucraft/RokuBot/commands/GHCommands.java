@@ -1,7 +1,7 @@
 package com.rokucraft.RokuBot.commands;
 
 import com.rokucraft.RokuBot.Main;
-import com.rokucraft.RokuBot.Settings;
+import com.rokucraft.RokuBot.config.Settings;
 import com.rokucraft.RokuBot.entities.MarkdownSection;
 import com.rokucraft.RokuBot.entities.Repository;
 import com.rokucraft.RokuBot.util.IssueUtil;
