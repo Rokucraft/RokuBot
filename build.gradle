@@ -3,7 +3,7 @@ plugins {
     id'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
-mainClassName = 'com.rokucraft.RokuBot.Main'
+mainClassName = 'com.rokucraft.rokubot.Main'
 
 version '2.0-SNAPSHOT'
 def jdaVersion = '4.3.0_277'
