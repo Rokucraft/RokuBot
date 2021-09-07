@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
@@ -15,7 +15,6 @@ public class DiscordInvite extends AbstractEntity{
         this.aliases = aliases;
         this.staffOnly = staffOnly;
         this.inviteCode = inviteCode;
-        Settings.discordInviteList.add(this);
     }
 
     @Nullable
@@ -27,6 +26,6 @@ public class DiscordInvite extends AbstractEntity{
 
     @Nullable
     public static DiscordInvite find(String name) {
-        return (DiscordInvite) find(name, Settings.discordInviteList);
+        return (DiscordInvite) find(name, Main.getConfig().discordInviteList);
     }
 }

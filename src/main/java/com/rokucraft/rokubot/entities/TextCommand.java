@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.interactions.components.Button;
@@ -38,6 +38,6 @@ public class TextCommand extends AbstractEntity {
 
     @Nullable
     public static TextCommand find(String name) {
-        return (TextCommand) find(name, Settings.textCommandList);
+        return (TextCommand) find(name, Main.getConfig().textCommandList);
     }
 }

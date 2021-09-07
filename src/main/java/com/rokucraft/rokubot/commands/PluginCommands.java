@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.commands;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.List;
+
 import static com.rokucraft.rokubot.Constants.GREEN;
 
 
@@ -17,14 +19,17 @@ public class PluginCommands extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
+        String prefix = Main.getConfig().prefix;
+        List<String> staffCategoryIDs = Main.getConfig().staffCategoryIDs;
+
         Message message = event.getMessage();
-        if (!Settings.staffCategoryIDs.contains(message.getCategory().getId())) return;
+        if (!staffCategoryIDs.contains(message.getCategory().getId())) return;
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
         EmbedBuilder response = null;
 
 
-        if(content.startsWith(Settings.prefix + "plugin")) {
+        if(content.startsWith(prefix + "plugin")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null) {
@@ -56,7 +61,7 @@ public class PluginCommands extends ListenerAdapter {
             }
         }
 
-        if(content.startsWith(Settings.prefix + "download")) {
+        if(content.startsWith(prefix + "download")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDownloadUrl() != null) {
@@ -78,7 +83,7 @@ public class PluginCommands extends ListenerAdapter {
             }
         }
 
-        if(content.startsWith(Settings.prefix + "docs")) {
+        if(content.startsWith(prefix + "docs")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDocsUrl() != null) {
@@ -100,7 +105,7 @@ public class PluginCommands extends ListenerAdapter {
             }
         }
 
-        if(content.startsWith(Settings.prefix + "dependencies")) {
+        if(content.startsWith(prefix + "dependencies")) {
             String[] args = event.getMessage().getContentRaw().split("\\s+");
             Plugin plugin = Plugin.find(args[1]);
             if (plugin != null && plugin.getDependencies() != null) {

@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
@@ -16,7 +16,7 @@ public class Plugin extends AbstractEntity {
 
     @Nullable
     public static Plugin find(String name) {
-        return (Plugin) find(name, Settings.pluginList);
+        return (Plugin) find(name, Main.getConfig().pluginList);
     }
 
     @Nullable

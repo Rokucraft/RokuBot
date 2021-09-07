@@ -1,7 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
 import com.rokucraft.rokubot.Main;
-import com.rokucraft.rokubot.config.Settings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -30,7 +29,7 @@ public class MarkdownSection extends AbstractEntity {
 
     @Nullable
     public static MarkdownSection find(String name) {
-        return (MarkdownSection) find(name, Settings.markdownSectionList);
+        return (MarkdownSection) find(name, Main.getConfig().markdownSectionList);
     }
 
     @NonNull

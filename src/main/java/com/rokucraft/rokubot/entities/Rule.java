@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -22,7 +22,7 @@ public class Rule extends AbstractEntity {
          return new EmbedBuilder()
                  .setTitle(index + ". " + name)
                  .setDescription(description)
-                 .setFooter(Settings.rulesFooter, "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2696.png")
+                 .setFooter(Main.getConfig().rulesFooter, "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2696.png")
                  .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4dc.png")
                  .setColor(FUCHSIA)
                  .build();

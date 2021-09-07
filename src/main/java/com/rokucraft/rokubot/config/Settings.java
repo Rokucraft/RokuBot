@@ -6,11 +6,11 @@ import com.rokucraft.rokubot.config.serializers.MessageEmbedSerializer;
 import com.rokucraft.rokubot.config.serializers.MessageSerializer;
 import com.rokucraft.rokubot.config.serializers.SlashMessageCommandSerializer;
 import com.rokucraft.rokubot.entities.*;
-import io.leangen.geantyref.TypeToken;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.Button;
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Setting;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
@@ -18,100 +18,45 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+@ConfigSerializable
 public class Settings {
+    public String botToken;
+    public String botActivity;
+    public String prefix;
+    @Setting("staff-category-ids")
+    public List<String> staffCategoryIDs;
+    public String githubLogin;
+    @Setting("github-oauth")
+    public String githubOAuth;
+    public String defaultRepoName;
+    public String rulesFooter;
+    public Map<String, String> voiceChannelRoleMap;
+    public Map<String, String> welcomeChannelMap;
 
-    private static CommentedConfigurationNode root;
+    public transient List<TextCommand> textCommandList = loadEntities("text-commands", TextCommand.class);;
+    public transient List<DiscordInvite> discordInviteList = loadEntities("discord-invites", DiscordInvite.class);;
+    public transient List<Plugin> pluginList = loadEntities("plugins", Plugin.class);;
+    public transient List<Repository> repositoryList = loadEntities("repositories", Repository.class);
+    public transient List<MarkdownSection> markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);;
+    public transient List<Rule> rulesList = loadEntities("rules", Rule.class);;
+    public transient List<SlashMessageCommand> slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
 
-    public static String botToken;
-    public static String botActivity;
-    public static String prefix;
-    public static List<String> staffCategoryIDs;
-    public static String gitHubLogin;
-    public static String gitHubOAuth;
-    public static String defaultRepoName;
-    public static String rulesFooter;
-    public static List<TextCommand> textCommandList;
-    public static List<DiscordInvite> discordInviteList;
-    public static List<Plugin> pluginList;
-    public static List<Repository> repositoryList;
-    public static List<MarkdownSection> markdownSectionList;
-    public static List<Rule> rulesList;
-    public static List<SlashMessageCommand> slashMessageCommandList;
-    public static Map<String, String> voiceChannelRoleMap;
-    public static Map<String, String> welcomeChannelMap;
-    public static Map<String, String> muteRoleMap;
-    public static List<MessageEmbed> welcomeEmbeds;
+    public transient List<MessageEmbed> welcomeEmbeds = loadEntities("welcome-embeds", MessageEmbed.class);;
 
-    public static void load() {
-        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-                .path(Path.of("settings.yml"))
-                .build();
-
-        try {
-            root = loader.load();
-
-            botToken = root.node("botToken").getString();
-            prefix = root.node("prefix").getString("!");
-            botActivity = root.node("botActivity").getString("Rokucraft");
-            staffCategoryIDs = root.node("staffCategoryIDs").getList(String.class);
-            gitHubLogin = root.node("gitHubLogin").getString();
-            gitHubOAuth = root.node("gitHubOAuth").getString();
-            defaultRepoName = root.node("defaultRepository").getString();
-            rulesFooter = root.node("rulesFooter").getString();
-            voiceChannelRoleMap = root.node("voice-channel-roles").get(new TypeToken<Map<String, String>>(){});
-            welcomeChannelMap = root.node("welcome-channel-map").get(new TypeToken<Map<String, String>>() {});
-        } catch (IOException e) {
-            System.err.println("An error occurred while loading settings: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
-            System.exit(1);
-        }
-    }
-
-    public static void loadTextCommands() {
-        textCommandList = loadEntities("text-commands", TextCommand.class);
-    }
-
-    public static void loadDiscordInvites() {
-        discordInviteList = loadEntities("discord-invites", DiscordInvite.class);
-    }
-
-    public static void loadRepositories() {
-        repositoryList = loadEntities("repositories", Repository.class);
-    }
-
-    public static void loadPlugins() {
-        pluginList = loadEntities("plugins", Plugin.class);
+    public Settings() {
         if (pluginList != null) {
             for (Plugin plugin : pluginList) {
                 if (plugin.getDiscordInviteCode() != null) {
-                    new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode());
+                    discordInviteList.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
                 }
                 if (plugin.getRepositoryUrl() != null) {
-                    new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl());
+                    repositoryList.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
                 }
             }
         }
     }
 
-    public static void loadMarkdownSections() {
-        markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);
-    }
-
-    public static void loadRules() {
-        rulesList = loadEntities("rules", Rule.class);
-    }
-
-    public static void loadSlashMessageCommands() {
-        slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
-    }
-
-    public static void loadWelcomeEmbeds() {
-        welcomeEmbeds = loadEntities("welcome-embeds", MessageEmbed.class);
-    }
-
-    private static <T> List<T> loadEntities(String entitytype, Class<T> tClass) {
+    private <T> List<T> loadEntities(String entitytype, Class<T> tClass) {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(Path.of(entitytype + ".yml"))
                 .defaultOptions(options -> options.serializers(
@@ -120,10 +65,8 @@ public class Settings {
                                 .register(SlashMessageCommand.class, SlashMessageCommandSerializer.INSTANCE)
                                 .register(Button.class, ButtonSerializer.INSTANCE)
                 )).build();
-
         try {
-            root = loader.load();
-            return root.node(entitytype).getList(tClass);
+            return loader.load().node(entitytype).getList(tClass);
         } catch (IOException e) {
             System.err.println("An error occurred while loading " + entitytype + ": " + e.getMessage());
             if (e.getCause() != null) {

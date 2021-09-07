@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.commands;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import com.rokucraft.rokubot.entities.Rule;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -14,7 +14,8 @@ public class RuleCommand extends Command {
 
     public RuleCommand() {
         List<net.dv8tion.jda.api.interactions.commands.Command.Choice> ruleChoices = new ArrayList<>();
-        for (Rule rule : Settings.rulesList) {
+        List<Rule> rulesList = Main.getConfig().rulesList;
+        for (Rule rule : rulesList) {
             int index = ruleChoices.size() + 1;
             ruleChoices.add(new net.dv8tion.jda.api.interactions.commands.Command.Choice(index + ". " + rule.getName(), index));
         }
@@ -29,7 +30,7 @@ public class RuleCommand extends Command {
     @Override
     public void execute(SlashCommandEvent event) {
         int index = Math.toIntExact(event.getOption("number").getAsLong());
-        Rule rule = Settings.rulesList.get(index - 1);
+        Rule rule = Main.getConfig().rulesList.get(index - 1);
         event.replyEmbeds(rule.toEmbed(index)).queue();
     }
 }

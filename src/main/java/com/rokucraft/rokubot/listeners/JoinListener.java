@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.listeners;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class JoinListener extends ListenerAdapter {
@@ -16,10 +18,13 @@ public class JoinListener extends ListenerAdapter {
     
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        TextChannel welcomeChannel = event.getGuild().getTextChannelById(Settings.welcomeChannelMap.get(event.getGuild().getId()));
+        Map<String, String> welcomeChannelMap = Main.getConfig().welcomeChannelMap;
+        List<MessageEmbed> welcomeEmbeds = Main.getConfig().welcomeEmbeds;
+
+        TextChannel welcomeChannel = event.getGuild().getTextChannelById(welcomeChannelMap.get(event.getGuild().getId()));
         if (welcomeChannel == null) return;
 
-        MessageEmbed welcomeEmbed = Settings.welcomeEmbeds.get(rand.nextInt(Settings.welcomeEmbeds.size()));
+        MessageEmbed welcomeEmbed = welcomeEmbeds.get(rand.nextInt(welcomeEmbeds.size()));
 
         if (welcomeEmbed.getDescription() != null && welcomeEmbed.getDescription().contains("%member%")) {
             welcomeEmbed = new EmbedBuilder(welcomeEmbed)

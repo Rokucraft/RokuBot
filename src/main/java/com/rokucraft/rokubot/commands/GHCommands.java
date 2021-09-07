@@ -1,7 +1,6 @@
 package com.rokucraft.rokubot.commands;
 
 import com.rokucraft.rokubot.Main;
-import com.rokucraft.rokubot.config.Settings;
 import com.rokucraft.rokubot.entities.MarkdownSection;
 import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.util.IssueUtil;
@@ -17,6 +16,7 @@ import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
 import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
@@ -28,17 +28,21 @@ public class GHCommands extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event)
     {
         if (event.getAuthor().isBot()) return;
+        String prefix = Main.getConfig().prefix;
+        List<String> staffCategoryIDs = Main.getConfig().staffCategoryIDs;
+
+
         Message message = event.getMessage();
-        if (!Settings.staffCategoryIDs.contains(message.getCategory().getId())) return;
+        if (!staffCategoryIDs.contains(message.getCategory().getId())) return;
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
 
         // Open Issues
-        if (content.startsWith(Settings.prefix + "issues")) {
+        if (content.startsWith(prefix + "issues")) {
             EmbedBuilder response;
             String[] args = content.split("\\s+");
 
-            if (Main.openIssues.isEmpty()) {
+            if (IssueUtil.getIssueList().isBlank()) {
                 response = createErrorEmbed()
                         .setTitle("❌ No Open Issues")
                         .setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png")
@@ -108,7 +112,7 @@ public class GHCommands extends ListenerAdapter {
             return;
         }
 
-        if (content.startsWith(Settings.prefix + "repo") || content.startsWith(Settings.prefix + "source")) {
+        if (content.startsWith(prefix + "repo") || content.startsWith(prefix + "source")) {
             String[] args = content.split("\\s+");
             if (args.length == 1) {
                 channel.sendMessage(Repository.find("default").getRepositoryUrl()).queue();
@@ -119,7 +123,7 @@ public class GHCommands extends ListenerAdapter {
                 } else {
                     MessageEmbed errorEmbed = createErrorEmbed()
                             .setTitle("Repository `" + args[1] + "` not found!")
-                            .setDescription("Usage: `" + Settings.prefix + "repository [name]`")
+                            .setDescription("Usage: `" + prefix + "repository [name]`")
                             .build();
                     channel.sendMessage(errorEmbed).queue();
                 }
@@ -127,8 +131,8 @@ public class GHCommands extends ListenerAdapter {
             return;
         }
 
-        if (content.toLowerCase().startsWith(Settings.prefix)) {
-            MarkdownSection markdownSection = MarkdownSection.find(content.substring(Settings.prefix.length()));
+        if (content.toLowerCase().startsWith(prefix)) {
+            MarkdownSection markdownSection = MarkdownSection.find(content.substring(prefix.length()));
             if (markdownSection != null) {
                 channel.sendMessage(markdownSection.toEmbed(event.getAuthor().getAvatarUrl())).queue();
             }

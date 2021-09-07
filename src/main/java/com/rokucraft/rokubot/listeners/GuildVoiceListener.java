@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.listeners;
 
-import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.Main;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
@@ -13,7 +13,7 @@ public class GuildVoiceListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         Guild guild = event.getGuild();
-        Role role = guild.getRoleById(Settings.voiceChannelRoleMap.get(guild.getId()));
+        Role role = guild.getRoleById(Main.getConfig().voiceChannelRoleMap.get(guild.getId()));
         if (role != null) {
             guild.addRoleToMember(event.getMember(), role).queue();
         }
@@ -22,7 +22,7 @@ public class GuildVoiceListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
         Guild guild = event.getGuild();
-        Role role = guild.getRoleById(Settings.voiceChannelRoleMap.get(guild.getId()));
+        Role role = guild.getRoleById(Main.getConfig().voiceChannelRoleMap.get(guild.getId()));
         if (role != null) {
             guild.removeRoleFromMember(event.getMember(), role).queue();
         }

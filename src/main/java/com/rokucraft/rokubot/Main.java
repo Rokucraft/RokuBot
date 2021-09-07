@@ -11,37 +11,29 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.kohsuke.github.*;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Path;
 
 public class Main {
-
     public static JDA jda;
     public static GitHub github;
-    public static List<GHIssue> openIssues;
     public static GHRepository defaultRepo;
     public static User botOwner;
-    private static final long OWNER_ID = 118004527600238593L;
+    private static Settings config;
 
     public static void main(String[] arguments) throws Exception {
-
-        Settings.load();
-        Settings.loadTextCommands();
-        Settings.loadDiscordInvites();
-        Settings.loadRepositories();
-        Settings.loadPlugins();
-        Settings.loadMarkdownSections();
-        Settings.loadRules();
-        Settings.loadSlashMessageCommands();
-        Settings.loadWelcomeEmbeds();
+        loadSettings();
 
         EventWaiter waiter = new EventWaiter();
 
-        jda = JDABuilder.createDefault(Settings.botToken)
+        jda = JDABuilder.createDefault(config.botToken)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .setActivity(Activity.playing("Rokucraft"))
                 .addEventListeners(waiter)
                 .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())
@@ -50,18 +42,38 @@ public class Main {
                 .addEventListeners(new JoinListener())
                 .addEventListeners(
                         new SlashCommandListener(new RuleCommand(), new InviteCommand())
-                                .addCommands(Settings.slashMessageCommandList)
+                                .addCommands(config.slashMessageCommandList)
                 ).build();
 
-        botOwner = jda.retrieveUserById(OWNER_ID).complete();
+        if (config.botActivity != null) {
+            jda.getPresence().setActivity(Activity.playing(config.botActivity));
+        }
 
-        github = new GitHubBuilder().withOAuthToken(Settings.gitHubOAuth, Settings.gitHubLogin).build();
-        defaultRepo = github.getRepository(Settings.defaultRepoName);
+        botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
+
+        github = new GitHubBuilder().withOAuthToken(config.githubOAuth, config.githubLogin).build();
+        defaultRepo = github.getRepository(config.defaultRepoName);
+    }
+
+    public static Settings getConfig() {
+        return config;
+    }
+
+    public static void loadSettings() {
+        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(Path.of("settings.yml"))
+                .build();
 
         try {
-            openIssues = defaultRepo.getIssues(GHIssueState.OPEN);
+            CommentedConfigurationNode root = loader.load();
+            config = root.get(Settings.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("An error occurred while loading settings: " + e.getMessage());
+            if (e.getCause() != null) {
+                e.getCause().printStackTrace();
+            }
+            System.exit(1);
+
         }
     }
 }
