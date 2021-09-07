@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.util;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHLabel;
@@ -15,7 +15,7 @@ public class IssueUtil {
     public static String getIssueList() {
         String issueList = "";
         try {
-            openIssues = Main.defaultRepo.getIssues(GHIssueState.OPEN);
+            openIssues = RokuBot.defaultRepo.getIssues(GHIssueState.OPEN);
         } catch (IOException ignored) {
             // This error wil be thrown if there are no open issues, so the List can remain empty
         }
@@ -28,7 +28,7 @@ public class IssueUtil {
     public static String getIssueList(GHLabel label) {
         String issueList = "";
         try {
-            openIssues = Main.defaultRepo.getIssues(GHIssueState.OPEN);
+            openIssues = RokuBot.defaultRepo.getIssues(GHIssueState.OPEN);
         } catch (IOException ignored) {
             // This error wil be thrown if there are no open issues, so the List can remain empty
         }

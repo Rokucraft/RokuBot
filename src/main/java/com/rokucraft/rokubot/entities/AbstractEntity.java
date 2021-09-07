@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.entities.Category;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -27,7 +27,7 @@ public abstract class AbstractEntity {
 
     public boolean isAllowed(Category category) {
         if (this.staffOnly) {
-            return Main.getConfig().staffCategoryIDs.contains(category.getId());
+            return RokuBot.getConfig().staffCategoryIDs.contains(category.getId());
         }
         return true;
     }

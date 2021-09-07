@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.commands;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -15,7 +15,7 @@ public class InviteCommand extends Command {
 
     public InviteCommand() {
         List<net.dv8tion.jda.api.interactions.commands.Command.Choice> inviteChoices = new ArrayList<>();
-        for (DiscordInvite invite : Main.getConfig().discordInviteList) {
+        for (DiscordInvite invite : RokuBot.getConfig().discordInviteList) {
             if (!invite.isStaffOnly()) {
                 String name = invite.getName();
                 inviteChoices.add(new net.dv8tion.jda.api.interactions.commands.Command.Choice(name, name));

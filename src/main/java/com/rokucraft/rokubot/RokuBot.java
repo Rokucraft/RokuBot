@@ -20,7 +20,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class Main {
+public class RokuBot {
     public static JDA jda;
     public static GitHub github;
     public static GHRepository defaultRepo;

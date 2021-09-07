@@ -1,7 +1,7 @@
 package com.rokucraft.rokubot.commands;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.TextCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -28,8 +28,8 @@ public class BaseCommands extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
-        String prefix = Main.getConfig().prefix;
-        List<String> staffCategoryIDs = Main.getConfig().staffCategoryIDs;
+        String prefix = RokuBot.getConfig().prefix;
+        List<String> staffCategoryIDs = RokuBot.getConfig().staffCategoryIDs;
 
         Message message = event.getMessage();
         String content = message.getContentRaw();
@@ -38,7 +38,7 @@ public class BaseCommands extends ListenerAdapter {
         if (content.startsWith(prefix + "help") && staffCategoryIDs.contains(message.getCategory().getId()))  {
             EmbedBuilder response = createInfoEmbed()
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
-                    .setFooter("Made by " + Main.botOwner.getName(), Main.botOwner.getAvatarUrl())
+                    .setFooter("Made by " + RokuBot.botOwner.getName(), RokuBot.botOwner.getAvatarUrl())
                     .addField("Plugin Commands",
                         ":octopus: `" + prefix + "plugin <name>` shows all info for the named plugin\n" +
                                 ":lizard: `" + prefix + "version <name>` shows version info for the named plugin\n" +
@@ -55,7 +55,7 @@ public class BaseCommands extends ListenerAdapter {
                         false);
 
             StringBuilder textCommandsHelpBuilder = new StringBuilder();
-            for (TextCommand textCommand : Main.getConfig().textCommandList) {
+            for (TextCommand textCommand : RokuBot.getConfig().textCommandList) {
                 if (textCommand.isAllowed(message.getCategory())) {
                     String description = textCommand.getDescription();
                     if (description == null) {description = "";}
@@ -91,7 +91,7 @@ public class BaseCommands extends ListenerAdapter {
         }
 
         if (content.startsWith(prefix + "reload") && staffCategoryIDs.contains(message.getCategory().getId())) {
-            Main.loadSettings();
+            RokuBot.loadSettings();
             channel.sendMessage(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build()).queue();
         }
 

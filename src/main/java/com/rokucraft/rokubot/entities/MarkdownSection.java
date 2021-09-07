@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -29,7 +29,7 @@ public class MarkdownSection extends AbstractEntity {
 
     @Nullable
     public static MarkdownSection find(String name) {
-        return (MarkdownSection) find(name, Main.getConfig().markdownSectionList);
+        return (MarkdownSection) find(name, RokuBot.getConfig().markdownSectionList);
     }
 
     @NonNull
@@ -55,7 +55,7 @@ public class MarkdownSection extends AbstractEntity {
 
     @Nullable
     public String getContents() throws IOException {
-        GHRepository repository = Main.github.getRepository(repoName);
+        GHRepository repository = RokuBot.github.getRepository(repoName);
         InputStream inputStream = repository.getFileContent(filePath).read();
         String fullText = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8))

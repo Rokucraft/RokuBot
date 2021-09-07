@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.commands;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.MarkdownSection;
 import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.util.IssueUtil;
@@ -28,8 +28,8 @@ public class GHCommands extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event)
     {
         if (event.getAuthor().isBot()) return;
-        String prefix = Main.getConfig().prefix;
-        List<String> staffCategoryIDs = Main.getConfig().staffCategoryIDs;
+        String prefix = RokuBot.getConfig().prefix;
+        List<String> staffCategoryIDs = RokuBot.getConfig().staffCategoryIDs;
 
 
         Message message = event.getMessage();
@@ -56,7 +56,7 @@ public class GHCommands extends ListenerAdapter {
 
             else {
                 try {
-                    GHLabel label = Main.defaultRepo.getLabel(args[1]);
+                    GHLabel label = RokuBot.defaultRepo.getLabel(args[1]);
                     String issueList = IssueUtil.getIssueList(label);
                     if (issueList.isEmpty()) {
                         response = createErrorEmbed()
@@ -81,7 +81,7 @@ public class GHCommands extends ListenerAdapter {
             String[] args = content.split("\\s+");
             try {
                 int id = Integer.parseInt(args[0].substring(1));
-                GHIssue issue = Main.defaultRepo.getIssue(id);
+                GHIssue issue = RokuBot.defaultRepo.getIssue(id);
 
                 int color = (issue.getState() == GHIssueState.OPEN) ? ISSUE_OPEN_COLOR : ISSUE_CLOSED_COLOR;
 

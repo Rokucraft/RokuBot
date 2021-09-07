@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.listeners;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -18,8 +18,8 @@ public class JoinListener extends ListenerAdapter {
     
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        Map<String, String> welcomeChannelMap = Main.getConfig().welcomeChannelMap;
-        List<MessageEmbed> welcomeEmbeds = Main.getConfig().welcomeEmbeds;
+        Map<String, String> welcomeChannelMap = RokuBot.getConfig().welcomeChannelMap;
+        List<MessageEmbed> welcomeEmbeds = RokuBot.getConfig().welcomeEmbeds;
 
         TextChannel welcomeChannel = event.getGuild().getTextChannelById(welcomeChannelMap.get(event.getGuild().getId()));
         if (welcomeChannel == null) return;

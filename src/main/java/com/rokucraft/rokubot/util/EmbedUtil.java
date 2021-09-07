@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.util;
 
-import com.rokucraft.rokubot.Main;
+import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import static com.rokucraft.rokubot.Constants.*;
@@ -14,7 +14,7 @@ public class EmbedUtil {
 
     public static EmbedBuilder createIssuesEmbed(String issueList) {
         return new EmbedBuilder()
-                .setTitle("Open Issues", Main.defaultRepo.getHtmlUrl() + "/issues")
+                .setTitle("Open Issues", RokuBot.defaultRepo.getHtmlUrl() + "/issues")
                 .setDescription(issueList)
                 .setThumbnail("https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png")
                 .setColor(ISSUE_OPEN_COLOR)
