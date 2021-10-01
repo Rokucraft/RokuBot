@@ -33,15 +33,15 @@ public class Settings {
     public Map<String, String> voiceChannelRoleMap;
     public Map<String, String> welcomeChannelMap;
 
-    public transient List<TextCommand> textCommandList = loadEntities("text-commands", TextCommand.class);;
-    public transient List<DiscordInvite> discordInviteList = loadEntities("discord-invites", DiscordInvite.class);;
-    public transient List<Plugin> pluginList = loadEntities("plugins", Plugin.class);;
-    public transient List<Repository> repositoryList = loadEntities("repositories", Repository.class);
-    public transient List<MarkdownSection> markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);;
-    public transient List<Rule> rulesList = loadEntities("rules", Rule.class);;
-    public transient List<SlashMessageCommand> slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
+    public final transient List<TextCommand> textCommandList = loadEntities("text-commands", TextCommand.class);
+    public final transient List<DiscordInvite> discordInviteList = loadEntities("discord-invites", DiscordInvite.class);
+    public final transient List<Plugin> pluginList = loadEntities("plugins", Plugin.class);
+    public final transient List<Repository> repositoryList = loadEntities("repositories", Repository.class);
+    public final transient List<MarkdownSection> markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);
+    public final transient List<Rule> rulesList = loadEntities("rules", Rule.class);
+    public final transient List<SlashMessageCommand> slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
 
-    public transient List<MessageEmbed> welcomeEmbeds = loadEntities("welcome-embeds", MessageEmbed.class);;
+    public final transient List<MessageEmbed> welcomeEmbeds = loadEntities("welcome-embeds", MessageEmbed.class);
 
     public Settings() {
         if (pluginList != null) {

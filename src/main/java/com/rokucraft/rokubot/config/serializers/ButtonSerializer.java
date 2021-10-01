@@ -17,7 +17,7 @@ public class ButtonSerializer implements TypeSerializer<Button> {
     @Override
     public Button deserialize(Type type, ConfigurationNode node) throws SerializationException {
         Emoji emoji = null;
-        if (!node.node("emoji").virtual()) {
+        if (!node.node("emoji").empty()) {
             emoji = Emoji.fromMarkdown(node.node("emoji").getString());
         }
         return Button.of(

@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class JoinListener extends ListenerAdapter {
 
-    Random rand = new Random();
+    final Random rand = new Random();
     
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {

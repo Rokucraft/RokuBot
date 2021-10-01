@@ -19,7 +19,7 @@ import static com.rokucraft.rokubot.util.EmbedUtil.createInfoEmbed;
 
 public class BaseCommands extends ListenerAdapter {
 
-    EventWaiter waiter;
+    final EventWaiter waiter;
 
     public BaseCommands(EventWaiter waiter) {
         this.waiter = waiter;
