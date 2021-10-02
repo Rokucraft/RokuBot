@@ -46,10 +46,10 @@ public class Settings {
     public Settings() {
         if (pluginList != null) {
             for (Plugin plugin : pluginList) {
-                if (plugin.getDiscordInviteCode() != null) {
+                if (plugin.getDiscordInviteCode() != null && discordInviteList != null) {
                     discordInviteList.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
                 }
-                if (plugin.getRepositoryUrl() != null) {
+                if (plugin.getRepositoryUrl() != null && repositoryList != null) {
                     repositoryList.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
                 }
             }

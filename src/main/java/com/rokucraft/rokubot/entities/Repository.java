@@ -29,4 +29,13 @@ public class Repository extends AbstractEntity{
     public static Repository find(String name) {
         return (Repository) find(name, RokuBot.getConfig().repositoryList);
     }
+
+    @NonNull
+    public static Repository getDefault() {
+        Repository repository = find("default");
+        if (repository == null) {
+            repository = RokuBot.getConfig().repositoryList.get(0);
+        }
+        return repository;
+    }
 }

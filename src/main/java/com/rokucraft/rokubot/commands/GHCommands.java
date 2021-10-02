@@ -4,6 +4,7 @@ import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.MarkdownSection;
 import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.util.IssueUtil;
+import com.rokucraft.rokubot.util.StaffOnly;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -33,7 +34,7 @@ public class GHCommands extends ListenerAdapter {
 
 
         Message message = event.getMessage();
-        if (!staffCategoryIDs.contains(message.getCategory().getId())) return;
+        if (!StaffOnly.check(message)) return;
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
 
@@ -115,7 +116,7 @@ public class GHCommands extends ListenerAdapter {
         if (content.startsWith(prefix + "repo") || content.startsWith(prefix + "source")) {
             String[] args = content.split("\\s+");
             if (args.length == 1) {
-                channel.sendMessage(Repository.find("default").getRepositoryUrl()).queue();
+                channel.sendMessage(Repository.getDefault().getRepositoryUrl()).queue();
             } else {
                 Repository repository = Repository.find(args[1]);
                 if (repository != null) {

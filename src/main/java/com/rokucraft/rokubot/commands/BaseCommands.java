@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.TextCommand;
+import com.rokucraft.rokubot.util.StaffOnly;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -35,7 +36,7 @@ public class BaseCommands extends ListenerAdapter {
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
 
-        if (content.startsWith(prefix + "help") && staffCategoryIDs.contains(message.getCategory().getId()))  {
+        if (content.startsWith(prefix + "help") && StaffOnly.check(message))  {
             EmbedBuilder response = createInfoEmbed()
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + RokuBot.botOwner.getName(), RokuBot.botOwner.getAvatarUrl())
@@ -74,7 +75,7 @@ public class BaseCommands extends ListenerAdapter {
         if (content.startsWith(prefix + "discord")) {
             String[] args = content.split("\\s+");
             if (args.length == 1) {
-                channel.sendMessage(DiscordInvite.find("default").getInviteUrl()).queue();
+                channel.sendMessage(DiscordInvite.getDefault().getInviteUrl()).queue();
             } else {
                 DiscordInvite discordInvite = DiscordInvite.find(args[1]);
                 if (discordInvite != null && discordInvite.isAllowed(message.getCategory())) {
@@ -90,7 +91,7 @@ public class BaseCommands extends ListenerAdapter {
             return;
         }
 
-        if (content.startsWith(prefix + "reload") && staffCategoryIDs.contains(message.getCategory().getId())) {
+        if (content.startsWith(prefix + "reload") && StaffOnly.check(message)) {
             RokuBot.loadSettings();
             channel.sendMessage(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build()).queue();
         }

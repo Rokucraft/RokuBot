@@ -1,9 +1,9 @@
 package com.rokucraft.rokubot.commands;
 
 import com.rokucraft.rokubot.RokuBot;
-import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
+import com.rokucraft.rokubot.util.StaffOnly;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -23,7 +23,7 @@ public class PluginCommands extends ListenerAdapter {
         List<String> staffCategoryIDs = RokuBot.getConfig().staffCategoryIDs;
 
         Message message = event.getMessage();
-        if (!staffCategoryIDs.contains(message.getCategory().getId())) return;
+        if (!StaffOnly.check(message)) return;
         String content = message.getContentRaw();
         MessageChannel channel = event.getChannel();
         EmbedBuilder response = null;
@@ -52,7 +52,7 @@ public class PluginCommands extends ListenerAdapter {
                     response.addField("Dependencies", plugin.getDependencies(), false);
                 }
                 if (plugin.getDiscordInviteCode() != null) {
-                    response.addField("Discord", DiscordInvite.find(plugin.getName()).getInviteUrl(), false);
+                    response.addField("Discord", "https://discord.gg/" + plugin.getDiscordInviteCode(), false);
                 }
             } else {
                 response = EmbedUtil.createErrorEmbed()

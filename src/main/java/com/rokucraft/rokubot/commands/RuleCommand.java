@@ -27,7 +27,7 @@ public class RuleCommand extends Command {
                 );
     }
 
-    @Override
+    @Override @SuppressWarnings("ConstantConditions")
     public void execute(SlashCommandEvent event) {
         int index = Math.toIntExact(event.getOption("number").getAsLong());
         Rule rule = RokuBot.getConfig().rulesList.get(index - 1);
