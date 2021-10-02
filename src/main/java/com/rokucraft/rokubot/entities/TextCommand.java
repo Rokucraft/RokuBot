@@ -5,8 +5,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Deprecated
 public class TextCommand extends AbstractEntity {
     private String description;
+    @Required
     private Message message;
     private List<Button> buttons;
 
@@ -22,7 +25,7 @@ public class TextCommand extends AbstractEntity {
         return description;
     }
 
-    @Nullable
+    @NonNull
     public Message getMessage() {
         return message;
     }

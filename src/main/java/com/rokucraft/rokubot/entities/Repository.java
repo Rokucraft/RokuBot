@@ -1,11 +1,14 @@
 package com.rokucraft.rokubot.entities;
 
 import com.rokucraft.rokubot.RokuBot;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
 public class Repository extends AbstractEntity{
+    @Required
     private String repositoryUrl;
 
     public Repository() {}
@@ -17,7 +20,7 @@ public class Repository extends AbstractEntity{
         this.repositoryUrl = repositoryUrl;
     }
 
-    @Nullable
+    @NonNull
     public String getRepositoryUrl() {
         return repositoryUrl;
     }

@@ -2,16 +2,19 @@ package com.rokucraft.rokubot.entities;
 
 import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.entities.Category;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import java.util.List;
 
 public abstract class AbstractEntity {
+    @Required
     String name;
     String[] aliases;
     boolean staffOnly;
 
-    @Nullable
+    @NonNull
     public String getName() {
         return name;
     }
@@ -41,7 +44,7 @@ public abstract class AbstractEntity {
                     return entity;
                 }
                 for (String alias : entity.getAliases()) {
-                    if (name.startsWith(alias.toLowerCase())) {
+                    if (alias != null && name.startsWith(alias.toLowerCase())) {
                         return entity;
                     }
                 }

@@ -17,12 +17,17 @@ public class ButtonSerializer implements TypeSerializer<Button> {
     @Override
     public Button deserialize(Type type, ConfigurationNode node) throws SerializationException {
         Emoji emoji = null;
-        if (!node.node("emoji").empty()) {
-            emoji = Emoji.fromMarkdown(node.node("emoji").getString());
+        String emojiCode = node.node("emoji").getString();
+        if (emojiCode != null && !emojiCode.isEmpty()) {
+            emoji = Emoji.fromMarkdown(emojiCode);
+        }
+        String idOrUrl = node.node("id-or-url").getString();
+        if (idOrUrl == null) {
+            throw new SerializationException("A value is required for this field");
         }
         return Button.of(
                 node.node("style").get(ButtonStyle.class, ButtonStyle.LINK),
-                node.node("id-or-url").getString(),
+                idOrUrl,
                 node.node("label").getString(),
                 emoji
         );

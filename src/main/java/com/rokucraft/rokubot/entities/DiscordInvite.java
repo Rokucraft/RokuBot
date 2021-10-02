@@ -1,11 +1,14 @@
 package com.rokucraft.rokubot.entities;
 
 import com.rokucraft.rokubot.RokuBot;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
 public class DiscordInvite extends AbstractEntity{
+    @Required
     private String inviteCode;
 
     public DiscordInvite() {}
@@ -17,11 +20,9 @@ public class DiscordInvite extends AbstractEntity{
         this.inviteCode = inviteCode;
     }
 
-    @Nullable
+    @NonNull
     public String getInviteUrl() {
-        if (inviteCode != null && !inviteCode.isEmpty()) {
-            return "https://discord.gg/" + inviteCode;
-        } else return null;
+        return "https://discord.gg/" + inviteCode;
     }
 
     @Nullable
