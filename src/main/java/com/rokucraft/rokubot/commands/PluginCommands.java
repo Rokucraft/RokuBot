@@ -10,8 +10,6 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.List;
-
 import static com.rokucraft.rokubot.Constants.GREEN;
 
 
@@ -20,7 +18,6 @@ public class PluginCommands extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
         String prefix = RokuBot.getConfig().prefix;
-        List<String> staffCategoryIDs = RokuBot.getConfig().staffCategoryIDs;
 
         Message message = event.getMessage();
         if (!StaffOnly.check(message)) return;

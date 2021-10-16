@@ -17,7 +17,6 @@ import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
-import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
 import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
@@ -30,8 +29,6 @@ public class GHCommands extends ListenerAdapter {
     {
         if (event.getAuthor().isBot()) return;
         String prefix = RokuBot.getConfig().prefix;
-        List<String> staffCategoryIDs = RokuBot.getConfig().staffCategoryIDs;
-
 
         Message message = event.getMessage();
         if (!StaffOnly.check(message)) return;

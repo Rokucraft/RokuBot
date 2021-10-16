@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 @ConfigSerializable
 public class Settings {
     public String botToken;
@@ -73,14 +74,12 @@ public class Settings {
                     .getList(MessageEmbed.class));
 
     public Settings() {
-        if (plugins != null) {
-            for (Plugin plugin : plugins) {
-                if (plugin.getDiscordInviteCode() != null && discordInvites != null) {
-                    discordInvites.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
-                }
-                if (plugin.getRepositoryUrl() != null && repositories != null) {
-                    repositories.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
-                }
+        for (Plugin plugin : plugins) {
+            if (plugin.getDiscordInviteCode() != null) {
+                discordInvites.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
+            }
+            if (plugin.getRepositoryUrl() != null) {
+                repositories.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
             }
         }
     }

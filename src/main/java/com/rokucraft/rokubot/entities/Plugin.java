@@ -4,6 +4,7 @@ import com.rokucraft.rokubot.RokuBot;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
+@SuppressWarnings("unused")
 @ConfigSerializable
 public class Plugin extends AbstractEntity {
     private String resourceUrl;

@@ -15,7 +15,7 @@ public class MessageEmbedSerializer implements TypeSerializer<MessageEmbed> {
     public static final MessageEmbedSerializer INSTANCE = new MessageEmbedSerializer();
 
     @Override
-    public MessageEmbed deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public MessageEmbed deserialize(Type type, ConfigurationNode node) {
         return new EmbedBuilder()
                 .setTitle(node.node("title").getString(), node.node("url").getString())
                 .setThumbnail(node.node("thumbnail-url").getString())

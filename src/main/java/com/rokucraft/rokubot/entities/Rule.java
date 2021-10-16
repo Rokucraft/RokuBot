@@ -8,6 +8,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 import static com.rokucraft.rokubot.Constants.FUCHSIA;
 
+@SuppressWarnings("unused")
 @ConfigSerializable
 public class Rule extends AbstractEntity {
     private String description;

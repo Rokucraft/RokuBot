@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import static com.rokucraft.rokubot.Constants.BLUE;
 import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
 
+@SuppressWarnings("unused")
 @ConfigSerializable
 public class MarkdownSection extends AbstractEntity {
     private String title;

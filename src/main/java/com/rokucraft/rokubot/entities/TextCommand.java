@@ -12,6 +12,7 @@ import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @ConfigSerializable
 @Deprecated
 public class TextCommand extends AbstractEntity {
