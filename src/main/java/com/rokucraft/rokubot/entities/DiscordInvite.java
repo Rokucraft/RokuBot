@@ -27,14 +27,14 @@ public class DiscordInvite extends AbstractEntity{
 
     @Nullable
     public static DiscordInvite find(String name) {
-        return (DiscordInvite) find(name, RokuBot.getConfig().discordInviteList);
+        return (DiscordInvite) find(name, RokuBot.getConfig().discordInvites);
     }
 
     @NonNull
     public static DiscordInvite getDefault() {
         DiscordInvite invite = find("default");
         if (invite == null) {
-            invite = RokuBot.getConfig().discordInviteList.get(0);
+            invite = RokuBot.getConfig().discordInvites.get(0);
         }
         return invite;
     }

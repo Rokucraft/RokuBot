@@ -16,7 +16,7 @@ public class Plugin extends AbstractEntity {
 
     @Nullable
     public static Plugin find(String name) {
-        return (Plugin) find(name, RokuBot.getConfig().pluginList);
+        return (Plugin) find(name, RokuBot.getConfig().plugins);
     }
 
     @Nullable

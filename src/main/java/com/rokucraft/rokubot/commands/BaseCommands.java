@@ -56,7 +56,7 @@ public class BaseCommands extends ListenerAdapter {
                         false);
 
             StringBuilder textCommandsHelpBuilder = new StringBuilder();
-            for (TextCommand textCommand : RokuBot.getConfig().textCommandList) {
+            for (TextCommand textCommand : RokuBot.getConfig().textCommands) {
                 if (textCommand.isAllowed(message.getCategory())) {
                     String description = textCommand.getDescription();
                     if (description == null) {description = "";}

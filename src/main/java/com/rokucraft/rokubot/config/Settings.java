@@ -37,31 +37,31 @@ public class Settings {
     public Map<String, String> voiceChannelRoleMap;
     public Map<String, String> welcomeChannelMap;
 
-    public final transient List<TextCommand> textCommandList = getChecked(() ->
+    public final transient List<TextCommand> textCommands = getChecked(() ->
             nodeFromPath("text-commands.yml")
                     .node("text-commands")
                     .getList(TextCommand.class));
-    public final transient List<DiscordInvite> discordInviteList = getChecked(() ->
+    public final transient List<DiscordInvite> discordInvites = getChecked(() ->
             nodeFromPath("discord-invites.yml")
                     .node("discord-invites")
                     .getList(DiscordInvite.class));
-    public final transient List<Plugin> pluginList = getChecked(() ->
+    public final transient List<Plugin> plugins = getChecked(() ->
             nodeFromPath("plugins.yml")
                     .node("plugins")
                     .getList(Plugin.class));
-    public final transient List<Repository> repositoryList = getChecked(() ->
+    public final transient List<Repository> repositories = getChecked(() ->
             nodeFromPath("repositories.yml")
                     .node("repositories")
                     .getList(Repository.class));
-    public final transient List<MarkdownSection> markdownSectionList = getChecked(() ->
+    public final transient List<MarkdownSection> markdownSections = getChecked(() ->
             nodeFromPath("markdown-sections.yml")
                     .node("markdown-sections")
                     .getList(MarkdownSection.class));
-    public final transient List<Rule> rulesList = getChecked(() ->
+    public final transient List<Rule> rules = getChecked(() ->
             nodeFromPath("rules.yml")
                     .node("rules")
                     .getList(Rule.class));
-    public final transient List<SlashMessageCommand> slashMessageCommandList = getChecked(() ->
+    public final transient List<SlashMessageCommand> slashMessageCommands = getChecked(() ->
             nodeFromPath("slash-message-commands.yml")
                     .node("slash-message-commands")
                     .getList(SlashMessageCommand.class));
@@ -71,13 +71,13 @@ public class Settings {
                     .getList(MessageEmbed.class));
 
     public Settings() {
-        if (pluginList != null) {
-            for (Plugin plugin : pluginList) {
-                if (plugin.getDiscordInviteCode() != null && discordInviteList != null) {
-                    discordInviteList.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
+        if (plugins != null) {
+            for (Plugin plugin : plugins) {
+                if (plugin.getDiscordInviteCode() != null && discordInvites != null) {
+                    discordInvites.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
                 }
-                if (plugin.getRepositoryUrl() != null && repositoryList != null) {
-                    repositoryList.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
+                if (plugin.getRepositoryUrl() != null && repositories != null) {
+                    repositories.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
                 }
             }
         }

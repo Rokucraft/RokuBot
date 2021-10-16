@@ -15,7 +15,7 @@ public class InviteCommand extends Command {
 
     public InviteCommand() {
         List<net.dv8tion.jda.api.interactions.commands.Command.Choice> inviteChoices = new ArrayList<>();
-        for (DiscordInvite invite : RokuBot.getConfig().discordInviteList) {
+        for (DiscordInvite invite : RokuBot.getConfig().discordInvites) {
             if (!invite.isStaffOnly()) {
                 String name = invite.getName();
                 inviteChoices.add(new net.dv8tion.jda.api.interactions.commands.Command.Choice(name, name));

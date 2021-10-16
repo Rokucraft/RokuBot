@@ -42,7 +42,7 @@ public class RokuBot {
                 .addEventListeners(new JoinListener())
                 .addEventListeners(
                         new SlashCommandListener(new RuleCommand(), new InviteCommand())
-                                .addCommands(config.slashMessageCommandList)
+                                .addCommands(config.slashMessageCommands)
                 ).build();
 
         if (config.botActivity != null) {

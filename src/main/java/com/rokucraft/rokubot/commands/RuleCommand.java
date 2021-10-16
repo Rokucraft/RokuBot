@@ -14,7 +14,7 @@ public class RuleCommand extends Command {
 
     public RuleCommand() {
         List<net.dv8tion.jda.api.interactions.commands.Command.Choice> ruleChoices = new ArrayList<>();
-        List<Rule> rulesList = RokuBot.getConfig().rulesList;
+        List<Rule> rulesList = RokuBot.getConfig().rules;
         for (Rule rule : rulesList) {
             int index = ruleChoices.size() + 1;
             ruleChoices.add(new net.dv8tion.jda.api.interactions.commands.Command.Choice(index + ". " + rule.getName(), index));
@@ -30,7 +30,7 @@ public class RuleCommand extends Command {
     @Override @SuppressWarnings("ConstantConditions")
     public void execute(SlashCommandEvent event) {
         int index = Math.toIntExact(event.getOption("number").getAsLong());
-        Rule rule = RokuBot.getConfig().rulesList.get(index - 1);
+        Rule rule = RokuBot.getConfig().rules.get(index - 1);
         event.replyEmbeds(rule.toEmbed(index)).queue();
     }
 }
