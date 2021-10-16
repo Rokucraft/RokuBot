@@ -9,11 +9,15 @@ import com.rokucraft.rokubot.entities.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.Button;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
+import org.spongepowered.configurate.util.CheckedSupplier;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +37,38 @@ public class Settings {
     public Map<String, String> voiceChannelRoleMap;
     public Map<String, String> welcomeChannelMap;
 
-    public final transient List<TextCommand> textCommandList = loadEntities("text-commands", TextCommand.class);
-    public final transient List<DiscordInvite> discordInviteList = loadEntities("discord-invites", DiscordInvite.class);
-    public final transient List<Plugin> pluginList = loadEntities("plugins", Plugin.class);
-    public final transient List<Repository> repositoryList = loadEntities("repositories", Repository.class);
-    public final transient List<MarkdownSection> markdownSectionList = loadEntities("markdown-sections", MarkdownSection.class);
-    public final transient List<Rule> rulesList = loadEntities("rules", Rule.class);
-    public final transient List<SlashMessageCommand> slashMessageCommandList = loadEntities("slash-message-commands", SlashMessageCommand.class);
-
-    public final transient List<MessageEmbed> welcomeEmbeds = loadEntities("welcome-embeds", MessageEmbed.class);
+    public final transient List<TextCommand> textCommandList = getChecked(() ->
+            nodeFromPath("text-commands.yml")
+                    .node("text-commands")
+                    .getList(TextCommand.class));
+    public final transient List<DiscordInvite> discordInviteList = getChecked(() ->
+            nodeFromPath("discord-invites.yml")
+                    .node("discord-invites")
+                    .getList(DiscordInvite.class));
+    public final transient List<Plugin> pluginList = getChecked(() ->
+            nodeFromPath("plugins.yml")
+                    .node("plugins")
+                    .getList(Plugin.class));
+    public final transient List<Repository> repositoryList = getChecked(() ->
+            nodeFromPath("repositories.yml")
+                    .node("repositories")
+                    .getList(Repository.class));
+    public final transient List<MarkdownSection> markdownSectionList = getChecked(() ->
+            nodeFromPath("markdown-sections.yml")
+                    .node("markdown-sections")
+                    .getList(MarkdownSection.class));
+    public final transient List<Rule> rulesList = getChecked(() ->
+            nodeFromPath("rules.yml")
+                    .node("rules")
+                    .getList(Rule.class));
+    public final transient List<SlashMessageCommand> slashMessageCommandList = getChecked(() ->
+            nodeFromPath("slash-message-commands.yml")
+                    .node("slash-message-commands")
+                    .getList(SlashMessageCommand.class));
+    public final transient List<MessageEmbed> welcomeEmbeds = getChecked(() ->
+            nodeFromPath("welcome-embeds.yml")
+                    .node("welcome-embeds")
+                    .getList(MessageEmbed.class));
 
     public Settings() {
         if (pluginList != null) {
@@ -56,19 +83,39 @@ public class Settings {
         }
     }
 
-    private <T> List<T> loadEntities(String entitytype, Class<T> tClass) {
-        final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-                .path(Path.of(entitytype + ".yml"))
+    /**
+     * Attempts to load a {@link ConfigurationNode} from the defined source.
+     *
+     * <p>The resultant node represents the root of the configuration being
+     * loaded.
+     *
+     * @param path The path string of the configuration file
+     * @return the newly constructed node
+     * @throws ConfigurateException if any sort of error occurs with reading or parsing the configuration
+     */
+    @NonNull
+    private static ConfigurationNode nodeFromPath(String path) throws ConfigurateException {
+        return YamlConfigurationLoader.builder()
+                .path(Path.of(path))
                 .defaultOptions(options -> options.serializers(
                         builder -> builder.register(Message.class, MessageSerializer.INSTANCE)
                                 .register(MessageEmbed.class, MessageEmbedSerializer.INSTANCE)
                                 .register(SlashMessageCommand.class, SlashMessageCommandSerializer.INSTANCE)
                                 .register(Button.class, ButtonSerializer.INSTANCE)
-                )).build();
+                )).build().load();
+    }
+
+    /**
+     * Gets a result from a {@link CheckedSupplier} that can throw a {@link ConfigurateException}.
+     * @param supplier The supplier whose result to get
+     * @param <T> the type of results supplied by this supplier
+     * @return a result from the supplier, or null in case of a {@link ConfigurateException}
+     */
+    private static <T> @Nullable T getChecked(@NonNull CheckedSupplier<T, ConfigurateException> supplier) {
         try {
-            return loader.load().node(entitytype).getList(tClass);
-        } catch (IOException e) {
-            System.err.println("An error occurred while loading " + entitytype + ": " + e.getMessage());
+            return supplier.get();
+        } catch (ConfigurateException e) {
+            System.err.println("An error occurred while loading the configuration" + e.getMessage());
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }
