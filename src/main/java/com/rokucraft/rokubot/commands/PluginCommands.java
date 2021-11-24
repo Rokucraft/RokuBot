@@ -125,7 +125,7 @@ public class PluginCommands extends ListenerAdapter {
         }
 
         if (response != null) {
-            channel.sendMessage(response.build()).queue();
+            channel.sendMessageEmbeds(response.build()).queue();
             response.clear();
         }
     }

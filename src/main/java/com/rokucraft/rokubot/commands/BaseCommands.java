@@ -64,7 +64,7 @@ public class BaseCommands extends ListenerAdapter {
 
             response.addField("Utility Commands", textCommandsHelp, false);
 
-            channel.sendMessage(response.build()).queue();
+            channel.sendMessageEmbeds(response.build()).queue();
             response.clear();
             return;
         }
@@ -82,7 +82,7 @@ public class BaseCommands extends ListenerAdapter {
                             .setTitle("Discord server `" + args[1] + "` not found!")
                             .setDescription("Usage: `" + prefix + "invite [name]`")
                             .build();
-                    channel.sendMessage(errorEmbed).queue();
+                    channel.sendMessageEmbeds(errorEmbed).queue();
                 }
             }
             return;
@@ -90,7 +90,7 @@ public class BaseCommands extends ListenerAdapter {
 
         if (content.startsWith(prefix + "reload") && StaffOnly.check(message)) {
             RokuBot.loadSettings();
-            channel.sendMessage(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build()).queue();
+            channel.sendMessageEmbeds(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build()).queue();
         }
 
         if (content.toLowerCase().startsWith("all my homies ")) {

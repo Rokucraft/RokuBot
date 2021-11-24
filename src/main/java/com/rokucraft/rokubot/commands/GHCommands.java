@@ -70,7 +70,7 @@ public class GHCommands extends ListenerAdapter {
                     response = createErrorEmbed().setTitle("❌ Label `" + args[1] + "` does not exist");
                 }
             }
-            channel.sendMessage(response.build()).queue();
+            channel.sendMessageEmbeds(response.build()).queue();
             response.clear();
             return;
         }
@@ -101,9 +101,9 @@ public class GHCommands extends ListenerAdapter {
                         .setTitle(issue.getTitle(), String.valueOf(issue.getHtmlUrl()))
                         .setDescription(issueBody)
                         .setTimestamp(issue.getCreatedAt().toInstant());
-                channel.sendMessage(builder.build()).queue();
+                channel.sendMessageEmbeds(builder.build()).queue();
             } catch (IOException e) {
-                channel.sendMessage(createErrorEmbed().setTitle("Issue not found").build()).queue();
+                channel.sendMessageEmbeds(createErrorEmbed().setTitle("Issue not found").build()).queue();
             } catch (NumberFormatException ignored) {
                 // Not a parsable int, so the user didn't ask for an issue
             }
@@ -123,7 +123,7 @@ public class GHCommands extends ListenerAdapter {
                             .setTitle("Repository `" + args[1] + "` not found!")
                             .setDescription("Usage: `" + prefix + "repository [name]`")
                             .build();
-                    channel.sendMessage(errorEmbed).queue();
+                    channel.sendMessageEmbeds(errorEmbed).queue();
                 }
             }
             return;
@@ -132,7 +132,7 @@ public class GHCommands extends ListenerAdapter {
         if (content.toLowerCase().startsWith(prefix)) {
             MarkdownSection markdownSection = MarkdownSection.find(content.substring(prefix.length()));
             if (markdownSection != null) {
-                channel.sendMessage(markdownSection.toEmbed(event.getAuthor().getAvatarUrl())).queue();
+                channel.sendMessageEmbeds(markdownSection.toEmbed(event.getAuthor().getAvatarUrl())).queue();
             }
         }
     }

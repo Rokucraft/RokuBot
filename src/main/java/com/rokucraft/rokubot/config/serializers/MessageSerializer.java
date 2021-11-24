@@ -18,7 +18,7 @@ public class MessageSerializer implements TypeSerializer<Message> {
     public Message deserialize(Type type, ConfigurationNode node) throws SerializationException {
         return new MessageBuilder()
                 .setContent(node.node("content").getString())
-                .setEmbed(node.node("embed").get(MessageEmbed.class))
+                .setEmbeds(node.node("embed").get(MessageEmbed.class))
                 .build();
     }
 

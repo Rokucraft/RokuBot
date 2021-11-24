@@ -32,7 +32,7 @@ public class JoinListener extends ListenerAdapter {
                     .build();
         }
         welcomeChannel.sendMessage("<:ds_join:884026626046828585>  Welcome, " + event.getMember().getAsMention() + "!")
-                .embed(welcomeEmbed)
+                .setEmbeds(welcomeEmbed)
                 .queue();
     }
 }
