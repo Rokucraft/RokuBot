@@ -9,6 +9,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class MessageSerializer implements TypeSerializer<Message> {
 
@@ -18,7 +19,7 @@ public class MessageSerializer implements TypeSerializer<Message> {
     public Message deserialize(Type type, ConfigurationNode node) throws SerializationException {
         return new MessageBuilder()
                 .setContent(node.node("content").getString())
-                .setEmbeds(node.node("embed").get(MessageEmbed.class))
+                .setEmbeds(node.node("embeds").getList(MessageEmbed.class, new ArrayList<>()))
                 .build();
     }
 
@@ -30,6 +31,6 @@ public class MessageSerializer implements TypeSerializer<Message> {
         }
 
         node.node("content").set(obj.getContentRaw());
-        node.node("embed").set(obj.getEmbeds().get(0));
+        node.node("embeds").set(obj.getEmbeds());
     }
 }
