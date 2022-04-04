@@ -2,7 +2,7 @@ package com.rokucraft.rokubot.config.serializers;
 
 import com.rokucraft.rokubot.commands.SlashMessageCommand;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;

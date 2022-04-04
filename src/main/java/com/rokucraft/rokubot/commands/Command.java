@@ -1,15 +1,15 @@
 package com.rokucraft.rokubot.commands;
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 public abstract class Command {
 
-    protected CommandData data;
+    protected SlashCommandData data;
 
-    public abstract void execute(SlashCommandEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event);
 
-    public CommandData getData() {
+    public SlashCommandData getData() {
         return data;
     }
 }

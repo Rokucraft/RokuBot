@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
@@ -25,8 +25,8 @@ public class BaseCommands extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) return;
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (!event.isFromGuild() ||event.getAuthor().isBot()) return;
         String prefix = RokuBot.getConfig().prefix;
 
         Message message = event.getMessage();
@@ -95,7 +95,7 @@ public class BaseCommands extends ListenerAdapter {
 
         if (content.toLowerCase().startsWith("all my homies ")) {
             channel.sendMessage("who").queue();
-            waiter.waitForEvent(GuildMessageReceivedEvent.class,
+            waiter.waitForEvent(MessageReceivedEvent.class,
                     e -> e.getAuthor().equals(event.getAuthor())
                             && e.getChannel().equals(event.getChannel()),
                     e -> channel.sendMessage("asked").queue());

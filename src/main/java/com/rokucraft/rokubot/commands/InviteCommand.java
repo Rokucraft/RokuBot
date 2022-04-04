@@ -2,11 +2,11 @@ package com.rokucraft.rokubot.commands;
 
 import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.DiscordInvite;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class InviteCommand extends Command {
             }
         }
 
-        this.data = new CommandData("invite", "Shows a discord invite link for the named server")
+        this.data = Commands.slash("invite", "Shows a discord invite link for the named server")
                 .addOptions(
                         new OptionData(OptionType.STRING, "name", "The name of the server")
                                 .addChoices(inviteChoices)
@@ -31,7 +31,7 @@ public class InviteCommand extends Command {
     }
 
     @Override @SuppressWarnings("ConstantConditions")
-    public void execute(SlashCommandEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         OptionMapping name = event.getOption("name");
         if (name == null) {
             event.reply(DiscordInvite.getDefault().getInviteUrl()).queue();
