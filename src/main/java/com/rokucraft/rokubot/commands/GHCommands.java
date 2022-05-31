@@ -28,7 +28,7 @@ public class GHCommands extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event)
     {
         if (!event.isFromGuild() || event.getAuthor().isBot()) return;
-        String prefix = RokuBot.getConfig().prefix;
+        String prefix = RokuBot.getConfig().getPrefix();
 
         Message message = event.getMessage();
         if (!StaffOnly.check(message)) return;

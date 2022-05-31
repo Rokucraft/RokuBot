@@ -32,7 +32,7 @@ public class RokuBot {
 
         EventWaiter waiter = new EventWaiter();
 
-        jda = JDABuilder.createDefault(config.botToken)
+        jda = JDABuilder.createDefault(config.getBotToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .addEventListeners(waiter)
                 .addEventListeners(new BaseCommands(waiter))
@@ -42,17 +42,17 @@ public class RokuBot {
                 .addEventListeners(new JoinListener())
                 .addEventListeners(
                         new SlashCommandListener(new RuleCommand(), new InviteCommand())
-                                .addCommands(config.slashMessageCommands)
+                                .addCommands(config.getSlashMessageCommands())
                 ).build();
 
-        if (config.botActivity != null) {
-            jda.getPresence().setActivity(Activity.playing(config.botActivity));
+        if (config.getBotActivity() != null) {
+            jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
         }
 
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
 
-        github = new GitHubBuilder().withOAuthToken(config.githubOAuth, config.githubLogin).build();
-        defaultRepo = github.getRepository(config.defaultRepoName);
+        github = new GitHubBuilder().withOAuthToken(config.getGithubOAuth(), config.getGithubLogin()).build();
+        defaultRepo = github.getRepository(config.getDefaultRepoName());
     }
 
     public static Settings getConfig() {

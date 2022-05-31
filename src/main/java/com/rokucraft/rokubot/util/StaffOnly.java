@@ -10,7 +10,7 @@ public class StaffOnly {
         if (category == null) {
             return false;
         } else {
-            return RokuBot.getConfig().staffCategoryIDs.contains(category.getId());
+            return RokuBot.getConfig().getStaffCategoryIDs().contains(category.getId());
         }
     }
 

@@ -27,59 +27,59 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 @ConfigSerializable
 public class Settings {
-    public String botToken;
-    public String botActivity;
-    public String prefix;
+    private String botToken;
+    private String botActivity;
+    private String prefix;
     @Setting("staff-category-ids")
-    public List<String> staffCategoryIDs;
-    public String githubLogin;
+    private List<String> staffCategoryIDs;
+    private String githubLogin;
     @Setting("github-oauth")
-    public String githubOAuth;
-    public String defaultRepoName;
-    public String rulesFooter;
-    public Map<String, String> voiceChannelRoleMap;
-    public Map<String, String> welcomeChannelMap;
+    private String githubOAuth;
+    private String defaultRepoName;
+    private String rulesFooter;
+    private Map<String, String> voiceChannelRoleMap;
+    private Map<String, String> welcomeChannelMap;
 
-    public final transient List<TextCommand> textCommands = getCheckedList(() ->
+    private final transient List<TextCommand> textCommands = getCheckedList(() ->
             nodeFromPath("text-commands.yml")
                     .node("text-commands")
                     .getList(TextCommand.class));
-    public final transient List<DiscordInvite> discordInvites = getCheckedList(() ->
+    private final transient List<DiscordInvite> discordInvites = getCheckedList(() ->
             nodeFromPath("discord-invites.yml")
                     .node("discord-invites")
                     .getList(DiscordInvite.class));
-    public final transient List<Plugin> plugins = getCheckedList(() ->
+    private final transient List<Plugin> plugins = getCheckedList(() ->
             nodeFromPath("plugins.yml")
                     .node("plugins")
                     .getList(Plugin.class));
-    public final transient List<Repository> repositories = getCheckedList(() ->
+    private final transient List<Repository> repositories = getCheckedList(() ->
             nodeFromPath("repositories.yml")
                     .node("repositories")
                     .getList(Repository.class));
-    public final transient List<MarkdownSection> markdownSections = getCheckedList(() ->
+    private final transient List<MarkdownSection> markdownSections = getCheckedList(() ->
             nodeFromPath("markdown-sections.yml")
                     .node("markdown-sections")
                     .getList(MarkdownSection.class));
-    public final transient List<Rule> rules = getCheckedList(() ->
+    private final transient List<Rule> rules = getCheckedList(() ->
             nodeFromPath("rules.yml")
                     .node("rules")
                     .getList(Rule.class));
-    public final transient List<SlashMessageCommand> slashMessageCommands = getCheckedList(() ->
+    private final transient List<SlashMessageCommand> slashMessageCommands = getCheckedList(() ->
             nodeFromPath("slash-message-commands.yml")
                     .node("slash-message-commands")
                     .getList(SlashMessageCommand.class));
-    public final transient List<MessageEmbed> welcomeEmbeds = getCheckedList(() ->
+    private final transient List<MessageEmbed> welcomeEmbeds = getCheckedList(() ->
             nodeFromPath("welcome-embeds.yml")
                     .node("welcome-embeds")
                     .getList(MessageEmbed.class));
 
     public Settings() {
-        for (Plugin plugin : plugins) {
+        for (Plugin plugin : getPlugins()) {
             if (plugin.getDiscordInviteCode() != null) {
-                discordInvites.add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
+                getDiscordInvites().add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
             }
             if (plugin.getRepositoryUrl() != null) {
-                repositories.add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
+                getRepositories().add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
             }
         }
     }
@@ -133,5 +133,77 @@ public class Settings {
      */
     private static <T> @NonNull List<T> getCheckedList(@NonNull CheckedSupplier<List<T>, ConfigurateException> supplier) {
         return Objects.requireNonNullElse(getChecked(supplier), new ArrayList<>());
+    }
+
+    public String getBotToken() {
+        return botToken;
+    }
+
+    public String getBotActivity() {
+        return botActivity;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public List<String> getStaffCategoryIDs() {
+        return staffCategoryIDs;
+    }
+
+    public String getGithubLogin() {
+        return githubLogin;
+    }
+
+    public String getGithubOAuth() {
+        return githubOAuth;
+    }
+
+    public String getDefaultRepoName() {
+        return defaultRepoName;
+    }
+
+    public String getRulesFooter() {
+        return rulesFooter;
+    }
+
+    public Map<String, String> getVoiceChannelRoleMap() {
+        return voiceChannelRoleMap;
+    }
+
+    public Map<String, String> getWelcomeChannelMap() {
+        return welcomeChannelMap;
+    }
+
+    public List<TextCommand> getTextCommands() {
+        return textCommands;
+    }
+
+    public List<DiscordInvite> getDiscordInvites() {
+        return discordInvites;
+    }
+
+    public List<Plugin> getPlugins() {
+        return plugins;
+    }
+
+    public List<Repository> getRepositories() {
+        return repositories;
+    }
+
+    public List<MarkdownSection> getMarkdownSections() {
+        return markdownSections;
+    }
+
+    public List<Rule> getRules() {
+        return rules;
+    }
+
+    public List<SlashMessageCommand> getSlashMessageCommands() {
+        return slashMessageCommands;
+    }
+
+    public List<MessageEmbed> getWelcomeEmbeds() {
+        return welcomeEmbeds;
     }
 }

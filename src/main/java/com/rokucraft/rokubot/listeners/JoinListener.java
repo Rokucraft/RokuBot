@@ -18,8 +18,8 @@ public class JoinListener extends ListenerAdapter {
     
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        Map<String, String> welcomeChannelMap = RokuBot.getConfig().welcomeChannelMap;
-        List<MessageEmbed> welcomeEmbeds = RokuBot.getConfig().welcomeEmbeds;
+        Map<String, String> welcomeChannelMap = RokuBot.getConfig().getWelcomeChannelMap();
+        List<MessageEmbed> welcomeEmbeds = RokuBot.getConfig().getWelcomeEmbeds();
 
         TextChannel welcomeChannel = event.getGuild().getTextChannelById(welcomeChannelMap.get(event.getGuild().getId()));
         if (welcomeChannel == null) return;

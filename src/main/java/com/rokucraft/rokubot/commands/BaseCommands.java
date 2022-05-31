@@ -27,7 +27,7 @@ public class BaseCommands extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (!event.isFromGuild() ||event.getAuthor().isBot()) return;
-        String prefix = RokuBot.getConfig().prefix;
+        String prefix = RokuBot.getConfig().getPrefix();
 
         Message message = event.getMessage();
         String content = message.getContentRaw();
@@ -53,7 +53,7 @@ public class BaseCommands extends ListenerAdapter {
                         false);
 
             StringBuilder textCommandsHelpBuilder = new StringBuilder();
-            for (TextCommand textCommand : RokuBot.getConfig().textCommands) {
+            for (TextCommand textCommand : RokuBot.getConfig().getTextCommands()) {
                 if (textCommand.isAllowed(message.getCategory())) {
                     String description = textCommand.getDescription();
                     if (description == null) {description = "";}

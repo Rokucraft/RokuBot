@@ -30,7 +30,7 @@ public abstract class AbstractEntity {
 
     public boolean isAllowed(Category category) {
         if (this.staffOnly) {
-            return RokuBot.getConfig().staffCategoryIDs.contains(category.getId());
+            return RokuBot.getConfig().getStaffCategoryIDs().contains(category.getId());
         }
         return true;
     }

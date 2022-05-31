@@ -30,7 +30,7 @@ public class MarkdownSection extends AbstractEntity {
 
     @Nullable
     public static MarkdownSection find(String name) {
-        return (MarkdownSection) find(name, RokuBot.getConfig().markdownSections);
+        return (MarkdownSection) find(name, RokuBot.getConfig().getMarkdownSections());
     }
 
     @NonNull

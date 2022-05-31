@@ -15,7 +15,7 @@ public class RuleCommand extends Command {
 
     public RuleCommand() {
         List<Choice> ruleChoices = new ArrayList<>();
-        List<Rule> rulesList = RokuBot.getConfig().rules;
+        List<Rule> rulesList = RokuBot.getConfig().getRules();
         for (Rule rule : rulesList) {
             int index = ruleChoices.size() + 1;
             ruleChoices.add(new Choice(index + ". " + rule.getName(), index));
@@ -31,7 +31,7 @@ public class RuleCommand extends Command {
     @Override @SuppressWarnings("ConstantConditions")
     public void execute(SlashCommandInteractionEvent event) {
         int index = Math.toIntExact(event.getOption("number").getAsLong());
-        Rule rule = RokuBot.getConfig().rules.get(index - 1);
+        Rule rule = RokuBot.getConfig().getRules().get(index - 1);
         event.replyEmbeds(rule.toEmbed(index)).queue();
     }
 }

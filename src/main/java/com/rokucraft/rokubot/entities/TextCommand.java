@@ -42,6 +42,6 @@ public class TextCommand extends AbstractEntity {
 
     @Nullable
     public static TextCommand find(String name) {
-        return (TextCommand) find(name, RokuBot.getConfig().textCommands);
+        return (TextCommand) find(name, RokuBot.getConfig().getTextCommands());
     }
 }

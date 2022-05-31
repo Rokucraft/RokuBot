@@ -16,7 +16,7 @@ public class InviteCommand extends Command {
 
     public InviteCommand() {
         List<Choice> inviteChoices = new ArrayList<>();
-        for (DiscordInvite invite : RokuBot.getConfig().discordInvites) {
+        for (DiscordInvite invite : RokuBot.getConfig().getDiscordInvites()) {
             if (!invite.isStaffOnly()) {
                 String name = invite.getName();
                 inviteChoices.add(new Choice(name, name));

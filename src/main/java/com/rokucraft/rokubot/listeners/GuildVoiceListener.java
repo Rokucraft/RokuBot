@@ -13,7 +13,7 @@ public class GuildVoiceListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         Guild guild = event.getGuild();
-        Role role = guild.getRoleById(RokuBot.getConfig().voiceChannelRoleMap.get(guild.getId()));
+        Role role = guild.getRoleById(RokuBot.getConfig().getVoiceChannelRoleMap().get(guild.getId()));
         if (role != null) {
             guild.addRoleToMember(event.getMember(), role).queue();
         }
@@ -22,7 +22,7 @@ public class GuildVoiceListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceLeave(@NotNull GuildVoiceLeaveEvent event) {
         Guild guild = event.getGuild();
-        Role role = guild.getRoleById(RokuBot.getConfig().voiceChannelRoleMap.get(guild.getId()));
+        Role role = guild.getRoleById(RokuBot.getConfig().getVoiceChannelRoleMap().get(guild.getId()));
         if (role != null) {
             guild.removeRoleFromMember(event.getMember(), role).queue();
         }
