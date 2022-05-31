@@ -51,7 +51,7 @@ public class RokuBot {
 
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
 
-        github = new GitHubBuilder().withOAuthToken(config.getGithubOAuth(), config.getGithubLogin()).build();
+        github = new GitHubBuilder().withOAuthToken(config.getGithubToken()).build();
         defaultRepo = github.getRepository(config.getDefaultRepoName());
     }
 

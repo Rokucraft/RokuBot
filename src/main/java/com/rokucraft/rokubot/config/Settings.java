@@ -32,9 +32,6 @@ public class Settings {
     private String prefix;
     @Setting("staff-category-ids")
     private List<String> staffCategoryIDs;
-    private String githubLogin;
-    @Setting("github-oauth")
-    private String githubOAuth;
     private String defaultRepoName;
     private String rulesFooter;
     private Map<String, String> voiceChannelRoleMap;
@@ -72,6 +69,11 @@ public class Settings {
             nodeFromPath("welcome-embeds.yml")
                     .node("welcome-embeds")
                     .getList(MessageEmbed.class));
+
+    private final transient Secrets secrets = getChecked(() -> nodeFromPath("secrets.yml").get(Secrets.class));
+
+    @ConfigSerializable
+    private record Secrets(String botToken, String githubToken) {}
 
     public Settings() {
         for (Plugin plugin : getPlugins()) {
@@ -136,7 +138,7 @@ public class Settings {
     }
 
     public String getBotToken() {
-        return botToken;
+        return secrets.botToken();
     }
 
     public String getBotActivity() {
@@ -151,12 +153,8 @@ public class Settings {
         return staffCategoryIDs;
     }
 
-    public String getGithubLogin() {
-        return githubLogin;
-    }
-
-    public String getGithubOAuth() {
-        return githubOAuth;
+    public String getGithubToken() {
+        return secrets.githubToken();
     }
 
     public String getDefaultRepoName() {
