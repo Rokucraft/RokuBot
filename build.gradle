@@ -19,11 +19,11 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.0-alpha.5") {
+    implementation("net.dv8tion:JDA:5.0.0-alpha.12") {
         exclude(module: "opus-java")
     }
-    implementation('ch.qos.logback:logback-classic:1.2.10')
-    implementation('org.kohsuke:github-api:1.301')
+    implementation('ch.qos.logback:logback-classic:1.2.11')
+    implementation('org.kohsuke:github-api:1.306')
     implementation("org.spongepowered:configurate-yaml:4.1.2")
     implementation("com.jagrosh:jda-utilities-commons:3.0.5")
 }
