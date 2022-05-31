@@ -7,7 +7,7 @@ mainClassName = 'com.rokucraft.rokubot.RokuBot'
 
 version '2.0-SNAPSHOT'
 
-sourceCompatibility = targetCompatibility = 11
+sourceCompatibility = targetCompatibility = 17
 
 repositories {
     jcenter()
