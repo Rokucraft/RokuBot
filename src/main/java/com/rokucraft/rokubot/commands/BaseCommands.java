@@ -89,7 +89,7 @@ public class BaseCommands extends ListenerAdapter {
         }
 
         if (content.startsWith(prefix + "reload") && StaffOnly.check(message)) {
-            RokuBot.loadSettings();
+            RokuBot.reloadSettings();
             channel.sendMessageEmbeds(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build()).queue();
         }
 

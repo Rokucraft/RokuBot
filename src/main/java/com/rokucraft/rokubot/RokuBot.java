@@ -45,14 +45,7 @@ public class RokuBot {
                                 .addCommands(config.getSlashMessageCommands())
                 ).build();
 
-        if (config.getBotActivity() != null) {
-            jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
-        }
-
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
-
-        github = new GitHubBuilder().withOAuthToken(config.getGithubToken()).build();
-        defaultRepo = github.getRepository(config.getDefaultRepoName());
     }
 
     public static void loadSettings() {
@@ -71,6 +64,29 @@ public class RokuBot {
             System.exit(1);
 
         }
+    }
+
+    public static void applySettings() {
+        if (config.getBotActivity() != null) {
+            jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
+        }
+
+        if (config.getGithubToken() == null) return;
+
+        try {
+            github = new GitHubBuilder().withOAuthToken(config.getGithubToken()).build();
+            defaultRepo = github.getRepository(config.getDefaultRepoName());
+        } catch (IOException e) {
+            System.err.println("An error occurred while loading settings: " + e.getMessage());
+            if (e.getCause() != null) {
+                e.getCause().printStackTrace();
+            }
+        }
+    }
+
+    public static void reloadSettings() {
+        loadSettings();
+        applySettings();
     }
 
     public static Settings getConfig() {
