@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class RokuBot {
-    public static JDA jda;
-    public static GitHub github;
-    public static GHRepository defaultRepo;
-    public static User botOwner;
+    private static JDA jda;
+    private static GitHub github;
+    private static GHRepository defaultRepo;
+    private static User botOwner;
     private static Settings config;
 
     public static void main(String[] arguments) throws Exception {
@@ -55,10 +55,6 @@ public class RokuBot {
         defaultRepo = github.getRepository(config.getDefaultRepoName());
     }
 
-    public static Settings getConfig() {
-        return config;
-    }
-
     public static void loadSettings() {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(Path.of("settings.yml"))
@@ -75,5 +71,21 @@ public class RokuBot {
             System.exit(1);
 
         }
+    }
+
+    public static Settings getConfig() {
+        return config;
+    }
+
+    public static GitHub getGithub() {
+        return github;
+    }
+
+    public static GHRepository getDefaultRepo() {
+        return defaultRepo;
+    }
+
+    public static User getBotOwner() {
+        return botOwner;
     }
 }

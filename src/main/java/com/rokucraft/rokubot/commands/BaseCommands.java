@@ -36,7 +36,7 @@ public class BaseCommands extends ListenerAdapter {
         if (content.startsWith(prefix + "help") && StaffOnly.check(message))  {
             EmbedBuilder response = createInfoEmbed()
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
-                    .setFooter("Made by " + RokuBot.botOwner.getName(), RokuBot.botOwner.getAvatarUrl())
+                    .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
                     .addField("Plugin Commands",
                         ":octopus: `" + prefix + "plugin <name>` shows all info for the named plugin\n" +
                                 ":lizard: `" + prefix + "version <name>` shows version info for the named plugin\n" +

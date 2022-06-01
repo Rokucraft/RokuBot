@@ -15,7 +15,7 @@ public class IssueUtil {
     public static String getIssueList() {
         String issueList = "";
         try {
-            openIssues = RokuBot.defaultRepo.getIssues(GHIssueState.OPEN);
+            openIssues = RokuBot.getDefaultRepo().getIssues(GHIssueState.OPEN);
         } catch (IOException ignored) {
             // This error wil be thrown if there are no open issues, so the List can remain empty
         }
@@ -28,7 +28,7 @@ public class IssueUtil {
     public static String getIssueList(GHLabel label) {
         String issueList = "";
         try {
-            openIssues = RokuBot.defaultRepo.getIssues(GHIssueState.OPEN);
+            openIssues = RokuBot.getDefaultRepo().getIssues(GHIssueState.OPEN);
         } catch (IOException ignored) {
             // This error wil be thrown if there are no open issues, so the List can remain empty
         }

@@ -56,7 +56,7 @@ public class MarkdownSection extends AbstractEntity {
 
     @Nullable
     public String getContents() throws IOException {
-        GHRepository repository = RokuBot.github.getRepository(repoName);
+        GHRepository repository = RokuBot.getGithub().getRepository(repoName);
         InputStream inputStream = repository.getFileContent(filePath).read();
         String fullText = new BufferedReader(
                 new InputStreamReader(inputStream, StandardCharsets.UTF_8))

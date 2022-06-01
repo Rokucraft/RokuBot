@@ -54,7 +54,7 @@ public class GHCommands extends ListenerAdapter {
 
             else {
                 try {
-                    GHLabel label = RokuBot.defaultRepo.getLabel(args[1]);
+                    GHLabel label = RokuBot.getDefaultRepo().getLabel(args[1]);
                     String issueList = IssueUtil.getIssueList(label);
                     if (issueList.isEmpty()) {
                         response = createErrorEmbed()
@@ -79,7 +79,7 @@ public class GHCommands extends ListenerAdapter {
             String[] args = content.split("\\s+");
             try {
                 int id = Integer.parseInt(args[0].substring(1));
-                GHIssue issue = RokuBot.defaultRepo.getIssue(id);
+                GHIssue issue = RokuBot.getDefaultRepo().getIssue(id);
 
                 int color = (issue.getState() == GHIssueState.OPEN) ? ISSUE_OPEN_COLOR : ISSUE_CLOSED_COLOR;
 
