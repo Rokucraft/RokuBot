@@ -32,11 +32,11 @@ public class InviteCommand extends Command {
 
     @Override @SuppressWarnings("ConstantConditions")
     public void execute(SlashCommandInteractionEvent event) {
-        OptionMapping name = event.getOption("name");
+        String name = event.getOption("name", OptionMapping::getAsString);
         if (name == null) {
             event.reply(DiscordInvite.getDefault().getInviteUrl()).queue();
         } else {
-            event.reply(DiscordInvite.find(name.getAsString()).getInviteUrl()).queue();
+            event.reply(DiscordInvite.find(name).getInviteUrl()).queue();
         }
     }
 }

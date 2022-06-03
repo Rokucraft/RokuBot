@@ -4,6 +4,7 @@ import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.Rule;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Choice;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -30,7 +31,7 @@ public class RuleCommand extends Command {
 
     @Override @SuppressWarnings("ConstantConditions")
     public void execute(SlashCommandInteractionEvent event) {
-        int index = Math.toIntExact(event.getOption("number").getAsLong());
+        int index = Math.toIntExact(event.getOption("number", OptionMapping::getAsLong));
         Rule rule = RokuBot.getConfig().getRules().get(index - 1);
         event.replyEmbeds(rule.toEmbed(index)).queue();
     }
