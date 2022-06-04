@@ -21,7 +21,9 @@ public class JoinListener extends ListenerAdapter {
         Map<String, String> welcomeChannelMap = RokuBot.getConfig().getWelcomeChannelMap();
         List<MessageEmbed> welcomeEmbeds = RokuBot.getConfig().getWelcomeEmbeds();
 
-        TextChannel welcomeChannel = event.getGuild().getTextChannelById(welcomeChannelMap.get(event.getGuild().getId()));
+        String id = welcomeChannelMap.get(event.getGuild().getId());
+        if (id == null) return;
+        TextChannel welcomeChannel = event.getGuild().getTextChannelById(id);
         if (welcomeChannel == null) return;
 
         MessageEmbed welcomeEmbed = welcomeEmbeds.get(rand.nextInt(welcomeEmbeds.size()));
