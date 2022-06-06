@@ -3,7 +3,6 @@ package com.rokucraft.rokubot;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.commands.*;
 import com.rokucraft.rokubot.config.Settings;
-import com.rokucraft.rokubot.listeners.GuildVoiceListener;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import com.rokucraft.rokubot.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
@@ -38,7 +37,6 @@ public class RokuBot {
                 .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new PluginCommands())
-                .addEventListeners(new GuildVoiceListener())
                 .addEventListeners(new JoinListener())
                 .addEventListeners(
                         new SlashCommandListener(new RuleCommand(), new InviteCommand())
