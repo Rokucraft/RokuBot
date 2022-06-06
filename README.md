@@ -1,4 +1,4 @@
-[![Rokucraft Logo](https://s3.amazonaws.com/files.enjin.com/765924/enjin_banner_new.png)](https://www.rokucraft.com/)
+[![Rokucraft Logo](https://i.imgur.com/aYs7lrA.png)](https://www.rokucraft.com/)
 
 # RokuBot ![GitHub](https://img.shields.io/github/license/Aikovdp/RokuBot) [![Java CI with Gradle](https://github.com/Rokucraft/RokuBot/actions/workflows/gradle.yml/badge.svg)](https://github.com/Rokucraft/RokuBot/actions/workflows/gradle.yml)
 
