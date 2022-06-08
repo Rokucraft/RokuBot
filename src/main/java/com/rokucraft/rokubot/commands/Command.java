@@ -1,5 +1,6 @@
 package com.rokucraft.rokubot.commands;
 
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
@@ -12,4 +13,6 @@ public abstract class Command {
     public SlashCommandData getData() {
         return data;
     }
+
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {}
 }
