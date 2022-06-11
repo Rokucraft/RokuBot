@@ -26,6 +26,13 @@ public class Plugin extends AbstractEntity {
     }
 
     @Nullable
+    public String getDiscordInviteUrl() {
+        if (discordInviteCode == null)
+            return null;
+        return "https://discord.gg/" + discordInviteCode;
+    }
+
+    @Nullable
     public String getDescription() {
         return description;
     }

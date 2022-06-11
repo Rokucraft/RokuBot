@@ -25,4 +25,8 @@ public class EmbedUtil {
         return new EmbedBuilder()
                 .setColor(RED);
     }
+
+    public static EmbedBuilder createErrorEmbed(String description) {
+        return createErrorEmbed().setDescription("❌ " + description);
+    }
 }
