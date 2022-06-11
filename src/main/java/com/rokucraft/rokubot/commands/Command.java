@@ -8,6 +8,16 @@ public abstract class Command {
 
     protected SlashCommandData data;
 
+    private boolean guildOnly = false;
+
+    public boolean isGuildOnly() {
+        return guildOnly;
+    }
+
+    public void setGuildOnly(boolean publicCommand) {
+        this.guildOnly = publicCommand;
+    }
+
     public abstract void execute(SlashCommandInteractionEvent event);
 
     public SlashCommandData getData() {

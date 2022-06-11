@@ -1,5 +1,6 @@
 package com.rokucraft.rokubot.listeners;
 
+import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.commands.Command;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -9,10 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class SlashCommandListener extends ListenerAdapter {
     private final Map<String, Command> commandMap = new HashMap<>();
@@ -25,7 +23,6 @@ public class SlashCommandListener extends ListenerAdapter {
      * Adds the specified commands to the listener.
      *
      * @param commands The commands to add
-     *
      * @return The SlashCommandListener instance, for chaining
      */
     public SlashCommandListener addCommands(Command... commands) {
@@ -36,7 +33,6 @@ public class SlashCommandListener extends ListenerAdapter {
      * Adds the specified commands to the listener.
      *
      * @param commands The commands to add
-     *
      * @return The SlashCommandListener instance, for chaining
      */
     public SlashCommandListener addCommands(Collection<? extends Command> commands) {
@@ -73,6 +69,23 @@ public class SlashCommandListener extends ListenerAdapter {
      * @param jda The JDA instance
      */
     public void updateCommands(@NonNull JDA jda) {
-        jda.updateCommands().addCommands(commandMap.values().stream().map(Command::getData).toList()).queue();
+        jda.updateCommands().addCommands(
+                commandMap.values().stream()
+                        .filter(command -> !command.isGuildOnly())
+                        .map(Command::getData)
+                        .toList()
+        ).queue();
+
+        RokuBot.getConfig().getTrustedServerIds().stream()
+                .map(jda::getGuildById)
+                .filter(Objects::nonNull)
+                .forEach(guild ->
+                        guild.updateCommands().addCommands(
+                                commandMap.values().stream()
+                                        .filter(Command::isGuildOnly)
+                                        .map(Command::getData)
+                                        .toList()
+                        ).queue()
+                );
     }
 }
