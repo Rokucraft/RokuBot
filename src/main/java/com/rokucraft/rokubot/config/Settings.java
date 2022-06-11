@@ -37,6 +37,8 @@ public class Settings {
     private Map<String, String> voiceChannelRoleMap;
     private Map<String, String> welcomeChannelMap;
 
+    private List<String> trustedServerIds;
+
     private final transient List<TextCommand> textCommands = getCheckedList(() ->
             nodeFromPath("text-commands.yml")
                     .node("text-commands")
@@ -171,6 +173,10 @@ public class Settings {
 
     public Map<String, String> getWelcomeChannelMap() {
         return welcomeChannelMap;
+    }
+
+    public List<String> getTrustedServerIds() {
+        return trustedServerIds;
     }
 
     public List<TextCommand> getTextCommands() {
