@@ -39,8 +39,12 @@ public class RokuBot {
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new JoinListener())
                 .addEventListeners(
-                        new SlashCommandListener(new RuleCommand(), new InviteCommand(), new PluginCommand())
-                                .addCommands(config.getSlashMessageCommands())
+                        new SlashCommandListener(
+                                new RuleCommand(),
+                                new InviteCommand(),
+                                new PluginCommand(),
+                                new ReloadCommand()
+                        ).addCommands(config.getSlashMessageCommands())
                 ).build();
 
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
