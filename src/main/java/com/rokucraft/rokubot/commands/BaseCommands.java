@@ -38,11 +38,6 @@ public class BaseCommands extends ListenerAdapter {
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
                     .addField("Plugin Commands",
-                        ":octopus: `" + prefix + "plugin <name>` shows all info for the named plugin\n" +
-                                ":lizard: `" + prefix + "version <name>` shows version info for the named plugin\n" +
-                                ":giraffe: `" + prefix + "download <name>` shows the download link for the named plugin\n" +
-                                ":owl: `" + prefix + "docs <name>` shows documentation links for the named plugin\n" +
-                                ":sloth: `" + prefix + "dependencies <name>` lists dependencies for the named plugin\n" +
                                 ":snail: `" + prefix + "invite <name>` shows a discord invite for the named plugin",
                         false)
                     .addField("GitHub Commands",
