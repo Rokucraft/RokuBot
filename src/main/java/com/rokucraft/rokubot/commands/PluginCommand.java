@@ -26,7 +26,6 @@ public class PluginCommand extends Command {
                         new OptionData(OptionType.STRING, "info", "The type of information you want")
                                 .addChoice("docs", "docs")
                                 .addChoice("download", "download")
-                                .addChoice("dependencies", "dependencies")
                 );
     }
 
