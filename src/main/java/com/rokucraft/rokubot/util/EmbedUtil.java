@@ -2,6 +2,7 @@ package com.rokucraft.rokubot.util;
 
 import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import static com.rokucraft.rokubot.Constants.*;
 
@@ -26,7 +27,9 @@ public class EmbedUtil {
                 .setColor(RED);
     }
 
-    public static EmbedBuilder createErrorEmbed(String description) {
-        return createErrorEmbed().setDescription("❌ " + description);
+    public static MessageEmbed createErrorEmbed(String description) {
+        return createErrorEmbed()
+                .setDescription("❌ " + description)
+                .build();
     }
 }

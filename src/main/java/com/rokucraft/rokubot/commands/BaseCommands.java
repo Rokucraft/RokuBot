@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import static com.rokucraft.rokubot.Constants.GREEN;
 import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
 import static com.rokucraft.rokubot.util.EmbedUtil.createInfoEmbed;
 
@@ -37,9 +36,6 @@ public class BaseCommands extends ListenerAdapter {
             EmbedBuilder response = createInfoEmbed()
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
-                    .addField("Plugin Commands",
-                                ":snail: `" + prefix + "invite <name>` shows a discord invite for the named plugin",
-                        false)
                     .addField("GitHub Commands",
                         ":exclamation: `" + prefix + "issues [label]` lists all issues (with the specified label)\n" +
                                 ":books: `" + prefix + "reference` shows a link to the GE reference\n" +

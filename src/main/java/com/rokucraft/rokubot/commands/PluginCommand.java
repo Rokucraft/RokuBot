@@ -4,6 +4,8 @@ import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -26,6 +28,7 @@ public class PluginCommand extends Command {
                         new OptionData(OptionType.STRING, "info", "The type of information you want")
                                 .addChoice("docs", "docs")
                                 .addChoice("download", "download")
+                                .addChoice("discord", "discord")
                 );
     }
 
@@ -37,17 +40,25 @@ public class PluginCommand extends Command {
                 .filter(p -> p.getName().equals(name))
                 .findFirst().ifPresentOrElse(
                         plugin -> {
-                            MessageEmbed response = (info == null)
-                                    ? createOverviewEmbed(plugin)
+                            Message response = (info == null)
+                                    ? toMessage(createOverviewEmbed(plugin))
                                     : switch (info) {
-                                        case "docs" -> createDocsEmbed(plugin);
-                                        case "download" -> createDownloadEmbed(plugin);
-                                        default -> createOverviewEmbed(plugin);
+                                        case "docs" -> toMessage(createDocsEmbed(plugin));
+                                        case "download" -> toMessage(createDownloadEmbed(plugin));
+                                        case "discord" -> createInviteMessage(plugin);
+                                        default -> toMessage(createOverviewEmbed(plugin));
                                     };
-                            event.replyEmbeds(response).queue();
+                            event.reply(response).queue();
                         },
                         () -> event.replyEmbeds(createNotFoundEmbed(name)).setEphemeral(true).queue()
                 );
+    }
+
+    private Message createInviteMessage(Plugin plugin) {
+        if (plugin.getDiscordInviteUrl() == null) {
+            return toMessage(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()));
+        }
+        return new MessageBuilder(plugin.getDiscordInviteUrl()).build();
     }
 
     @Override
@@ -87,7 +98,7 @@ public class PluginCommand extends Command {
 
     private static MessageEmbed createDocsEmbed(@NonNull Plugin plugin) {
         if (plugin.getDocsUrl() == null) {
-            return EmbedUtil.createErrorEmbed("Could not find documentation link for " + plugin.getName()).build();
+            return EmbedUtil.createErrorEmbed("Could not find a documentation link for " + plugin.getName());
         }
         return new EmbedBuilder()
                 .setColor(GREEN)
@@ -100,7 +111,7 @@ public class PluginCommand extends Command {
 
     private static MessageEmbed createDownloadEmbed(@NonNull Plugin plugin) {
         if (plugin.getDownloadUrl() == null) {
-            return EmbedUtil.createErrorEmbed("Could not find download link for " + plugin.getName()).build();
+            return EmbedUtil.createErrorEmbed("Could not find a download link for " + plugin.getName());
         }
         return new EmbedBuilder()
                 .setColor(GREEN)
@@ -112,6 +123,10 @@ public class PluginCommand extends Command {
     }
 
     private static MessageEmbed createNotFoundEmbed(String name) {
-        return EmbedUtil.createErrorEmbed("Plugin `" + name + "` not found").build();
+        return EmbedUtil.createErrorEmbed("Plugin `" + name + "` not found");
+    }
+
+    private static Message toMessage(MessageEmbed embed) {
+        return new MessageBuilder(embed).build();
     }
 }

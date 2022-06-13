@@ -2,7 +2,6 @@ package com.rokucraft.rokubot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.commands.*;
-import com.rokucraft.rokubot.commands.PluginCommand;
 import com.rokucraft.rokubot.config.Settings;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import com.rokucraft.rokubot.listeners.SlashCommandListener;
