@@ -65,12 +65,8 @@ public class RokuBot {
             CommentedConfigurationNode root = loader.load();
             config = root.get(Settings.class);
         } catch (IOException e) {
-            System.err.println("An error occurred while loading settings: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
+            logger.error("An error occurred while loading settings:", e);
             System.exit(1);
-
         }
     }
 
