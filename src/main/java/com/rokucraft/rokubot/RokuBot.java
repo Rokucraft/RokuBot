@@ -13,13 +13,19 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+import org.kohsuke.github.authorization.OrgAppInstallationAuthorizationProvider;
+import org.kohsuke.github.extras.authorization.JWTTokenProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.security.GeneralSecurityException;
 
 public class RokuBot {
+    private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
     private static JDA jda;
     private static GitHub github;
     private static GHRepository defaultRepo;
@@ -47,6 +53,7 @@ public class RokuBot {
                 ).build();
 
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
+        applySettings();
     }
 
     public static void loadSettings() {
@@ -72,16 +79,15 @@ public class RokuBot {
             jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
         }
 
-        if (config.getGithubToken() == null) return;
+        if (config.getGithubAppId() == null || config.getGithubOrganization() == null) return;
 
         try {
-            github = new GitHubBuilder().withOAuthToken(config.getGithubToken()).build();
+            var jwtAuth = new JWTTokenProvider(config.getGithubAppId(), Path.of("github-app.private-key.pem"));
+            var orgAppAuth = new OrgAppInstallationAuthorizationProvider(config.getGithubOrganization(), jwtAuth);
+            github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
             defaultRepo = github.getRepository(config.getDefaultRepoName());
-        } catch (IOException e) {
-            System.err.println("An error occurred while loading settings: " + e.getMessage());
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
-            }
+        } catch (IOException | GeneralSecurityException e) {
+            logger.error("An error occurred while loading GitHub settings", e);
         }
     }
 

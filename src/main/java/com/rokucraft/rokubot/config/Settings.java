@@ -27,7 +27,8 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 @ConfigSerializable
 public class Settings {
-    private String botToken;
+    private String githubAppId;
+    private String githubOrganization;
     private String botActivity;
     private String prefix;
     @Setting("staff-category-ids")
@@ -36,7 +37,6 @@ public class Settings {
     private String rulesFooter;
     private Map<String, String> voiceChannelRoleMap;
     private Map<String, String> welcomeChannelMap;
-
     private List<String> trustedServerIds;
 
     private final transient List<TextCommand> textCommands = getCheckedList(() ->
@@ -75,7 +75,7 @@ public class Settings {
     private final transient Secrets secrets = getChecked(() -> nodeFromPath("secrets.yml").get(Secrets.class));
 
     @ConfigSerializable
-    private record Secrets(String botToken, String githubToken) {}
+    private record Secrets(String botToken) {}
 
     public Settings() {
         for (Plugin plugin : getPlugins()) {
@@ -155,8 +155,12 @@ public class Settings {
         return staffCategoryIDs;
     }
 
-    public String getGithubToken() {
-        return secrets.githubToken();
+    public String getGithubAppId() {
+        return githubAppId;
+    }
+
+    public String getGithubOrganization() {
+        return githubOrganization;
     }
 
     public String getDefaultRepoName() {
