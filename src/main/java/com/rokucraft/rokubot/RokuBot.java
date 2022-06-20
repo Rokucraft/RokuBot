@@ -23,6 +23,9 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class RokuBot {
     private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
@@ -31,6 +34,7 @@ public class RokuBot {
     private static GHRepository defaultRepo;
     private static User botOwner;
     private static Settings config;
+    private static List<GHRepository> repositoryCache = new ArrayList<>();
 
     public static void main(String[] arguments) throws Exception {
         loadSettings();
@@ -48,7 +52,8 @@ public class RokuBot {
                                 new RuleCommand(),
                                 new InviteCommand(),
                                 new PluginCommand(),
-                                new ReloadCommand()
+                                new ReloadCommand(),
+                                new IssueCommand()
                         ).addCommands(config.getSlashMessageCommands())
                 ).build();
 
@@ -82,7 +87,18 @@ public class RokuBot {
             var orgAppAuth = new OrgAppInstallationAuthorizationProvider(config.getGithubOrganization(), jwtAuth);
             github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
             defaultRepo = github.getRepository(config.getDefaultRepoName());
-        } catch (IOException | GeneralSecurityException e) {
+
+            repositoryCache = github.getOrganization(config.getGithubOrganization())
+                    .listRepositories().toList().stream()
+                    .sorted(Comparator.comparing((GHRepository r) -> {
+                        try {
+                            return r.getUpdatedAt();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).reversed())
+                    .toList();
+        } catch (IOException | GeneralSecurityException | RuntimeException e) {
             logger.error("An error occurred while loading GitHub settings", e);
         }
     }
@@ -106,5 +122,9 @@ public class RokuBot {
 
     public static User getBotOwner() {
         return botOwner;
+    }
+
+    public static List<GHRepository> getRepositoryCache() {
+        return repositoryCache;
     }
 }

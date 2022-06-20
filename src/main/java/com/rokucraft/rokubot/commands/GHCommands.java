@@ -12,14 +12,11 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kohsuke.github.GHIssue;
-import org.kohsuke.github.GHIssueState;
 import org.kohsuke.github.GHLabel;
-import org.kohsuke.github.GHUser;
 
 import java.io.IOException;
 
 import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
-import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
 import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
 import static com.rokucraft.rokubot.util.EmbedUtil.createIssuesEmbed;
 
@@ -72,41 +69,6 @@ public class GHCommands extends ListenerAdapter {
             }
             channel.sendMessageEmbeds(response.build()).queue();
             response.clear();
-            return;
-        }
-
-        if (content.startsWith("#")) {
-            String[] args = content.split("\\s+");
-            try {
-                int id = Integer.parseInt(args[0].substring(1));
-                GHIssue issue = RokuBot.getDefaultRepo().getIssue(id);
-
-                int color = (issue.getState() == GHIssueState.OPEN) ? ISSUE_OPEN_COLOR : ISSUE_CLOSED_COLOR;
-
-                String thumbnailUrl = (issue.getState() == GHIssueState.OPEN) ? "https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png" : "https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png";
-                GHUser author = issue.getUser();
-                String authorName = (author.getName() == null) ? author.getLogin() : author.getName();
-                String issueBody = issue.getBody()
-                        .replaceAll("(?s)<!--.*?-->", "") // Removes HTML comments
-                        .replaceAll("###(.*)", "**$1**") //Makes Markdown titles bold
-                        .trim();
-                if (issueBody.length() > 2048) {
-                    issueBody = issueBody.substring(0, 2047).concat("…"); // Prevents reaching the char limit
-                }
-
-                EmbedBuilder builder = new EmbedBuilder();
-                builder.setColor(color)
-                        .setThumbnail(thumbnailUrl)
-                        .setAuthor(authorName, String.valueOf(author.getHtmlUrl()), author.getAvatarUrl())
-                        .setTitle(issue.getTitle(), String.valueOf(issue.getHtmlUrl()))
-                        .setDescription(issueBody)
-                        .setTimestamp(issue.getCreatedAt().toInstant());
-                channel.sendMessageEmbeds(builder.build()).queue();
-            } catch (IOException e) {
-                channel.sendMessageEmbeds(createErrorEmbed().setTitle("Issue not found").build()).queue();
-            } catch (NumberFormatException ignored) {
-                // Not a parsable int, so the user didn't ask for an issue
-            }
             return;
         }
 
