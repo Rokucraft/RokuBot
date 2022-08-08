@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Choice;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -30,6 +31,7 @@ public class IssueCommand extends Command {
     public IssueCommand() {
         setGuildOnly(true);
         this.data = Commands.slash("issue", "Preview an issue")
+                .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
                 .addOptions(
                         new OptionData(OptionType.INTEGER, "number", "The issue number")
                                 .setRequiredRange(1, Integer.MAX_VALUE)

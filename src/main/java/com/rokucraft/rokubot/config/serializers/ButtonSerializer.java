@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.config.serializers;
 
-import net.dv8tion.jda.api.entities.Emoji;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -19,7 +19,7 @@ public class ButtonSerializer implements TypeSerializer<Button> {
         Emoji emoji = null;
         String emojiCode = node.node("emoji").getString();
         if (emojiCode != null && !emojiCode.isEmpty()) {
-            emoji = Emoji.fromMarkdown(emojiCode);
+            emoji = Emoji.fromFormatted(emojiCode);
         }
         String idOrUrl = node.node("id-or-url").getString();
         if (idOrUrl == null) {
@@ -47,7 +47,7 @@ public class ButtonSerializer implements TypeSerializer<Button> {
         }
         node.node("label").set(obj.getLabel());
         if (obj.getEmoji() != null) {
-            node.node("emoji").set(obj.getEmoji().getAsMention());
+            node.node("emoji").set(obj.getEmoji().getFormatted());
         }
     }
 }

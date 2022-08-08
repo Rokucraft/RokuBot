@@ -42,7 +42,7 @@ public class RokuBot {
         EventWaiter waiter = new EventWaiter();
 
         jda = JDABuilder.createDefault(config.getBotToken())
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(waiter)
                 .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())

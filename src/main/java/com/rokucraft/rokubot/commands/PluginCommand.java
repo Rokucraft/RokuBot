@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -22,7 +23,7 @@ public class PluginCommand extends Command {
     public PluginCommand() {
         this.setGuildOnly(true);
         this.data = Commands.slash("plugin", "Get information about a plugin")
-                .setDefaultEnabled(false)
+                .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
                 .addOption(OptionType.STRING, "name", "The name of the plugin", true, true)
                 .addOptions(
                         new OptionData(OptionType.STRING, "info", "The type of information you want")
