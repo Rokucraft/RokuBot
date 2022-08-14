@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.config;
 
-import com.rokucraft.rokubot.commands.SlashMessageCommand;
+import com.rokucraft.rokubot.command.commands.SlashMessageCommand;
 import com.rokucraft.rokubot.config.serializers.ButtonSerializer;
 import com.rokucraft.rokubot.config.serializers.MessageEmbedSerializer;
 import com.rokucraft.rokubot.config.serializers.MessageSerializer;

@@ -1,4 +1,4 @@
-package com.rokucraft.rokubot.commands;
+package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.MarkdownSection;
@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GHLabel;
 
 import java.io.IOException;

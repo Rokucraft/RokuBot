@@ -1,8 +1,11 @@
-package com.rokucraft.rokubot.commands;
+package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.RokuBot;
+import com.rokucraft.rokubot.command.AutoCompletable;
+import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -10,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.kohsuke.github.GHIssue;
@@ -22,14 +26,14 @@ import java.io.IOException;
 import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
 import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
 
-public class IssueCommand extends Command {
+public class IssueCommand implements SlashCommand, AutoCompletable {
+    private final CommandData data;
     public static final String ICON_ISSUE_OPEN =
             "https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png";
     public static final String ICON_ISSUE_CLOSED =
             "https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png";
 
     public IssueCommand() {
-        setGuildOnly(true);
         this.data = Commands.slash("issue", "Preview an issue")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
                 .addOptions(
@@ -89,5 +93,10 @@ public class IssueCommand extends Command {
                 .setDescription(issueBody)
                 .setTimestamp(issue.getCreatedAt().toInstant())
                 .build();
+    }
+
+    @Override
+    public CommandData getData(Guild guild) {
+        return this.data;
     }
 }

@@ -1,10 +1,10 @@
 package com.rokucraft.rokubot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.rokucraft.rokubot.commands.*;
+import com.rokucraft.rokubot.command.CommandManager;
+import com.rokucraft.rokubot.command.commands.*;
 import com.rokucraft.rokubot.config.Settings;
 import com.rokucraft.rokubot.listeners.JoinListener;
-import com.rokucraft.rokubot.listeners.SlashCommandListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -36,7 +37,7 @@ public class RokuBot {
     private static Settings config;
     private static List<GHRepository> repositoryCache = new ArrayList<>();
 
-    public static void main(String[] arguments) throws Exception {
+    public static void main(String[] arguments) throws LoginException, InterruptedException {
         loadSettings();
 
         EventWaiter waiter = new EventWaiter();
@@ -47,15 +48,24 @@ public class RokuBot {
                 .addEventListeners(new BaseCommands(waiter))
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new JoinListener())
-                .addEventListeners(
-                        new SlashCommandListener(
-                                new RuleCommand(),
-                                new InviteCommand(),
+                .build();
+
+        CommandManager commandManager = new CommandManager(jda);
+        commandManager.addCommands(new RuleCommand(), new InviteCommand());
+        commandManager.addCommands(config.getSlashMessageCommands());
+
+        jda.awaitReady();
+
+        config.getTrustedServerIds().stream()
+                .map(jda::getGuildById)
+                .forEach(guild ->
+                        commandManager.addGuildCommands(guild,
                                 new PluginCommand(),
                                 new ReloadCommand(),
                                 new IssueCommand()
-                        ).addCommands(config.getSlashMessageCommands())
-                ).build();
+                        )
+                );
+        commandManager.registerCommands();
 
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
         applySettings();

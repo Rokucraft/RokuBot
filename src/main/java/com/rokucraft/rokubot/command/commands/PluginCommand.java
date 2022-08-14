@@ -1,10 +1,13 @@
-package com.rokucraft.rokubot.commands;
+package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.RokuBot;
+import com.rokucraft.rokubot.command.AutoCompletable;
+import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -12,16 +15,17 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
 
-public class PluginCommand extends Command {
+public class PluginCommand implements SlashCommand, AutoCompletable {
+    private final CommandData data;
 
     public PluginCommand() {
-        this.setGuildOnly(true);
         this.data = Commands.slash("plugin", "Get information about a plugin")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
                 .addOption(OptionType.STRING, "name", "The name of the plugin", true, true)
@@ -129,5 +133,10 @@ public class PluginCommand extends Command {
 
     private static Message toMessage(MessageEmbed embed) {
         return new MessageBuilder(embed).build();
+    }
+
+    @Override
+    public CommandData getData(Guild guild) {
+        return data;
     }
 }

@@ -1,4 +1,4 @@
-package com.rokucraft.rokubot.commands;
+package com.rokucraft.rokubot.command.commands;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.RokuBot;
