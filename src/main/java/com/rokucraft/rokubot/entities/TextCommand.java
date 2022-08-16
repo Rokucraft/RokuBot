@@ -3,14 +3,10 @@ package com.rokucraft.rokubot.entities;
 import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.requests.restaction.MessageAction;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Required;
-
-import java.util.List;
 
 @SuppressWarnings("unused")
 @ConfigSerializable
@@ -19,7 +15,6 @@ public class TextCommand extends AbstractEntity {
     private String description;
     @Required
     private Message message;
-    private List<Button> buttons;
 
     @Nullable
     public String getDescription() {
@@ -32,12 +27,7 @@ public class TextCommand extends AbstractEntity {
     }
 
     public void execute(MessageChannel channel) {
-        MessageAction messageAction = channel.sendMessage(getMessage());
-        if (buttons.isEmpty()) {
-            messageAction.queue();
-        } else {
-            messageAction.setActionRow(buttons).queue();
-        }
+        channel.sendMessage(getMessage()).queue();
     }
 
     @Nullable
