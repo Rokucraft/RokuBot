@@ -44,6 +44,19 @@ public class CommandManager extends ListenerAdapter {
         this.globalCommands.addAll(commands);
     }
 
+    public void clearCommands() {
+        this.globalCommands.clear();
+    }
+
+    public void clearGuildCommands() {
+        this.guildCommands.clear();
+    }
+
+    public void clearAll() {
+        clearCommands();
+        clearGuildCommands();
+    }
+
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         findFirstMatchingCommand(SlashCommand.class, event)

@@ -38,8 +38,9 @@ public class RokuBot {
     private static User botOwner;
     private static Settings config;
     private static List<GHRepository> repositoryCache = new ArrayList<>();
+    private static CommandManager commandManager;
 
-    public static void main(String[] arguments) throws LoginException, InterruptedException {
+    public static void main(String[] arguments) throws LoginException {
         loadSettings();
 
         EventWaiter waiter = new EventWaiter();
@@ -51,23 +52,6 @@ public class RokuBot {
                 .addEventListeners(new GHCommands())
                 .addEventListeners(new JoinListener())
                 .build();
-
-        CommandManager commandManager = new CommandManager(jda);
-        commandManager.addCommands(new RuleCommand(), new InviteCommand());
-        commandManager.addCommands(config.getSlashMessageCommands());
-
-        jda.awaitReady();
-
-        config.getTrustedServerIds().stream()
-                .map(jda::getGuildById)
-                .forEach(guild ->
-                        commandManager.addGuildCommands(guild,
-                                new PluginCommand(),
-                                new ReloadCommand(),
-                                new IssueCommand()
-                        )
-                );
-        commandManager.registerCommands();
 
         botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
         applySettings();
@@ -92,6 +76,38 @@ public class RokuBot {
             jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
         }
 
+        initGitHub();
+        initCommands();
+    }
+
+    private static void initCommands() {
+        if (commandManager == null) {
+            commandManager = new CommandManager(jda);
+        } else {
+            commandManager.clearAll();
+        }
+        CommandManager commandManager = new CommandManager(jda);
+        commandManager.addCommands(new RuleCommand(), new InviteCommand());
+        commandManager.addCommands(config.getSlashMessageCommands());
+
+        try {
+            jda.awaitReady();
+            config.getTrustedServerIds().stream()
+                    .map(jda::getGuildById)
+                    .forEach(guild ->
+                            commandManager.addGuildCommands(guild,
+                                    new PluginCommand(),
+                                    new ReloadCommand(),
+                                    new IssueCommand()
+                            )
+                    );
+        } catch (InterruptedException e) {
+            logger.error("Thread was interrupted while waiting for JDA to be ready", e);
+        }
+        commandManager.registerCommands();
+    }
+
+    private static void initGitHub() {
         if (config.getGithubAppId() == null || config.getGithubOrganization() == null) return;
 
         try {
