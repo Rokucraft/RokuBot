@@ -96,7 +96,7 @@ public class RokuBot {
                     .map(jda::getGuildById)
                     .forEach(guild ->
                             commandManager.addGuildCommands(guild,
-                                    new PluginCommand(),
+                                    new PluginCommand(config.getPlugins()),
                                     new ReloadCommand(),
                                     new IssueCommand()
                             )

@@ -1,6 +1,5 @@
 package com.rokucraft.rokubot.command.commands;
 
-import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.command.AutoCompletable;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.Plugin;
@@ -20,12 +19,16 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.List;
+
 import static com.rokucraft.rokubot.Constants.GREEN;
 
 public class PluginCommand implements SlashCommand, AutoCompletable {
     private final CommandData data;
+    private final List<Plugin> plugins;
 
-    public PluginCommand() {
+    public PluginCommand(List<Plugin> plugins) {
+        this.plugins = plugins;
         this.data = Commands.slash("plugin", "Get information about a plugin")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
                 .addOption(OptionType.STRING, "name", "The name of the plugin", true, true)
@@ -41,7 +44,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
     public void execute(SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
         String info = event.getOption("info", OptionMapping::getAsString);
-        RokuBot.getConfig().getPlugins().stream()
+        this.plugins.stream()
                 .filter(p -> p.getName().equals(name))
                 .findFirst().ifPresentOrElse(
                         plugin -> {
@@ -59,22 +62,22 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
                 );
     }
 
-    private Message createInviteMessage(Plugin plugin) {
-        if (plugin.getDiscordInviteUrl() == null) {
-            return toMessage(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()));
-        }
-        return new MessageBuilder(plugin.getDiscordInviteUrl()).build();
-    }
-
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event) {
         event.replyChoiceStrings(
-                RokuBot.getConfig().getPlugins().stream()
+                this.plugins.stream()
                         .map(Plugin::getName)
                         .filter(name -> name.toLowerCase().contains(event.getFocusedOption().getValue().toLowerCase()))
                         .limit(25)
                         .toList()
         ).queue();
+    }
+
+    private Message createInviteMessage(Plugin plugin) {
+        if (plugin.getDiscordInviteUrl() == null) {
+            return toMessage(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()));
+        }
+        return new MessageBuilder(plugin.getDiscordInviteUrl()).build();
     }
 
     private static MessageEmbed createOverviewEmbed(@NonNull Plugin plugin) {
@@ -95,7 +98,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
         if (plugin.getDependencies() != null) {
             response.addField("Dependencies", plugin.getDependencies(), false);
         }
-        if (plugin.getDiscordInviteCode() != null) {
+        if (plugin.getDiscordInviteUrl() != null) {
             response.addField("Discord", plugin.getDiscordInviteUrl(), false);
         }
         return response.build();
@@ -137,6 +140,6 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
 
     @Override
     public CommandData getData(Guild guild) {
-        return data;
+        return this.data;
     }
 }
