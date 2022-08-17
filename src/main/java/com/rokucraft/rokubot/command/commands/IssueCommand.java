@@ -15,6 +15,8 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kohsuke.github.*;
 
 import java.io.IOException;
@@ -24,16 +26,20 @@ import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
 import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
 
 public class IssueCommand implements SlashCommand, AutoCompletable {
-    private final CommandData data;
-    private final GitHub github;
-    private final List<GHRepository> repositoryCache;
-    private final String defaultRepoName;
+    private final @NonNull CommandData data;
+    private final @NonNull GitHub github;
+    private final @Nullable List<GHRepository> repositoryCache;
+    private final @Nullable String defaultRepoName;
     public static final String ICON_ISSUE_OPEN =
             "https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png";
     public static final String ICON_ISSUE_CLOSED =
             "https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png";
 
-    public IssueCommand(GitHub github, List<GHRepository> repositoryCache, String defaultRepoName) {
+    public IssueCommand(
+            @NonNull GitHub github,
+            @Nullable List<GHRepository> repositoryCache,
+            @Nullable String defaultRepoName
+    ) {
         this.github = github;
         this.repositoryCache = repositoryCache;
         this.defaultRepoName = defaultRepoName;
@@ -81,7 +87,8 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
         ).queue();
     }
 
-    private MessageEmbed createIssueEmbed(GHIssue issue) throws IOException {
+    @NonNull
+    private MessageEmbed createIssueEmbed(@NonNull GHIssue issue) throws IOException {
         boolean open = issue.getState() == GHIssueState.OPEN;
         GHUser author = issue.getUser();
         String authorName = (author.getName() != null) ? author.getName() : author.getLogin();
@@ -102,7 +109,7 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
                 .build();
     }
 
-    @Override
+    @Override @NonNull
     public CommandData getData(Guild guild) {
         return this.data;
     }
