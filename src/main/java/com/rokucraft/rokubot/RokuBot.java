@@ -87,7 +87,7 @@ public class RokuBot {
             commandManager.clearAll();
         }
         CommandManager commandManager = new CommandManager(jda);
-        commandManager.addCommands(new RuleCommand(), new InviteCommand());
+        commandManager.addCommands(new RuleCommand(config.getRules(), config.getRulesFooter()), new InviteCommand());
         commandManager.addCommands(config.getSlashMessageCommands());
 
         try {
