@@ -98,7 +98,7 @@ public class RokuBot {
                             commandManager.addGuildCommands(guild,
                                     new PluginCommand(config.getPlugins()),
                                     new ReloadCommand(),
-                                    new IssueCommand()
+                                    new IssueCommand(github, repositoryCache, config.getDefaultRepoName())
                             )
                     );
         } catch (InterruptedException e) {
@@ -150,9 +150,5 @@ public class RokuBot {
 
     public static User getBotOwner() {
         return botOwner;
-    }
-
-    public static List<GHRepository> getRepositoryCache() {
-        return repositoryCache;
     }
 }

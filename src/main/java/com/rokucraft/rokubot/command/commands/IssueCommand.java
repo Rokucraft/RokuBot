@@ -1,6 +1,5 @@
 package com.rokucraft.rokubot.command.commands;
 
-import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.command.AutoCompletable;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.util.EmbedUtil;
@@ -16,24 +15,28 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import org.kohsuke.github.GHIssue;
-import org.kohsuke.github.GHIssueState;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GHUser;
+import org.kohsuke.github.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
 import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
 
 public class IssueCommand implements SlashCommand, AutoCompletable {
     private final CommandData data;
+    private final GitHub github;
+    private final List<GHRepository> repositoryCache;
+    private final String defaultRepoName;
     public static final String ICON_ISSUE_OPEN =
             "https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png";
     public static final String ICON_ISSUE_CLOSED =
             "https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png";
 
-    public IssueCommand() {
+    public IssueCommand(GitHub github, List<GHRepository> repositoryCache, String defaultRepoName) {
+        this.github = github;
+        this.repositoryCache = repositoryCache;
+        this.defaultRepoName = defaultRepoName;
         this.data = Commands.slash("issue", "Preview an issue")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
                 .addOptions(
@@ -50,8 +53,8 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
             if (number == null) {
                 throw new IllegalArgumentException("You must enter a number");
             }
-            String repo = event.getOption("repo", RokuBot.getConfig().getDefaultRepoName(), OptionMapping::getAsString);
-            GHIssue issue = RokuBot.getGithub().getRepository(repo).getIssue(number);
+            String repo = event.getOption("repo", this.defaultRepoName, OptionMapping::getAsString);
+            GHIssue issue = this.github.getRepository(repo).getIssue(number);
             event.replyEmbeds(createIssueEmbed(issue)).queue();
         } catch (IOException e) {
             event.replyEmbeds(EmbedUtil.createErrorEmbed("Unable to find issue")).setEphemeral(true).queue();
@@ -63,8 +66,12 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event) {
         String query = event.getFocusedOption().getValue().toLowerCase();
+        if (repositoryCache == null) {
+            event.replyChoices().queue();
+            return;
+        }
         event.replyChoices(
-                RokuBot.getRepositoryCache()
+                this.repositoryCache
                         .stream()
                         .filter(GHRepository::hasIssues)
                         .filter(r -> r.getName().toLowerCase().contains(query))
