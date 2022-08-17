@@ -1,4 +1,4 @@
-package com.rokucraft.rokubot.command.commands;
+package com.rokucraft.rokubot.command.legacy;
 
 import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.MarkdownSection;

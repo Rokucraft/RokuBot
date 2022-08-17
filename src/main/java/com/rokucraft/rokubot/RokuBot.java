@@ -3,6 +3,8 @@ package com.rokucraft.rokubot;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.command.CommandManager;
 import com.rokucraft.rokubot.command.commands.*;
+import com.rokucraft.rokubot.command.legacy.BaseCommands;
+import com.rokucraft.rokubot.command.legacy.GHCommands;
 import com.rokucraft.rokubot.config.Settings;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
