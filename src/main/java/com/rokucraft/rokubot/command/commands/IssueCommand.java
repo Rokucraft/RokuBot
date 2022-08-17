@@ -109,8 +109,8 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
                 .build();
     }
 
-    @Override @NonNull
-    public CommandData getData(Guild guild) {
+    @Override
+    public @NonNull CommandData getData(Guild guild) {
         return this.data;
     }
 }

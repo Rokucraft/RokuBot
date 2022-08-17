@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class InviteCommand implements SlashCommand, GlobalCommand {
     }
 
     @Override
-    public CommandData getData() {
-        return data;
+    public @NonNull CommandData getData() {
+        return this.data;
     }
 }

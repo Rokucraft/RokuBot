@@ -139,7 +139,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
     }
 
     @Override
-    public CommandData getData(Guild guild) {
+    public @NonNull CommandData getData(Guild guild) {
         return this.data;
     }
 }

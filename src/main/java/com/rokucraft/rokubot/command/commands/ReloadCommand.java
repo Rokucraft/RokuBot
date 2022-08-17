@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
 
@@ -27,7 +28,7 @@ public class ReloadCommand implements SlashCommand {
     }
 
     @Override
-    public CommandData getData(Guild guild) {
+    public @NonNull CommandData getData(Guild guild) {
         return data;
     }
 }

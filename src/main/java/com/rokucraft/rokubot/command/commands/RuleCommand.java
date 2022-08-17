@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class RuleCommand implements GlobalCommand, SlashCommand {
     }
 
     @Override
-    public CommandData getData() {
+    public @NonNull CommandData getData() {
         return data;
     }
 }

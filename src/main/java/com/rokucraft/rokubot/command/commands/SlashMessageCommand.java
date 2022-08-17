@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class SlashMessageCommand implements GlobalCommand, SlashCommand {
     private final CommandData data;
@@ -27,7 +28,7 @@ public class SlashMessageCommand implements GlobalCommand, SlashCommand {
     }
 
     @Override
-    public CommandData getData() {
+    public @NonNull CommandData getData() {
         return data;
     }
 }
