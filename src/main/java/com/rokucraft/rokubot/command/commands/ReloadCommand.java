@@ -1,9 +1,9 @@
 package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.RokuBot;
+import com.rokucraft.rokubot.command.GlobalCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -12,7 +12,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
 
-public class ReloadCommand implements SlashCommand {
+public class ReloadCommand implements SlashCommand, GlobalCommand {
     private final CommandData data;
     public ReloadCommand() {
         this.data = Commands.slash("reload", "Reload the bot configuration")
@@ -28,7 +28,7 @@ public class ReloadCommand implements SlashCommand {
     }
 
     @Override
-    public @NonNull CommandData getData(Guild guild) {
+    public @NonNull CommandData getData() {
         return data;
     }
 }

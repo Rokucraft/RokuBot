@@ -6,7 +6,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface GlobalCommand extends Command {
     @Override
-    default @NonNull CommandData getData(Guild guild) {
+    default @NonNull CommandData getData(@NonNull Guild guild) {
         return getData();
     }
 

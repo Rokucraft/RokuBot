@@ -1,12 +1,12 @@
 package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.command.AutoCompletable;
+import com.rokucraft.rokubot.command.GlobalCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
 
-public class PluginCommand implements SlashCommand, AutoCompletable {
+public class PluginCommand implements SlashCommand, AutoCompletable, GlobalCommand {
     private final @NonNull CommandData data;
     private final @NonNull List<Plugin> plugins;
 
@@ -140,7 +140,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
     }
 
     @Override
-    public @NonNull CommandData getData(Guild guild) {
+    public @NonNull CommandData getData() {
         return this.data;
     }
 }
