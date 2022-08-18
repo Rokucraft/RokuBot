@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface GlobalCommand extends Command {
+public interface GuildIndependentCommand extends Command {
     @Override
     default @NonNull CommandData getData(@NonNull Guild guild) {
         return getData();

@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.command.commands;
 
-import com.rokucraft.rokubot.command.GlobalCommand;
+import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.Rule;
 import com.rokucraft.rokubot.util.EmbedUtil;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.FUCHSIA;
 
-public class RuleCommand implements GlobalCommand, SlashCommand {
+public class RuleCommand implements GuildIndependentCommand, SlashCommand {
     private static final String SCALES_ICON =
             "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2696.png";
     private static final String SCROLL_ICON =

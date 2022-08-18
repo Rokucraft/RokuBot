@@ -1,7 +1,7 @@
 package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.command.AutoCompletable;
-import com.rokucraft.rokubot.command.GlobalCommand;
+import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -25,7 +25,7 @@ import java.util.List;
 import static com.rokucraft.rokubot.Constants.ISSUE_CLOSED_COLOR;
 import static com.rokucraft.rokubot.Constants.ISSUE_OPEN_COLOR;
 
-public class IssueCommand implements SlashCommand, AutoCompletable, GlobalCommand {
+public class IssueCommand implements SlashCommand, AutoCompletable, GuildIndependentCommand {
     private final @NonNull CommandData data;
     private final @NonNull GitHub github;
     private final @Nullable List<GHRepository> repositoryCache;

@@ -1,7 +1,7 @@
 package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.command.AutoCompletable;
-import com.rokucraft.rokubot.command.GlobalCommand;
+import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
 
-public class PluginCommand implements SlashCommand, AutoCompletable, GlobalCommand {
+public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndependentCommand {
     private final @NonNull CommandData data;
     private final @NonNull List<Plugin> plugins;
 

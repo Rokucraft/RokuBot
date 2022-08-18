@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class CommandManager extends ListenerAdapter {
     private final @NonNull JDA jda;
-    private final @NonNull Set<GlobalCommand> globalCommands = new HashSet<>();
+    private final @NonNull Set<GuildIndependentCommand> globalCommands = new HashSet<>();
     private final @NonNull Map<Guild, Set<Command>> guildCommands = new HashMap<>();
 
     public CommandManager(@NonNull JDA jda) {
@@ -37,11 +37,11 @@ public class CommandManager extends ListenerAdapter {
         }
     }
 
-    public void addCommands(@NonNull GlobalCommand... commands) {
+    public void addCommands(@NonNull GuildIndependentCommand... commands) {
         addCommands(Arrays.asList(commands));
     }
 
-    public void addCommands(@NonNull Collection<? extends GlobalCommand> commands) {
+    public void addCommands(@NonNull Collection<? extends GuildIndependentCommand> commands) {
         this.globalCommands.addAll(commands);
     }
 
@@ -106,7 +106,7 @@ public class CommandManager extends ListenerAdapter {
     public void registerCommands() {
         this.jda.updateCommands().addCommands(
                 this.globalCommands.stream()
-                        .map(GlobalCommand::getData)
+                        .map(GuildIndependentCommand::getData)
                         .toList()
         ).queue();
         this.guildCommands.forEach((guild, commands) ->

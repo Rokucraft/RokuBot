@@ -2,7 +2,7 @@ package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.command.SlashCommand;
-import com.rokucraft.rokubot.command.GlobalCommand;
+import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Choice;
@@ -16,7 +16,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InviteCommand implements SlashCommand, GlobalCommand {
+public class InviteCommand implements SlashCommand, GuildIndependentCommand {
     private final CommandData data;
 
     public InviteCommand() {

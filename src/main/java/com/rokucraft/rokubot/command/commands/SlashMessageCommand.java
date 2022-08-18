@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.command.commands;
 
-import com.rokucraft.rokubot.command.GlobalCommand;
+import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class SlashMessageCommand implements GlobalCommand, SlashCommand {
+public class SlashMessageCommand implements GuildIndependentCommand, SlashCommand {
     private final CommandData data;
 
     private final Message message;
