@@ -53,7 +53,7 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NonNull SlashCommandInteractionEvent event) {
         try {
             Integer number = event.getOption("number", OptionMapping::getAsInt);
             if (number == null) {
@@ -70,7 +70,7 @@ public class IssueCommand implements SlashCommand, AutoCompletable {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         String query = event.getFocusedOption().getValue().toLowerCase();
         if (repositoryCache == null) {
             event.replyChoices().queue();

@@ -42,7 +42,7 @@ public class RuleCommand implements GlobalCommand, SlashCommand {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NonNull SlashCommandInteractionEvent event) {
         try {
             Integer number = event.getOption("number", OptionMapping::getAsInt);
             if (number == null) {

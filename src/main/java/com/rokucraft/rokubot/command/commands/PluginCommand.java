@@ -41,7 +41,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
         String info = event.getOption("info", OptionMapping::getAsString);
         this.plugins.stream()
@@ -63,7 +63,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         event.replyChoiceStrings(
                 this.plugins.stream()
                         .map(Plugin::getName)

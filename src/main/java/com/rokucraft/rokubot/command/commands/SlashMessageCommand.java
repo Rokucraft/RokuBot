@@ -23,7 +23,7 @@ public class SlashMessageCommand implements GlobalCommand, SlashCommand {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NonNull SlashCommandInteractionEvent event) {
         event.reply(message).queue();
     }
 

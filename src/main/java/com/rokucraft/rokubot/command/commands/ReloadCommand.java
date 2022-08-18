@@ -20,7 +20,7 @@ public class ReloadCommand implements SlashCommand {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NonNull SlashCommandInteractionEvent event) {
         RokuBot.reloadSettings();
         event.replyEmbeds(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build())
                 .setEphemeral(true)

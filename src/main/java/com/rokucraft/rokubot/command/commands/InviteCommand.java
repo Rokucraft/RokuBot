@@ -36,7 +36,7 @@ public class InviteCommand implements SlashCommand, GlobalCommand {
     }
 
     @Override @SuppressWarnings("ConstantConditions")
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
         if (name == null) {
             event.reply(DiscordInvite.getDefault().getInviteUrl()).queue();
