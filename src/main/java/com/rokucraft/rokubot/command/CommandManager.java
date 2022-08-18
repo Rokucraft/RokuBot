@@ -97,7 +97,9 @@ public class CommandManager extends ListenerAdapter {
                         this.globalCommands.stream()
                 )
                 .filter(clazz::isInstance)
-                .filter(cmd -> cmd.getData(guild).getName().equals(name))
+                .filter(cmd -> guild != null
+                        ? cmd.getData(guild).getName().equals(name)
+                        : cmd instanceof GuildIndependentCommand gicmd && gicmd.getData().getName().equals(name))
                 .map(clazz::cast)
                 .findFirst();
     }
