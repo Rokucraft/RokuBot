@@ -9,16 +9,15 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class SlashMessageCommand implements GuildIndependentCommand, SlashCommand {
-    private final CommandData data;
+    private final @NonNull CommandData data;
+    private final @NonNull Message message;
 
-    private final Message message;
-
-    public SlashMessageCommand(String name, String description, Message message) {
+    public SlashMessageCommand(@NonNull String name, @NonNull String description, @NonNull Message message) {
         this.data = Commands.slash(name, description);
         this.message = message;
     }
 
-    public Message getMessage() {
+    public @NonNull Message getMessage() {
         return message;
     }
 
