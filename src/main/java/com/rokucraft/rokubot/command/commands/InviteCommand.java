@@ -4,6 +4,7 @@ import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.entities.DiscordInvite;
+import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -35,14 +36,15 @@ public class InviteCommand implements SlashCommand, GuildIndependentCommand {
                 );
     }
 
-    @Override @SuppressWarnings("ConstantConditions")
+    @Override
     public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
-        if (name == null) {
-            event.reply(DiscordInvite.getDefault().getInviteUrl()).queue();
-        } else {
-            event.reply(DiscordInvite.find(name).getInviteUrl()).queue();
+        DiscordInvite invite = name == null ? DiscordInvite.getDefault() : DiscordInvite.find(name);
+        if (invite == null) {
+            event.replyEmbeds(EmbedUtil.createErrorEmbed("Invite `" + name + "` not found")).setEphemeral(true).queue();
+            return;
         }
+        event.reply(invite.getInviteUrl()).queue();
     }
 
     @Override
