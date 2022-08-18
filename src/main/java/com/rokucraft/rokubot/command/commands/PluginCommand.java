@@ -18,16 +18,17 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
 import static com.rokucraft.rokubot.Constants.GREEN;
 
 public class PluginCommand implements SlashCommand, AutoCompletable {
-    private final CommandData data;
-    private final List<Plugin> plugins;
+    private final @NonNull CommandData data;
+    private final @NonNull List<Plugin> plugins;
 
-    public PluginCommand(List<Plugin> plugins) {
+    public PluginCommand(@NonNull List<Plugin> plugins) {
         this.plugins = plugins;
         this.data = Commands.slash("plugin", "Get information about a plugin")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
@@ -73,14 +74,14 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
         ).queue();
     }
 
-    private Message createInviteMessage(Plugin plugin) {
+    private @NonNull Message createInviteMessage(@NonNull Plugin plugin) {
         if (plugin.getDiscordInviteUrl() == null) {
             return toMessage(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()));
         }
         return new MessageBuilder(plugin.getDiscordInviteUrl()).build();
     }
 
-    private static MessageEmbed createOverviewEmbed(@NonNull Plugin plugin) {
+    private static @NonNull MessageEmbed createOverviewEmbed(@NonNull Plugin plugin) {
         EmbedBuilder response = new EmbedBuilder()
                 .setColor(GREEN)
                 .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f419.png")
@@ -104,7 +105,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
         return response.build();
     }
 
-    private static MessageEmbed createDocsEmbed(@NonNull Plugin plugin) {
+    private static @NonNull MessageEmbed createDocsEmbed(@NonNull Plugin plugin) {
         if (plugin.getDocsUrl() == null) {
             return EmbedUtil.createErrorEmbed("Could not find a documentation link for " + plugin.getName());
         }
@@ -117,7 +118,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
                 .build();
     }
 
-    private static MessageEmbed createDownloadEmbed(@NonNull Plugin plugin) {
+    private static @NonNull MessageEmbed createDownloadEmbed(@NonNull Plugin plugin) {
         if (plugin.getDownloadUrl() == null) {
             return EmbedUtil.createErrorEmbed("Could not find a download link for " + plugin.getName());
         }
@@ -130,11 +131,11 @@ public class PluginCommand implements SlashCommand, AutoCompletable {
                 .build();
     }
 
-    private static MessageEmbed createNotFoundEmbed(String name) {
+    private static @NonNull MessageEmbed createNotFoundEmbed(@Nullable String name) {
         return EmbedUtil.createErrorEmbed("Plugin `" + name + "` not found");
     }
 
-    private static Message toMessage(MessageEmbed embed) {
+    private static @NonNull Message toMessage(@NonNull MessageEmbed embed) {
         return new MessageBuilder(embed).build();
     }
 
