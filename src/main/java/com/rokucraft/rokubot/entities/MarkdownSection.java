@@ -1,16 +1,17 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Required;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
@@ -18,34 +19,35 @@ import java.util.stream.Collectors;
 import static com.rokucraft.rokubot.Constants.BLUE;
 import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
 
-@SuppressWarnings("unused")
 @ConfigSerializable
-public class MarkdownSection extends AbstractEntity {
-    private String title;
-    private String repoName;
-    private String filePath;
-    private String thumbnailUrl;
-    private String url;
-    private String footer;
+public record MarkdownSection (
+    @Required String name,
+    @Required String title,
+    @Required String repoName,
+    @Required String filePath,
+    @Nullable String thumbnailUrl,
+    @Nullable String url,
+    @Nullable String description
+){
+    public static final String INFO_ICON =
+            "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png";
 
-    @Nullable
-    public static MarkdownSection find(String name) {
-        return (MarkdownSection) find(name, RokuBot.getConfig().getMarkdownSections());
+    public @NonNull Tag toTag(@NonNull GitHub gitHub) {
+        return new Tag(
+                name,
+                description,
+                new MessageBuilder(toEmbed(gitHub)).build()
+        );
     }
 
-    @NonNull
-    public MessageEmbed toEmbed(String footerIconUrl) {
+    public @NonNull MessageEmbed toEmbed(@NonNull GitHub gitHub) {
         EmbedBuilder builder;
-        if (thumbnailUrl == null) {
-            thumbnailUrl = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png";
-        }
         try {
             builder = new EmbedBuilder()
                     .setColor(BLUE)
                     .setTitle(title.replaceAll("#+ ", ""), url)
-                    .setThumbnail(thumbnailUrl)
-                    .setFooter(footer, footerIconUrl)
-                    .setDescription(getContents());
+                    .setThumbnail(thumbnailUrl != null ? thumbnailUrl : INFO_ICON)
+                    .setDescription(getContents(gitHub));
         } catch (IOException e) {
             e.printStackTrace();
             builder = createErrorEmbed()
@@ -54,17 +56,16 @@ public class MarkdownSection extends AbstractEntity {
         return builder.build();
     }
 
-    @Nullable
-    public String getContents() throws IOException {
-        GHRepository repository = RokuBot.getGithub().getRepository(repoName);
-        InputStream inputStream = repository.getFileContent(filePath).read();
-        String fullText = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
-                .collect(Collectors.joining("\n"));
-
-        return fullText.substring(fullText.indexOf(title))
-                .replaceFirst(".*", "") // Remove title
-                .replaceAll("(?s)#+ .*", ""); // Remove everything starting from new title
+    public @NonNull String getContents(@NonNull GitHub gitHub) throws IOException {
+        GHRepository repository = gitHub.getRepository(repoName);
+        try (var reader = new BufferedReader(
+                new InputStreamReader(repository.getFileContent(filePath).read(), StandardCharsets.UTF_8)
+        )) {
+             return reader.lines()
+                     .dropWhile(line -> !line.contains(title)) // Remove everything before title
+                     .skip(1) // Remove title
+                     .takeWhile(line -> !line.matches("#+ .*")) // Take until next title
+                     .collect(Collectors.joining("\n"));
+        }
     }
 }

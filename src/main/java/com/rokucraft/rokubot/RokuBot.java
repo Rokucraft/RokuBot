@@ -29,6 +29,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class RokuBot {
     private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
@@ -94,11 +95,15 @@ public class RokuBot {
             jda.awaitReady();
             config.getTrustedServerIds().stream()
                     .map(jda::getGuildById)
+                    .filter(Objects::nonNull)
                     .forEach(guild ->
                             commandManager.addGuildCommands(guild,
                                     new PluginCommand(config.getPlugins()),
                                     new ReloadCommand(),
-                                    new IssueCommand(github, repositoryCache, config.getDefaultRepoName())
+                                    new IssueCommand(github, repositoryCache, config.getDefaultRepoName()),
+                                    new TagCommand(config.getMarkdownSections().stream()
+                                        .map(md -> md.toTag(github))
+                                        .toList())
                             )
                     );
         } catch (InterruptedException e) {
@@ -138,10 +143,6 @@ public class RokuBot {
 
     public static Settings getConfig() {
         return config;
-    }
-
-    public static GitHub getGithub() {
-        return github;
     }
 
     public static GHRepository getDefaultRepo() {

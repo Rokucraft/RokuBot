@@ -1,7 +1,6 @@
 package com.rokucraft.rokubot.command.legacy;
 
 import com.rokucraft.rokubot.RokuBot;
-import com.rokucraft.rokubot.entities.MarkdownSection;
 import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.util.IssueUtil;
 import com.rokucraft.rokubot.util.StaffOnly;
@@ -86,14 +85,6 @@ public class GHCommands extends ListenerAdapter {
                             .build();
                     channel.sendMessageEmbeds(errorEmbed).queue();
                 }
-            }
-            return;
-        }
-
-        if (content.toLowerCase().startsWith(prefix)) {
-            MarkdownSection markdownSection = MarkdownSection.find(content.substring(prefix.length()));
-            if (markdownSection != null) {
-                channel.sendMessageEmbeds(markdownSection.toEmbed(event.getAuthor().getAvatarUrl())).queue();
             }
         }
     }
