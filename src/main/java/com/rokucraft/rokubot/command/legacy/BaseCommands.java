@@ -35,11 +35,10 @@ public class BaseCommands extends ListenerAdapter {
             EmbedBuilder response = createInfoEmbed()
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
-                    .addField("GitHub Commands",
+                    .addField("Commands",
                         ":exclamation: `" + prefix + "issues [label]` lists all issues (with the specified label)\n" +
-                                ":books: `" + prefix + "reference` shows a link to the GE reference\n" +
-                                ":question: `" + prefix + "questions` shows a link to the asking-questions document\n" +
-                                ":fleur_de_lis: `" + prefix + "symbols` shows a link to the list with symbols",
+                                ":books: `" + prefix + "repo` shows a link to a repository\n" +
+                                ":incoming_envelope: `" + prefix + "discord` shows a discord invite link for a project",
                         false);
 
             channel.sendMessageEmbeds(response.build()).queue();
