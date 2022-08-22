@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 import static com.rokucraft.rokubot.Constants.BLUE;
-import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
 
 @ConfigSerializable
 public record MarkdownSection (
@@ -32,7 +31,7 @@ public record MarkdownSection (
     public static final String INFO_ICON =
             "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png";
 
-    public @NonNull Tag toTag(@NonNull GitHub gitHub) {
+    public @NonNull Tag toTag(@NonNull GitHub gitHub) throws IOException {
         return new Tag(
                 name,
                 description,
@@ -40,20 +39,13 @@ public record MarkdownSection (
         );
     }
 
-    public @NonNull MessageEmbed toEmbed(@NonNull GitHub gitHub) {
-        EmbedBuilder builder;
-        try {
-            builder = new EmbedBuilder()
+    public @NonNull MessageEmbed toEmbed(@NonNull GitHub gitHub) throws IOException {
+        return new EmbedBuilder()
                     .setColor(BLUE)
                     .setTitle(title.replaceAll("#+ ", ""), url)
                     .setThumbnail(thumbnailUrl != null ? thumbnailUrl : INFO_ICON)
-                    .setDescription(getContents(gitHub));
-        } catch (IOException e) {
-            e.printStackTrace();
-            builder = createErrorEmbed()
-                    .setTitle("❌ Couldn't find info");
-        }
-        return builder.build();
+                    .setDescription(getContents(gitHub))
+                    .build();
     }
 
     public @NonNull String getContents(@NonNull GitHub gitHub) throws IOException {

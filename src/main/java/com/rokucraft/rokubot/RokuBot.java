@@ -94,7 +94,15 @@ public class RokuBot {
 
         List<Tag> tags = new ArrayList<>(config.getPrivateTags());
         tags.addAll(config.getMarkdownSections().stream()
-                .map(md -> md.toTag(github))
+                .map(section -> {
+                    try {
+                        return section.toTag(github);
+                    } catch (IOException e) {
+                        logger.error("Unable to get contents for " + section, e);
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
                 .toList());
 
         try {
