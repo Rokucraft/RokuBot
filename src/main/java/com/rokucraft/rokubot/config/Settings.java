@@ -1,10 +1,8 @@
 package com.rokucraft.rokubot.config;
 
-import com.rokucraft.rokubot.command.commands.SlashMessageCommand;
 import com.rokucraft.rokubot.config.serializers.ButtonSerializer;
 import com.rokucraft.rokubot.config.serializers.MessageCreateDataSerializer;
 import com.rokucraft.rokubot.config.serializers.MessageEmbedSerializer;
-import com.rokucraft.rokubot.config.serializers.SlashMessageCommandSerializer;
 import com.rokucraft.rokubot.entities.*;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -63,10 +61,10 @@ public class Settings {
             nodeFromPath("rules.yml")
                     .node("rules")
                     .getList(Rule.class));
-    private final transient List<SlashMessageCommand> slashMessageCommands = getCheckedList(() ->
-            nodeFromPath("slash-message-commands.yml")
-                    .node("slash-message-commands")
-                    .getList(SlashMessageCommand.class));
+    private final transient List<Tag> rootTags = getCheckedList(() ->
+            nodeFromPath("root-tag-commands.yml")
+                    .node("root-tag-commands")
+                    .getList(Tag.class));
     private final transient List<MessageEmbed> welcomeEmbeds = getCheckedList(() ->
             nodeFromPath("welcome-embeds.yml")
                     .node("welcome-embeds")
@@ -105,7 +103,6 @@ public class Settings {
                 .defaultOptions(options -> options.serializers(
                         builder -> builder.register(MessageCreateData.class, MessageCreateDataSerializer.INSTANCE)
                                 .register(MessageEmbed.class, MessageEmbedSerializer.INSTANCE)
-                                .register(SlashMessageCommand.class, SlashMessageCommandSerializer.INSTANCE)
                                 .register(Button.class, ButtonSerializer.INSTANCE)
                 )).build().load();
     }
@@ -207,8 +204,8 @@ public class Settings {
         return rules;
     }
 
-    public List<SlashMessageCommand> getSlashMessageCommands() {
-        return slashMessageCommands;
+    public List<Tag> getRootTags() {
+        return rootTags;
     }
 
     public List<MessageEmbed> getWelcomeEmbeds() {

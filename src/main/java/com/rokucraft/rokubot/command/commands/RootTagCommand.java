@@ -2,6 +2,7 @@ package com.rokucraft.rokubot.command.commands;
 
 import com.rokucraft.rokubot.command.GuildIndependentCommand;
 import com.rokucraft.rokubot.command.SlashCommand;
+import com.rokucraft.rokubot.entities.Tag;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -11,27 +12,18 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import static net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions.DISABLED;
 import static net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions.ENABLED;
 
-public class SlashMessageCommand implements GuildIndependentCommand, SlashCommand {
+public class RootTagCommand implements GuildIndependentCommand, SlashCommand {
     private final @NonNull CommandData data;
     private final @NonNull MessageCreateData message;
 
-    public SlashMessageCommand(
-            @NonNull String name,
-            @NonNull String description,
-            @NonNull MessageCreateData message,
-            boolean defaultEnabled
-    ) {
-        this.data = Commands.slash(name, description)
+    public RootTagCommand(@NonNull Tag tag, boolean defaultEnabled) {
+        this.data = Commands.slash(tag.name(), (tag.description() != null) ? tag.description() : tag.name())
                 .setDefaultPermissions(defaultEnabled ? ENABLED : DISABLED);
-        this.message = message;
+        this.message = tag.message();
     }
 
-    public SlashMessageCommand(@NonNull String name, @NonNull String description, @NonNull MessageCreateData message) {
-        this(name, description, message, true);
-    }
-
-    public @NonNull MessageCreateData getMessage() {
-        return message;
+    public RootTagCommand(@NonNull Tag tag) {
+        this(tag, true);
     }
 
     @Override
