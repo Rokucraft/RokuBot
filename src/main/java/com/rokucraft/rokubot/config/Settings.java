@@ -37,10 +37,10 @@ public class Settings {
     private Map<String, String> welcomeChannelMap;
     private List<String> trustedServerIds;
 
-    private final transient List<TextCommand> textCommands = getCheckedList(() ->
-            nodeFromPath("text-commands.yml")
-                    .node("text-commands")
-                    .getList(TextCommand.class));
+    private final transient List<Tag> privateTags = getCheckedList(() ->
+            nodeFromPath("private-tags.yml")
+                    .node("private-tags")
+                    .getList(Tag.class));
     private final transient List<DiscordInvite> discordInvites = getCheckedList(() ->
             nodeFromPath("discord-invites.yml")
                     .node("discord-invites")
@@ -180,8 +180,8 @@ public class Settings {
         return trustedServerIds;
     }
 
-    public List<TextCommand> getTextCommands() {
-        return textCommands;
+    public List<Tag> getPrivateTags() {
+        return privateTags;
     }
 
     public List<DiscordInvite> getDiscordInvites() {

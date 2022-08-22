@@ -6,6 +6,7 @@ import com.rokucraft.rokubot.command.commands.*;
 import com.rokucraft.rokubot.command.legacy.BaseCommands;
 import com.rokucraft.rokubot.command.legacy.GHCommands;
 import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.entities.Tag;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -91,6 +92,11 @@ public class RokuBot {
         commandManager.addCommands(new RuleCommand(config.getRules(), config.getRulesFooter()), new InviteCommand());
         commandManager.addCommands(config.getRootTags().stream().map(RootTagCommand::new).toList());
 
+        List<Tag> tags = new ArrayList<>(config.getPrivateTags());
+        tags.addAll(config.getMarkdownSections().stream()
+                .map(md -> md.toTag(github))
+                .toList());
+
         try {
             jda.awaitReady();
             config.getTrustedServerIds().stream()
@@ -101,9 +107,7 @@ public class RokuBot {
                                     new PluginCommand(config.getPlugins()),
                                     new ReloadCommand(),
                                     new IssueCommand(github, repositoryCache, config.getDefaultRepoName()),
-                                    new TagCommand(config.getMarkdownSections().stream()
-                                        .map(md -> md.toTag(github))
-                                        .toList())
+                                    new TagCommand(tags)
                             )
                     );
         } catch (InterruptedException e) {

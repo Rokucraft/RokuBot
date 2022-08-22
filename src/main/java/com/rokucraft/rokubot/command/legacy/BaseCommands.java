@@ -3,7 +3,6 @@ package com.rokucraft.rokubot.command.legacy;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.RokuBot;
 import com.rokucraft.rokubot.entities.DiscordInvite;
-import com.rokucraft.rokubot.entities.TextCommand;
 import com.rokucraft.rokubot.util.StaffOnly;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -43,18 +42,6 @@ public class BaseCommands extends ListenerAdapter {
                                 ":fleur_de_lis: `" + prefix + "symbols` shows a link to the list with symbols",
                         false);
 
-            StringBuilder textCommandsHelpBuilder = new StringBuilder();
-            for (TextCommand textCommand : RokuBot.getConfig().getTextCommands()) {
-                if (textCommand.isAllowed(message.getCategory())) {
-                    String description = textCommand.getDescription();
-                    if (description == null) {description = "";}
-                    textCommandsHelpBuilder.append("• `").append(prefix).append(textCommand.getName()).append("` ").append(description).append("\n");
-                }
-            }
-            String textCommandsHelp = textCommandsHelpBuilder.toString();
-
-            response.addField("Utility Commands", textCommandsHelp, false);
-
             channel.sendMessageEmbeds(response.build()).queue();
             response.clear();
             return;
@@ -85,13 +72,6 @@ public class BaseCommands extends ListenerAdapter {
                     e -> e.getAuthor().equals(event.getAuthor())
                             && e.getChannel().equals(event.getChannel()),
                     e -> channel.sendMessage("asked").queue());
-        }
-
-        if (content.toLowerCase().startsWith(prefix)) {
-            TextCommand textCommand = TextCommand.find(content.substring(prefix.length()));
-            if (textCommand != null && textCommand.isAllowed(message.getCategory())) {
-                textCommand.execute(channel);
-            }
         }
     }
 }
