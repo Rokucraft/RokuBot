@@ -6,8 +6,6 @@ import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.Plugin;
 import com.rokucraft.rokubot.util.EmbedUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,6 +15,8 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -49,15 +49,16 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
                 .filter(p -> p.getName().equals(name))
                 .findFirst().ifPresentOrElse(
                         plugin -> {
-                            Message response = (info == null)
-                                    ? toMessage(createOverviewEmbed(plugin))
-                                    : switch (info) {
-                                        case "docs" -> toMessage(createDocsEmbed(plugin));
-                                        case "download" -> toMessage(createDownloadEmbed(plugin));
-                                        case "discord" -> createInviteMessage(plugin);
-                                        default -> toMessage(createOverviewEmbed(plugin));
-                                    };
-                            event.reply(response).queue();
+                            if (info == null) {
+                                event.replyEmbeds(createOverviewEmbed(plugin)).queue();
+                            } else {
+                                switch (info) {
+                                    case "docs" -> event.replyEmbeds(createDocsEmbed(plugin)).queue();
+                                    case "download" -> event.replyEmbeds(createDownloadEmbed(plugin)).queue();
+                                    case "discord" -> event.reply(createInviteMessage(plugin)).queue();
+                                    default -> event.replyEmbeds(createOverviewEmbed(plugin)).queue();
+                                }
+                            }
                         },
                         () -> event.replyEmbeds(createNotFoundEmbed(name)).setEphemeral(true).queue()
                 );
@@ -74,11 +75,13 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
         ).queue();
     }
 
-    private @NonNull Message createInviteMessage(@NonNull Plugin plugin) {
+    private @NonNull MessageCreateData createInviteMessage(@NonNull Plugin plugin) {
         if (plugin.getDiscordInviteUrl() == null) {
-            return toMessage(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()));
+            return new MessageCreateBuilder()
+                    .setEmbeds(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()))
+                    .build();
         }
-        return new MessageBuilder(plugin.getDiscordInviteUrl()).build();
+        return new MessageCreateBuilder().setContent(plugin.getDiscordInviteUrl()).build();
     }
 
     private static @NonNull MessageEmbed createOverviewEmbed(@NonNull Plugin plugin) {
@@ -133,10 +136,6 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
 
     private static @NonNull MessageEmbed createNotFoundEmbed(@Nullable String name) {
         return EmbedUtil.createErrorEmbed("Plugin `" + name + "` not found");
-    }
-
-    private static @NonNull Message toMessage(@NonNull MessageEmbed embed) {
-        return new MessageBuilder(embed).build();
     }
 
     @Override

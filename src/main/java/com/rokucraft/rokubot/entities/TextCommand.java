@@ -1,8 +1,8 @@
 package com.rokucraft.rokubot.entities;
 
 import com.rokucraft.rokubot.RokuBot;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
@@ -14,7 +14,7 @@ import org.spongepowered.configurate.objectmapping.meta.Required;
 public class TextCommand extends AbstractEntity {
     private String description;
     @Required
-    private Message message;
+    private MessageCreateData message;
 
     @Nullable
     public String getDescription() {
@@ -22,7 +22,7 @@ public class TextCommand extends AbstractEntity {
     }
 
     @NonNull
-    public Message getMessage() {
+    public MessageCreateData getMessage() {
         return message;
     }
 

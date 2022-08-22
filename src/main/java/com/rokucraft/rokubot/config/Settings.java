@@ -2,13 +2,13 @@ package com.rokucraft.rokubot.config;
 
 import com.rokucraft.rokubot.command.commands.SlashMessageCommand;
 import com.rokucraft.rokubot.config.serializers.ButtonSerializer;
+import com.rokucraft.rokubot.config.serializers.MessageCreateDataSerializer;
 import com.rokucraft.rokubot.config.serializers.MessageEmbedSerializer;
-import com.rokucraft.rokubot.config.serializers.MessageSerializer;
 import com.rokucraft.rokubot.config.serializers.SlashMessageCommandSerializer;
 import com.rokucraft.rokubot.entities.*;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurateException;
@@ -103,7 +103,7 @@ public class Settings {
         return YamlConfigurationLoader.builder()
                 .path(Path.of(path))
                 .defaultOptions(options -> options.serializers(
-                        builder -> builder.register(Message.class, MessageSerializer.INSTANCE)
+                        builder -> builder.register(MessageCreateData.class, MessageCreateDataSerializer.INSTANCE)
                                 .register(MessageEmbed.class, MessageEmbedSerializer.INSTANCE)
                                 .register(SlashMessageCommand.class, SlashMessageCommandSerializer.INSTANCE)
                                 .register(Button.class, ButtonSerializer.INSTANCE)

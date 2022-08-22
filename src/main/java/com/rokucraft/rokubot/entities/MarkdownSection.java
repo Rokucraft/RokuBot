@@ -1,8 +1,8 @@
 package com.rokucraft.rokubot.entities;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.kohsuke.github.GHRepository;
@@ -36,7 +36,7 @@ public record MarkdownSection (
         return new Tag(
                 name,
                 description,
-                new MessageBuilder(toEmbed(gitHub)).build()
+                new MessageCreateBuilder().addEmbeds(toEmbed(gitHub)).build()
         );
     }
 
