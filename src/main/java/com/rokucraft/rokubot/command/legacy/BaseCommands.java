@@ -36,8 +36,7 @@ public class BaseCommands extends ListenerAdapter {
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
                     .addField("Commands",
-                        ":exclamation: `" + prefix + "issues [label]` lists all issues (with the specified label)\n" +
-                                ":books: `" + prefix + "repo` shows a link to a repository\n" +
+                        ":books: `" + prefix + "repo` shows a link to a repository\n" +
                                 ":incoming_envelope: `" + prefix + "discord` shows a discord invite link for a project",
                         false);
 

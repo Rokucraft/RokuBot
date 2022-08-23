@@ -36,7 +36,6 @@ public class RokuBot {
     private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
     private static JDA jda;
     private static GitHub github;
-    private static GHRepository defaultRepo;
     private static User botOwner;
     private static Settings config;
     private static List<GHRepository> repositoryCache = new ArrayList<>();
@@ -131,7 +130,6 @@ public class RokuBot {
             var jwtAuth = new JWTTokenProvider(config.getGithubAppId(), Path.of("github-app.private-key.pem"));
             var orgAppAuth = new OrgAppInstallationAuthorizationProvider(config.getGithubOrganization(), jwtAuth);
             github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
-            defaultRepo = github.getRepository(config.getDefaultRepoName());
 
             repositoryCache = github.getOrganization(config.getGithubOrganization())
                     .listRepositories().toList().stream()
@@ -155,10 +153,6 @@ public class RokuBot {
 
     public static Settings getConfig() {
         return config;
-    }
-
-    public static GHRepository getDefaultRepo() {
-        return defaultRepo;
     }
 
     public static User getBotOwner() {
