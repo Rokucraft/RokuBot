@@ -11,7 +11,6 @@ import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -36,7 +35,6 @@ public class RokuBot {
     private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
     private static JDA jda;
     private static GitHub github;
-    private static User botOwner;
     private static Settings config;
     private static List<GHRepository> repositoryCache = new ArrayList<>();
     private static CommandManager commandManager;
@@ -54,7 +52,6 @@ public class RokuBot {
                 .addEventListeners(new JoinListener())
                 .build();
 
-        botOwner = jda.retrieveUserById(Constants.OWNER_ID).complete();
         applySettings();
     }
 
@@ -153,9 +150,5 @@ public class RokuBot {
 
     public static Settings getConfig() {
         return config;
-    }
-
-    public static User getBotOwner() {
-        return botOwner;
     }
 }

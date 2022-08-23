@@ -36,7 +36,6 @@ public class BaseCommands extends ListenerAdapter {
                     .setColor(BLUE)
                     .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png")
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
-                    .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
                     .addField("Commands",
                         ":books: `" + prefix + "repo` shows a link to a repository\n" +
                                 ":incoming_envelope: `" + prefix + "discord` shows a discord invite link for a project",
