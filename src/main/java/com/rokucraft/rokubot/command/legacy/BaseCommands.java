@@ -11,8 +11,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import static com.rokucraft.rokubot.Constants.BLUE;
 import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
-import static com.rokucraft.rokubot.util.EmbedUtil.createInfoEmbed;
 
 public class BaseCommands extends ListenerAdapter {
 
@@ -32,7 +32,9 @@ public class BaseCommands extends ListenerAdapter {
         MessageChannel channel = event.getChannel();
 
         if (content.startsWith(prefix + "help") && StaffOnly.check(message))  {
-            EmbedBuilder response = createInfoEmbed()
+            EmbedBuilder response = new EmbedBuilder()
+                    .setColor(BLUE)
+                    .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2139.png")
                     .setTitle(event.getGuild().getSelfMember().getEffectiveName() + " Help")
                     .setFooter("Made by " + RokuBot.getBotOwner().getName(), RokuBot.getBotOwner().getAvatarUrl())
                     .addField("Commands",
