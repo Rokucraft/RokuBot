@@ -3,7 +3,7 @@ package com.rokucraft.rokubot.util;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import static com.rokucraft.rokubot.Constants.RED;
+import static com.rokucraft.rokubot.ColorConstants.RED;
 
 public class EmbedUtil {
 

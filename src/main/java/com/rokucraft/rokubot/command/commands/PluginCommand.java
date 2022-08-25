@@ -22,7 +22,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
-import static com.rokucraft.rokubot.Constants.GREEN;
+import static com.rokucraft.rokubot.ColorConstants.GREEN;
 
 public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndependentCommand {
     private final @NonNull CommandData data;

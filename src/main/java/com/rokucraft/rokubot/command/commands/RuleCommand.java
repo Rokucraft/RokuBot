@@ -17,7 +17,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 
-import static com.rokucraft.rokubot.Constants.FUCHSIA;
+import static com.rokucraft.rokubot.ColorConstants.FUCHSIA;
 
 public class RuleCommand implements GuildIndependentCommand, SlashCommand {
     private static final String SCALES_ICON =

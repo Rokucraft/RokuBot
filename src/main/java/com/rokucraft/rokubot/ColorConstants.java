@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot;
 
-public class Constants {
+public class ColorConstants {
     public static final int BLUE = 0x42D9ED;
     public static final int FUCHSIA = 0xEB459E;
     public static final int GREEN = 0x57F287;

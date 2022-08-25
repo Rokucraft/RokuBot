@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import static com.rokucraft.rokubot.Constants.BLUE;
+import static com.rokucraft.rokubot.ColorConstants.BLUE;
 import static com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed;
 
 public class BaseCommands extends ListenerAdapter {

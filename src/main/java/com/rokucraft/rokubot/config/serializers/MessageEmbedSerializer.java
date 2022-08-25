@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.config.serializers;
 
-import com.rokucraft.rokubot.Constants;
+import com.rokucraft.rokubot.ColorConstants;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -21,7 +21,7 @@ public class MessageEmbedSerializer implements TypeSerializer<MessageEmbed> {
                 .setThumbnail(node.node("thumbnail-url").getString())
                 .setDescription(node.node("description").getString())
                 .setImage(node.node("image-url").getString())
-                .setColor(node.node("color").getInt(Constants.BLUE))
+                .setColor(node.node("color").getInt(ColorConstants.BLUE))
                 .setFooter(node.node("footer", "text").getString(), node.node("footer", "icon-url").getString())
                 .build();
     }
