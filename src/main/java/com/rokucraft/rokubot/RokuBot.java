@@ -88,12 +88,8 @@ public class RokuBot {
         CommandManager commandManager = new CommandManager(jda);
         commandManager.addCommands(new RuleCommand(config.getRules(), config.getRulesFooter()));
 
-        List<DiscordInvite> publicInvites = config.getDiscordInvites().stream()
-                .filter(i -> !i.isStaffOnly())
-                .toList();
-        List<DiscordInvite> privateInvites = config.getDiscordInvites().stream()
-                .filter(DiscordInvite::isStaffOnly)
-                .toList();
+        List<DiscordInvite> publicInvites = config.getPublicInvites();
+        List<DiscordInvite> privateInvites = config.getPrivateInvites();
         if (!publicInvites.isEmpty()) {
             commandManager.addCommands(new InviteCommand("invite", publicInvites, publicInvites.get(0), true));
         }

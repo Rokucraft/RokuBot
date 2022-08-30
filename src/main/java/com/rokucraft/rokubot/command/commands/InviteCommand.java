@@ -49,7 +49,7 @@ public class InviteCommand implements SlashCommand, GuildIndependentCommand, Aut
         if (!useAutocomplete) {
             nameOption.addChoices(
                     this.invites.stream()
-                            .map(invite -> new Choice(invite.getName(), invite.getName()))
+                            .map(invite -> new Choice(invite.name(), invite.name()))
                             .toList()
             );
         }
@@ -65,11 +65,11 @@ public class InviteCommand implements SlashCommand, GuildIndependentCommand, Aut
         Optional<DiscordInvite> inviteOptional = (name == null)
                 ? Optional.ofNullable(defaultInvite)
                 : this.invites.stream()
-                        .filter(invite -> invite.getName().equals(name))
+                        .filter(invite -> invite.name().equals(name))
                         .findFirst();
 
         inviteOptional.ifPresentOrElse(
-                invite -> event.reply(invite.getInviteUrl()).queue(),
+                invite -> event.reply(invite.inviteUrl()).queue(),
                 () -> {
                     String error = (name != null) ? "Invite `" + name + "` not found" : "You must provide a name";
                     event.replyEmbeds(EmbedUtil.createErrorEmbed(error)).setEphemeral(true).queue();
@@ -80,7 +80,7 @@ public class InviteCommand implements SlashCommand, GuildIndependentCommand, Aut
     @Override
     public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         event.replyChoiceStrings(
-                AutoCompletable.filterCollectionByQueryString(this.invites, DiscordInvite::getName, event)
+                AutoCompletable.filterCollectionByQueryString(this.invites, DiscordInvite::name, event)
         ).queue();
     }
 

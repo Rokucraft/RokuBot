@@ -41,9 +41,13 @@ public class Settings {
             nodeFromPath("private-tags.yml")
                     .node("private-tags")
                     .getList(Tag.class));
-    private final transient List<DiscordInvite> discordInvites = getCheckedList(() ->
+    private final transient List<DiscordInvite> publicInvites = getCheckedList(() ->
             nodeFromPath("discord-invites.yml")
-                    .node("discord-invites")
+                    .node("public-invites")
+                    .getList(DiscordInvite.class));
+    private final transient List<DiscordInvite> privateInvites = getCheckedList(() ->
+            nodeFromPath("discord-invites.yml")
+                    .node("private-invites")
                     .getList(DiscordInvite.class));
     private final transient List<Plugin> plugins = getCheckedList(() ->
             nodeFromPath("plugins.yml")
@@ -78,7 +82,7 @@ public class Settings {
     public Settings() {
         for (Plugin plugin : getPlugins()) {
             if (plugin.getDiscordInviteCode() != null) {
-                getDiscordInvites().add(new DiscordInvite(plugin.getName(), plugin.getAliases(), true, plugin.getDiscordInviteCode()));
+                privateInvites.add(new DiscordInvite(plugin.getName(), plugin.getDiscordInviteCode()));
             }
             if (plugin.getRepositoryUrl() != null) {
                 getRepositories().add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
@@ -184,8 +188,12 @@ public class Settings {
         return privateTags;
     }
 
-    public List<DiscordInvite> getDiscordInvites() {
-        return discordInvites;
+    public List<DiscordInvite> getPublicInvites() {
+        return publicInvites;
+    }
+
+    public List<DiscordInvite> getPrivateInvites() {
+        return privateInvites;
     }
 
     public List<Plugin> getPlugins() {

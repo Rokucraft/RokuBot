@@ -1,7 +1,5 @@
 package com.rokucraft.rokubot.entities;
 
-import com.rokucraft.rokubot.RokuBot;
-import net.dv8tion.jda.api.entities.Category;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.meta.Required;
@@ -22,17 +20,6 @@ public abstract class AbstractEntity {
     @Nullable
     public String[] getAliases() {
         return aliases;
-    }
-
-    public boolean isStaffOnly() {
-        return staffOnly;
-    }
-
-    public boolean isAllowed(Category category) {
-        if (this.staffOnly) {
-            return RokuBot.getConfig().getStaffCategoryIDs().contains(category.getId());
-        }
-        return true;
     }
 
     @Nullable
