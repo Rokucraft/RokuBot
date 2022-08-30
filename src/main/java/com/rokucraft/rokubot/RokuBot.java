@@ -4,9 +4,9 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.command.CommandManager;
 import com.rokucraft.rokubot.command.commands.*;
 import com.rokucraft.rokubot.command.legacy.BaseCommands;
-import com.rokucraft.rokubot.command.legacy.GHCommands;
 import com.rokucraft.rokubot.config.Settings;
 import com.rokucraft.rokubot.entities.DiscordInvite;
+import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.entities.Tag;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
@@ -49,7 +49,6 @@ public class RokuBot {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(waiter)
                 .addEventListeners(new BaseCommands(waiter))
-                .addEventListeners(new GHCommands())
                 .addEventListeners(new JoinListener())
                 .build();
 
@@ -122,6 +121,10 @@ public class RokuBot {
                                 );
                                 if (!privateInvites.isEmpty()) {
                                     commandManager.addCommands(new InviteCommand("discord", privateInvites, null, false));
+                                }
+                                List<Repository> repositories = config.getRepositories();
+                                if (!repositories.isEmpty()) {
+                                    commandManager.addCommands(new RepoCommand(repositories, repositories.get(0)));
                                 }
                             }
                     );
