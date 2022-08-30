@@ -81,11 +81,11 @@ public class Settings {
 
     public Settings() {
         for (Plugin plugin : getPlugins()) {
-            if (plugin.getDiscordInviteCode() != null) {
-                this.privateInvites.add(new DiscordInvite(plugin.getName(), plugin.getDiscordInviteCode()));
+            if (plugin.discordInviteCode() != null) {
+                this.privateInvites.add(new DiscordInvite(plugin.name(), plugin.discordInviteCode()));
             }
-            if (plugin.getRepositoryUrl() != null) {
-                this.repositories.add(new Repository(plugin.getName(), plugin.getRepositoryUrl()));
+            if (plugin.repositoryUrl() != null) {
+                this.repositories.add(new Repository(plugin.name(), plugin.repositoryUrl()));
             }
         }
     }

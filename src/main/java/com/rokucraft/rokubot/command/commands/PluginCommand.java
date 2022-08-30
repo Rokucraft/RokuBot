@@ -46,7 +46,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
         String name = event.getOption("name", OptionMapping::getAsString);
         String info = event.getOption("info", OptionMapping::getAsString);
         this.plugins.stream()
-                .filter(p -> p.getName().equals(name))
+                .filter(p -> p.name().equals(name))
                 .findFirst().ifPresentOrElse(
                         plugin -> {
                             if (info == null) {
@@ -68,7 +68,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
     public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         event.replyChoiceStrings(
                 this.plugins.stream()
-                        .map(Plugin::getName)
+                        .map(Plugin::name)
                         .filter(name -> name.toLowerCase().contains(event.getFocusedOption().getValue().toLowerCase()))
                         .limit(25)
                         .toList()
@@ -78,7 +78,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
     private @NonNull MessageCreateData createInviteMessage(@NonNull Plugin plugin) {
         if (plugin.getDiscordInviteUrl() == null) {
             return new MessageCreateBuilder()
-                    .setEmbeds(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.getName()))
+                    .setEmbeds(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.name()))
                     .build();
         }
         return new MessageCreateBuilder().setContent(plugin.getDiscordInviteUrl()).build();
@@ -88,19 +88,19 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
         EmbedBuilder response = new EmbedBuilder()
                 .setColor(GREEN)
                 .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f419.png")
-                .setTitle(plugin.getName(), plugin.getResourceUrl())
-                .setDescription(plugin.getDescription());
-        if (plugin.getDownloadUrl() != null) {
-            response.addField("Download Link", plugin.getDownloadUrl(), false);
+                .setTitle(plugin.name(), plugin.resourceUrl())
+                .setDescription(plugin.description());
+        if (plugin.downloadUrl() != null) {
+            response.addField("Download Link", plugin.downloadUrl(), false);
         }
-        if (plugin.getDocsUrl() != null) {
-            response.addField("Documentation", plugin.getDocsUrl(), true);
+        if (plugin.docsUrl() != null) {
+            response.addField("Documentation", plugin.docsUrl(), true);
         }
-        if (plugin.getRepositoryUrl() != null) {
-            response.addField("Repository", plugin.getRepositoryUrl(), true);
+        if (plugin.repositoryUrl() != null) {
+            response.addField("Repository", plugin.repositoryUrl(), true);
         }
-        if (plugin.getDependencies() != null) {
-            response.addField("Dependencies", plugin.getDependencies(), false);
+        if (plugin.getDependenciesAsString() != null) {
+            response.addField("Dependencies", plugin.getDependenciesAsString(), false);
         }
         if (plugin.getDiscordInviteUrl() != null) {
             response.addField("Discord", plugin.getDiscordInviteUrl(), false);
@@ -109,28 +109,28 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
     }
 
     private static @NonNull MessageEmbed createDocsEmbed(@NonNull Plugin plugin) {
-        if (plugin.getDocsUrl() == null) {
-            return EmbedUtil.createErrorEmbed("Could not find a documentation link for " + plugin.getName());
+        if (plugin.docsUrl() == null) {
+            return EmbedUtil.createErrorEmbed("Could not find a documentation link for " + plugin.name());
         }
         return new EmbedBuilder()
                 .setColor(GREEN)
                 .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f989.png")
-                .setTitle(plugin.getName() + " Documentation", plugin.getResourceUrl())
-                .setDescription("The latest documentation for **" + plugin.getName() + "** can be found here:\n"
-                        + plugin.getDocsUrl())
+                .setTitle(plugin.name() + " Documentation", plugin.resourceUrl())
+                .setDescription("The latest documentation for **" + plugin.name() + "** can be found here:\n"
+                        + plugin.docsUrl())
                 .build();
     }
 
     private static @NonNull MessageEmbed createDownloadEmbed(@NonNull Plugin plugin) {
-        if (plugin.getDownloadUrl() == null) {
-            return EmbedUtil.createErrorEmbed("Could not find a download link for " + plugin.getName());
+        if (plugin.downloadUrl() == null) {
+            return EmbedUtil.createErrorEmbed("Could not find a download link for " + plugin.name());
         }
         return new EmbedBuilder()
                 .setColor(GREEN)
                 .setThumbnail("https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f992.png")
-                .setTitle("Download " + plugin.getName(), plugin.getResourceUrl())
-                .setDescription("The latest version of **" + plugin.getName() + "** can be downloaded here:\n"
-                        + plugin.getDownloadUrl())
+                .setTitle("Download " + plugin.name(), plugin.resourceUrl())
+                .setDescription("The latest version of **" + plugin.name() + "** can be downloaded here:\n"
+                        + plugin.downloadUrl())
                 .build();
     }
 
