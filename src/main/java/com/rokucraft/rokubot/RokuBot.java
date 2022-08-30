@@ -3,7 +3,7 @@ package com.rokucraft.rokubot;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.command.CommandManager;
 import com.rokucraft.rokubot.command.commands.*;
-import com.rokucraft.rokubot.command.legacy.BaseCommands;
+import com.rokucraft.rokubot.listeners.EasterEggListener;
 import com.rokucraft.rokubot.config.Settings;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.Repository;
@@ -48,7 +48,7 @@ public class RokuBot {
         jda = JDABuilder.createDefault(config.getBotToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(waiter)
-                .addEventListeners(new BaseCommands(waiter))
+                .addEventListeners(new EasterEggListener(waiter))
                 .addEventListeners(new JoinListener())
                 .build();
 
