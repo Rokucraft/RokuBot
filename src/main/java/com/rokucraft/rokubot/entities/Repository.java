@@ -1,26 +1,10 @@
 package com.rokucraft.rokubot.entities;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Required;
 
 @ConfigSerializable
-public class Repository extends AbstractEntity{
-    @Required
-    private String repositoryUrl;
-
-    public Repository() {}
-
-    public Repository(String name, String[] aliases, boolean staffOnly, String repositoryUrl) {
-        this.name = name;
-        this.aliases = aliases;
-        this.staffOnly = staffOnly;
-        this.repositoryUrl = repositoryUrl;
-    }
-
-    @NonNull
-    public String getRepositoryUrl() {
-        return repositoryUrl;
-    }
-
-}
+public record Repository(
+        @Required String name,
+        @Required String repositoryUrl
+) {}

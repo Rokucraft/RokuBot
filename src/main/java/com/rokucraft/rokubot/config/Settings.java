@@ -82,10 +82,10 @@ public class Settings {
     public Settings() {
         for (Plugin plugin : getPlugins()) {
             if (plugin.getDiscordInviteCode() != null) {
-                privateInvites.add(new DiscordInvite(plugin.getName(), plugin.getDiscordInviteCode()));
+                this.privateInvites.add(new DiscordInvite(plugin.getName(), plugin.getDiscordInviteCode()));
             }
             if (plugin.getRepositoryUrl() != null) {
-                getRepositories().add(new Repository(plugin.getName(), plugin.getAliases(), true, plugin.getRepositoryUrl()));
+                this.repositories.add(new Repository(plugin.getName(), plugin.getRepositoryUrl()));
             }
         }
     }

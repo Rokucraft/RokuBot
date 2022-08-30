@@ -47,7 +47,7 @@ public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndepend
         if (!useAutocomplete) {
             nameOption.addChoices(
                     this.repositories.stream()
-                            .map(repo -> new Command.Choice(repo.getName(), repo.getName()))
+                            .map(repo -> new Command.Choice(repo.name(), repo.name()))
                             .toList()
             );
         }
@@ -59,7 +59,7 @@ public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndepend
     @Override
     public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         event.replyChoiceStrings(
-            AutoCompletable.filterCollectionByQueryString(this.repositories, Repository::getName, event)
+            AutoCompletable.filterCollectionByQueryString(this.repositories, Repository::name, event)
         ).queue();
     }
 
@@ -69,11 +69,11 @@ public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndepend
         Optional<Repository> repoOptional = (name == null)
                 ? Optional.ofNullable(defaultRepository)
                 : this.repositories.stream()
-                    .filter(repo -> repo.getName().equals(name))
+                    .filter(repo -> repo.name().equals(name))
                     .findFirst();
 
         repoOptional.ifPresentOrElse(
-                invite -> event.reply(invite.getRepositoryUrl()).queue(),
+                invite -> event.reply(invite.repositoryUrl()).queue(),
                 () -> {
                     String error = (name != null) ? "Repository `" + name + "` not found" : "You must provide a name";
                     event.replyEmbeds(EmbedUtil.createErrorEmbed(error)).setEphemeral(true).queue();
