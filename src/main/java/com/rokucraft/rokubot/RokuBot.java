@@ -6,6 +6,7 @@ import com.rokucraft.rokubot.command.commands.*;
 import com.rokucraft.rokubot.command.legacy.BaseCommands;
 import com.rokucraft.rokubot.command.legacy.GHCommands;
 import com.rokucraft.rokubot.config.Settings;
+import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.Tag;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
@@ -85,7 +86,17 @@ public class RokuBot {
             commandManager.clearAll();
         }
         CommandManager commandManager = new CommandManager(jda);
-        commandManager.addCommands(new RuleCommand(config.getRules(), config.getRulesFooter()), new InviteCommand());
+        commandManager.addCommands(new RuleCommand(config.getRules(), config.getRulesFooter()));
+
+        List<DiscordInvite> publicInvites = config.getDiscordInvites().stream()
+                .filter(i -> !i.isStaffOnly())
+                .toList();
+        List<DiscordInvite> privateInvites = config.getDiscordInvites().stream()
+                .filter(DiscordInvite::isStaffOnly)
+                .toList();
+        if (!publicInvites.isEmpty()) {
+            commandManager.addCommands(new InviteCommand("invite", publicInvites, publicInvites.get(0), true));
+        }
         commandManager.addCommands(config.getRootTags().stream().map(RootTagCommand::new).toList());
 
         List<Tag> tags = new ArrayList<>(config.getPrivateTags());
@@ -106,13 +117,17 @@ public class RokuBot {
             config.getTrustedServerIds().stream()
                     .map(jda::getGuildById)
                     .filter(Objects::nonNull)
-                    .forEach(guild ->
-                            commandManager.addGuildCommands(guild,
-                                    new PluginCommand(config.getPlugins()),
-                                    new ReloadCommand(),
-                                    new IssueCommand(github, repositoryCache, config.getDefaultRepoName()),
-                                    new TagCommand(tags)
-                            )
+                    .forEach(guild -> {
+                                commandManager.addGuildCommands(guild,
+                                        new PluginCommand(config.getPlugins()),
+                                        new ReloadCommand(),
+                                        new IssueCommand(github, repositoryCache, config.getDefaultRepoName()),
+                                        new TagCommand(tags)
+                                );
+                                if (!privateInvites.isEmpty()) {
+                                    commandManager.addCommands(new InviteCommand("discord", privateInvites, null, false));
+                                }
+                            }
                     );
         } catch (InterruptedException e) {
             logger.error("Thread was interrupted while waiting for JDA to be ready", e);

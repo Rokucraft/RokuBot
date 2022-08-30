@@ -1,10 +1,11 @@
 package com.rokucraft.rokubot.command.commands;
 
-import com.rokucraft.rokubot.RokuBot;
-import com.rokucraft.rokubot.command.SlashCommand;
+import com.rokucraft.rokubot.command.AutoCompletable;
 import com.rokucraft.rokubot.command.GuildIndependentCommand;
+import com.rokucraft.rokubot.command.SlashCommand;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.util.EmbedUtil;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -13,38 +14,74 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
-public class InviteCommand implements SlashCommand, GuildIndependentCommand {
-    private final CommandData data;
+import static net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions.*;
 
-    public InviteCommand() {
-        List<Choice> inviteChoices = new ArrayList<>();
-        for (DiscordInvite invite : RokuBot.getConfig().getDiscordInvites()) {
-            if (!invite.isStaffOnly()) {
-                String name = invite.getName();
-                inviteChoices.add(new Choice(name, name));
-            }
+public class InviteCommand implements SlashCommand, GuildIndependentCommand, AutoCompletable {
+    private final @NonNull CommandData data;
+    private final @NonNull Set<DiscordInvite> invites;
+    private final @Nullable DiscordInvite defaultInvite;
+
+    public InviteCommand(
+            @NonNull String name,
+            @NonNull Collection<? extends DiscordInvite> invites,
+            @Nullable DiscordInvite defaultInvite,
+            boolean defaultEnabled
+    ) {
+        this.invites = new HashSet<>(invites);
+        this.defaultInvite = defaultInvite;
+
+        boolean nameRequired = defaultInvite == null; // A name is required when no default is provided
+        boolean useAutocomplete = this.invites.size() > OptionData.MAX_CHOICES;
+        var nameOption = new OptionData(
+                OptionType.STRING,
+                "name",
+                "The name of the server",
+                nameRequired,
+                useAutocomplete
+        );
+        if (!useAutocomplete) {
+            nameOption.addChoices(
+                    this.invites.stream()
+                            .map(invite -> new Choice(invite.getName(), invite.getName()))
+                            .toList()
+            );
         }
 
-        this.data = Commands.slash("invite", "Shows a discord invite link for the named server")
-                .addOptions(
-                        new OptionData(OptionType.STRING, "name", "The name of the server")
-                                .addChoices(inviteChoices)
-                );
+        this.data = Commands.slash(name, "Shows a Discord invite link for the named server")
+                .setDefaultPermissions(defaultEnabled ? ENABLED : DISABLED)
+                .addOptions(nameOption);
     }
 
     @Override
     public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
-        DiscordInvite invite = name == null ? DiscordInvite.getDefault() : DiscordInvite.find(name);
-        if (invite == null) {
-            event.replyEmbeds(EmbedUtil.createErrorEmbed("Invite `" + name + "` not found")).setEphemeral(true).queue();
-            return;
-        }
-        event.reply(invite.getInviteUrl()).queue();
+        Optional<DiscordInvite> inviteOptional = (name == null)
+                ? Optional.ofNullable(defaultInvite)
+                : this.invites.stream()
+                        .filter(invite -> invite.getName().equals(name))
+                        .findFirst();
+
+        inviteOptional.ifPresentOrElse(
+                invite -> event.reply(invite.getInviteUrl()).queue(),
+                () -> {
+                    String error = (name != null) ? "Invite `" + name + "` not found" : "You must provide a name";
+                    event.replyEmbeds(EmbedUtil.createErrorEmbed(error)).setEphemeral(true).queue();
+                }
+        );
+    }
+
+    @Override
+    public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
+        event.replyChoiceStrings(
+                AutoCompletable.filterCollectionByQueryString(this.invites, DiscordInvite::getName, event)
+        ).queue();
     }
 
     @Override
