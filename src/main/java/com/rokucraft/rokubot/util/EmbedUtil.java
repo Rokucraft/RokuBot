@@ -7,6 +7,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import static com.rokucraft.rokubot.ColorConstants.RED;
 
 public class EmbedUtil {
+    private EmbedUtil() {}
 
     public static @NonNull MessageEmbed createErrorEmbed(@NonNull String description) {
         return new EmbedBuilder()
