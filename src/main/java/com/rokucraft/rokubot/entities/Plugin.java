@@ -20,14 +20,14 @@ public record Plugin(
 ) {
 
     public @Nullable String getDiscordInviteUrl() {
-        if (discordInviteCode == null)
+        if (this.discordInviteCode == null)
             return null;
-        return "https://discord.gg/" + discordInviteCode;
+        return "https://discord.gg/" + this.discordInviteCode;
     }
 
     public @Nullable String getDependenciesAsString() {
-        if (!dependencies.isEmpty()) {
-            return String.join(", ", dependencies);
+        if (!this.dependencies.isEmpty()) {
+            return String.join(", ", this.dependencies);
         } else return null;
     }
 }

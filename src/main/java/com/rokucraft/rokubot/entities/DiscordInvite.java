@@ -10,6 +10,6 @@ public record DiscordInvite(
         @Required String inviteCode
 ) {
     public @NonNull String inviteUrl() {
-        return "https://discord.gg/" + inviteCode;
+        return "https://discord.gg/" + this.inviteCode;
     }
 }

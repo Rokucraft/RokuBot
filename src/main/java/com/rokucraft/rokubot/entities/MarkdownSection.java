@@ -33,8 +33,8 @@ public record MarkdownSection (
 
     public @NonNull Tag toTag(@NonNull GitHub gitHub) throws IOException {
         return new Tag(
-                name,
-                description,
+                this.name,
+                this.description,
                 new MessageCreateBuilder().addEmbeds(toEmbed(gitHub)).build()
         );
     }
@@ -42,19 +42,19 @@ public record MarkdownSection (
     public @NonNull MessageEmbed toEmbed(@NonNull GitHub gitHub) throws IOException {
         return new EmbedBuilder()
                     .setColor(BLUE)
-                    .setTitle(title.replaceAll("#+ ", ""), url)
-                    .setThumbnail(thumbnailUrl != null ? thumbnailUrl : INFO_ICON)
+                    .setTitle(this.title.replaceAll("#+ ", ""), this.url)
+                    .setThumbnail(this.thumbnailUrl != null ? this.thumbnailUrl : INFO_ICON)
                     .setDescription(getContents(gitHub))
                     .build();
     }
 
     public @NonNull String getContents(@NonNull GitHub gitHub) throws IOException {
-        GHRepository repository = gitHub.getRepository(repoName);
+        GHRepository repository = gitHub.getRepository(this.repoName);
         try (var reader = new BufferedReader(
-                new InputStreamReader(repository.getFileContent(filePath).read(), StandardCharsets.UTF_8)
+                new InputStreamReader(repository.getFileContent(this.filePath).read(), StandardCharsets.UTF_8)
         )) {
              return reader.lines()
-                     .dropWhile(line -> !line.contains(title)) // Remove everything before title
+                     .dropWhile(line -> !line.contains(this.title)) // Remove everything before title
                      .skip(1) // Remove title
                      .takeWhile(line -> !line.matches("#+ .*")) // Take until next title
                      .collect(Collectors.joining("\n"));

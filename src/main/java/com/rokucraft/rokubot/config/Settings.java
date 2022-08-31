@@ -141,82 +141,82 @@ public class Settings {
     }
 
     public String getBotToken() {
-        return secrets.botToken();
+        return this.secrets.botToken();
     }
 
     public String getBotActivity() {
-        return botActivity;
+        return this.botActivity;
     }
 
     public String getPrefix() {
-        return prefix;
+        return this.prefix;
     }
 
     public List<String> getStaffCategoryIDs() {
-        return staffCategoryIDs;
+        return this.staffCategoryIDs;
     }
 
     public String getGithubAppId() {
-        return githubAppId;
+        return this.githubAppId;
     }
 
     public String getGithubOrganization() {
-        return githubOrganization;
+        return this.githubOrganization;
     }
 
     public String getDefaultRepoName() {
-        return defaultRepoName;
+        return this.defaultRepoName;
     }
 
     public String getRulesFooter() {
-        return rulesFooter;
+        return this.rulesFooter;
     }
 
     public Map<String, String> getVoiceChannelRoleMap() {
-        return voiceChannelRoleMap;
+        return this.voiceChannelRoleMap;
     }
 
     public Map<String, String> getWelcomeChannelMap() {
-        return welcomeChannelMap;
+        return this.welcomeChannelMap;
     }
 
     public List<String> getTrustedServerIds() {
-        return trustedServerIds;
+        return this.trustedServerIds;
     }
 
     public List<Tag> getPrivateTags() {
-        return privateTags;
+        return this.privateTags;
     }
 
     public List<DiscordInvite> getPublicInvites() {
-        return publicInvites;
+        return this.publicInvites;
     }
 
     public List<DiscordInvite> getPrivateInvites() {
-        return privateInvites;
+        return this.privateInvites;
     }
 
     public List<Plugin> getPlugins() {
-        return plugins;
+        return this.plugins;
     }
 
     public List<Repository> getRepositories() {
-        return repositories;
+        return this.repositories;
     }
 
     public List<MarkdownSection> getMarkdownSections() {
-        return markdownSections;
+        return this.markdownSections;
     }
 
     public List<Rule> getRules() {
-        return rules;
+        return this.rules;
     }
 
     public List<Tag> getRootTags() {
-        return rootTags;
+        return this.rootTags;
     }
 
     public List<MessageEmbed> getWelcomeEmbeds() {
-        return welcomeEmbeds;
+        return this.welcomeEmbeds;
     }
 }

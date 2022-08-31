@@ -26,7 +26,7 @@ public class JoinListener extends ListenerAdapter {
         TextChannel welcomeChannel = event.getGuild().getTextChannelById(id);
         if (welcomeChannel == null) return;
 
-        MessageEmbed welcomeEmbed = welcomeEmbeds.get(rand.nextInt(welcomeEmbeds.size()));
+        MessageEmbed welcomeEmbed = welcomeEmbeds.get(this.rand.nextInt(welcomeEmbeds.size()));
 
         if (welcomeEmbed.getDescription() != null && welcomeEmbed.getDescription().contains("%member%")) {
             welcomeEmbed = new EmbedBuilder(welcomeEmbed)

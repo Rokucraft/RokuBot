@@ -21,7 +21,7 @@ public class EasterEggListener extends ListenerAdapter {
 
         if (event.getMessage().getContentRaw().toLowerCase().startsWith("all my homies ")) {
             originalChannel.sendMessage("who").queue();
-            waiter.waitForEvent(
+            this.waiter.waitForEvent(
                     MessageReceivedEvent.class,
                     e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(originalChannel),
                     e -> e.getChannel().sendMessage("asked").queue()
