@@ -2,18 +2,15 @@ package com.rokucraft.rokubot.util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import static com.rokucraft.rokubot.ColorConstants.RED;
 
 public class EmbedUtil {
 
-    public static EmbedBuilder createErrorEmbed() {
+    public static @NonNull MessageEmbed createErrorEmbed(@NonNull String description) {
         return new EmbedBuilder()
-                .setColor(RED);
-    }
-
-    public static MessageEmbed createErrorEmbed(String description) {
-        return createErrorEmbed()
+                .setColor(RED)
                 .setDescription("❌ " + description)
                 .build();
     }
