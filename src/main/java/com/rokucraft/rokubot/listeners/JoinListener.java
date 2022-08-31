@@ -1,11 +1,12 @@
 package com.rokucraft.rokubot.listeners;
 
-import com.rokucraft.rokubot.RokuBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,19 +15,26 @@ import java.util.Random;
 
 public class JoinListener extends ListenerAdapter {
 
-    final Random rand = new Random();
-    
+    private final @NonNull Map<String, String> welcomeChannelMap;
+    private final @NonNull List<MessageEmbed> welcomeEmbeds;
+    private final Random rand = new Random();
+
+    public JoinListener(
+            @Nullable Map<String, String> welcomeChannelMap,
+            @Nullable List<MessageEmbed> welcomeEmbeds
+    ) {
+        this.welcomeChannelMap = welcomeChannelMap != null ? Map.copyOf(welcomeChannelMap) : Map.of();
+        this.welcomeEmbeds = welcomeEmbeds != null ? List.copyOf(welcomeEmbeds) : List.of();
+    }
+
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        Map<String, String> welcomeChannelMap = RokuBot.getConfig().getWelcomeChannelMap();
-        List<MessageEmbed> welcomeEmbeds = RokuBot.getConfig().getWelcomeEmbeds();
-
-        String id = welcomeChannelMap.get(event.getGuild().getId());
-        if (id == null) return;
-        TextChannel welcomeChannel = event.getGuild().getTextChannelById(id);
+        String channelId = this.welcomeChannelMap.get(event.getGuild().getId());
+        if (channelId == null) return;
+        TextChannel welcomeChannel = event.getGuild().getTextChannelById(channelId);
         if (welcomeChannel == null) return;
 
-        MessageEmbed welcomeEmbed = welcomeEmbeds.get(this.rand.nextInt(welcomeEmbeds.size()));
+        MessageEmbed welcomeEmbed = this.welcomeEmbeds.get(this.rand.nextInt(this.welcomeEmbeds.size()));
 
         if (welcomeEmbed.getDescription() != null && welcomeEmbed.getDescription().contains("%member%")) {
             welcomeEmbed = new EmbedBuilder(welcomeEmbed)

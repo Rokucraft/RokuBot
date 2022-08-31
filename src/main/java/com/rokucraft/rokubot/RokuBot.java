@@ -39,6 +39,7 @@ public class RokuBot {
     private static Settings config;
     private static List<GHRepository> repositoryCache = new ArrayList<>();
     private static CommandManager commandManager;
+    private static JoinListener joinListener;
 
     public static void main(String[] arguments) throws LoginException {
         loadSettings();
@@ -49,7 +50,6 @@ public class RokuBot {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(waiter)
                 .addEventListeners(new EasterEggListener(waiter))
-                .addEventListeners(new JoinListener())
                 .build();
 
         applySettings();
@@ -73,6 +73,11 @@ public class RokuBot {
         if (config.getBotActivity() != null) {
             jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
         }
+        if (joinListener != null) {
+            jda.removeEventListener(joinListener);
+        }
+        joinListener = new JoinListener(config.getWelcomeChannelMap(), config.getWelcomeEmbeds());
+        jda.addEventListener(joinListener);
 
         initGitHub();
         initCommands();
@@ -160,9 +165,5 @@ public class RokuBot {
     public static void reloadSettings() {
         loadSettings();
         applySettings();
-    }
-
-    public static Settings getConfig() {
-        return config;
     }
 }
