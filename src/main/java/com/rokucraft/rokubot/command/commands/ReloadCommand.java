@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import static com.rokucraft.rokubot.ColorConstants.GREEN;
+import static com.rokucraft.rokubot.util.ColorConstants.GREEN;
 
 public class ReloadCommand implements SlashCommand, GuildIndependentCommand {
     private final @NonNull CommandData data;

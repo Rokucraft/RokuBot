@@ -1,6 +1,6 @@
 package com.rokucraft.rokubot.config.serializers;
 
-import com.rokucraft.rokubot.ColorConstants;
+import com.rokucraft.rokubot.util.ColorConstants;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.Nullable;

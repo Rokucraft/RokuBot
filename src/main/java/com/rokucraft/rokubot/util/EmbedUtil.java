@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import static com.rokucraft.rokubot.ColorConstants.RED;
+import static com.rokucraft.rokubot.util.ColorConstants.RED;
 
 public class EmbedUtil {
     private EmbedUtil() {}

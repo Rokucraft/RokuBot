@@ -1,4 +1,4 @@
-package com.rokucraft.rokubot;
+package com.rokucraft.rokubot.util;
 
 public class ColorConstants {
     public static final int BLUE = 0x42D9ED;

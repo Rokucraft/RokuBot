@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-import static com.rokucraft.rokubot.ColorConstants.BLUE;
+import static com.rokucraft.rokubot.util.ColorConstants.BLUE;
 
 @ConfigSerializable
 public record MarkdownSection (

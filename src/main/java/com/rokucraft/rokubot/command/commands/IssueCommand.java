@@ -22,8 +22,8 @@ import org.kohsuke.github.*;
 import java.io.IOException;
 import java.util.List;
 
-import static com.rokucraft.rokubot.ColorConstants.ISSUE_CLOSED_COLOR;
-import static com.rokucraft.rokubot.ColorConstants.ISSUE_OPEN_COLOR;
+import static com.rokucraft.rokubot.util.ColorConstants.ISSUE_CLOSED_COLOR;
+import static com.rokucraft.rokubot.util.ColorConstants.ISSUE_OPEN_COLOR;
 
 public class IssueCommand implements SlashCommand, AutoCompletable, GuildIndependentCommand {
     private final @NonNull CommandData data;
