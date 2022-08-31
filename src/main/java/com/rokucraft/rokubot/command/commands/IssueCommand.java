@@ -72,7 +72,7 @@ public class IssueCommand implements SlashCommand, AutoCompletable, GuildIndepen
     @Override
     public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         String query = event.getFocusedOption().getValue().toLowerCase();
-        if (repositoryCache == null) {
+        if (this.repositoryCache == null) {
             event.replyChoices().queue();
             return;
         }
@@ -87,8 +87,7 @@ public class IssueCommand implements SlashCommand, AutoCompletable, GuildIndepen
         ).queue();
     }
 
-    @NonNull
-    private MessageEmbed createIssueEmbed(@NonNull GHIssue issue) throws IOException {
+    private @NonNull MessageEmbed createIssueEmbed(@NonNull GHIssue issue) throws IOException {
         boolean open = issue.getState() == GHIssueState.OPEN;
         GHUser author = issue.getUser();
         String authorName = (author.getName() != null) ? author.getName() : author.getLogin();

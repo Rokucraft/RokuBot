@@ -67,7 +67,7 @@ public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndepend
     public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
         Optional<Repository> repoOptional = (name == null)
-                ? Optional.ofNullable(defaultRepository)
+                ? Optional.ofNullable(this.defaultRepository)
                 : this.repositories.stream()
                     .filter(repo -> repo.name().equals(name))
                     .findFirst();

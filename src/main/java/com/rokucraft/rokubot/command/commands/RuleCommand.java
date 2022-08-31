@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
@@ -24,12 +25,12 @@ public class RuleCommand implements GuildIndependentCommand, SlashCommand {
             "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/2696.png";
     private static final String SCROLL_ICON =
             "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f4dc.png";
-    private final List<Rule> rules;
-    private final String rulesFooter;
-    private final CommandData data;
+    private final @NonNull List<Rule> rules;
+    private final @Nullable String rulesFooter;
+    private final @NonNull CommandData data;
 
-    public RuleCommand(List<Rule> rules, String rulesFooter) {
-        this.rules = rules;
+    public RuleCommand(@NonNull List<Rule> rules, @Nullable String rulesFooter) {
+        this.rules = List.copyOf(rules);
         this.rulesFooter = rulesFooter;
         this.data = Commands.slash("rule", "Shows the requested rule")
                 .addOptions(new OptionData(OptionType.INTEGER, "number", "The rule to show", true).addChoices(
@@ -61,15 +62,15 @@ public class RuleCommand implements GuildIndependentCommand, SlashCommand {
      * @return a decorated {@link MessageEmbed} containing the rule
      * @throws IllegalArgumentException when a rule with the provided number does not exist
      */
-    private MessageEmbed createRuleEmbed(int number) throws IllegalArgumentException {
-        if (number < 1 || number > rules.size()) {
+    private @NonNull MessageEmbed createRuleEmbed(int number) throws IllegalArgumentException {
+        if (number < 1 || number > this.rules.size()) {
             throw new IllegalArgumentException("Invalid rule number: " + number);
         }
-        Rule rule = rules.get(number - 1);
+        Rule rule = this.rules.get(number - 1);
         return new EmbedBuilder()
                 .setTitle(number + ". " + rule.name())
                 .setDescription(rule.description())
-                .setFooter(rulesFooter, SCALES_ICON)
+                .setFooter(this.rulesFooter, SCALES_ICON)
                 .setThumbnail(SCROLL_ICON)
                 .setColor(FUCHSIA)
                 .build();
@@ -77,6 +78,6 @@ public class RuleCommand implements GuildIndependentCommand, SlashCommand {
 
     @Override
     public @NonNull CommandData getData() {
-        return data;
+        return this.data;
     }
 }

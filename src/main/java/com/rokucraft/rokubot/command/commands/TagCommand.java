@@ -34,13 +34,13 @@ public class TagCommand implements SlashCommand, GuildIndependentCommand {
 
     @Override
     public @NonNull CommandData getData() {
-        return data;
+        return this.data;
     }
 
     @Override
     public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
-        Optional<Tag> tag = tags.stream()
+        Optional<Tag> tag = this.tags.stream()
                 .filter(t -> t.name().equals(name))
                 .findFirst();
         tag.ifPresentOrElse(

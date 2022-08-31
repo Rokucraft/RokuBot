@@ -13,7 +13,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import static com.rokucraft.rokubot.ColorConstants.GREEN;
 
 public class ReloadCommand implements SlashCommand, GuildIndependentCommand {
-    private final CommandData data;
+    private final @NonNull CommandData data;
+
     public ReloadCommand() {
         this.data = Commands.slash("reload", "Reload the bot configuration")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED);
@@ -29,6 +30,6 @@ public class ReloadCommand implements SlashCommand, GuildIndependentCommand {
 
     @Override
     public @NonNull CommandData getData() {
-        return data;
+        return this.data;
     }
 }

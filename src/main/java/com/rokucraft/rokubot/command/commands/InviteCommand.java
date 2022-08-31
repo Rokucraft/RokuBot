@@ -63,7 +63,7 @@ public class InviteCommand implements SlashCommand, GuildIndependentCommand, Aut
     public void execute(@NonNull SlashCommandInteractionEvent event) {
         String name = event.getOption("name", OptionMapping::getAsString);
         Optional<DiscordInvite> inviteOptional = (name == null)
-                ? Optional.ofNullable(defaultInvite)
+                ? Optional.ofNullable(this.defaultInvite)
                 : this.invites.stream()
                         .filter(invite -> invite.name().equals(name))
                         .findFirst();

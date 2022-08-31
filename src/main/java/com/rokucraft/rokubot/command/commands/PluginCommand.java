@@ -75,7 +75,7 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
         ).queue();
     }
 
-    private @NonNull MessageCreateData createInviteMessage(@NonNull Plugin plugin) {
+    private static @NonNull MessageCreateData createInviteMessage(@NonNull Plugin plugin) {
         if (plugin.getDiscordInviteUrl() == null) {
             return new MessageCreateBuilder()
                     .setEmbeds(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.name()))

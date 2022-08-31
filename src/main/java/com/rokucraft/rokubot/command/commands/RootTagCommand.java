@@ -28,11 +28,11 @@ public class RootTagCommand implements GuildIndependentCommand, SlashCommand {
 
     @Override
     public void execute(@NonNull SlashCommandInteractionEvent event) {
-        event.reply(message).queue();
+        event.reply(this.message).queue();
     }
 
     @Override
     public @NonNull CommandData getData() {
-        return data;
+        return this.data;
     }
 }
