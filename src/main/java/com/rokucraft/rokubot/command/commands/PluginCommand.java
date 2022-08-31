@@ -76,12 +76,12 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
     }
 
     private static @NonNull MessageCreateData createInviteMessage(@NonNull Plugin plugin) {
-        if (plugin.getDiscordInviteUrl() == null) {
+        if (plugin.discordInviteUrl() == null) {
             return new MessageCreateBuilder()
                     .setEmbeds(EmbedUtil.createErrorEmbed("Could not find an invite link for " + plugin.name()))
                     .build();
         }
-        return new MessageCreateBuilder().setContent(plugin.getDiscordInviteUrl()).build();
+        return new MessageCreateBuilder().setContent(plugin.discordInviteUrl()).build();
     }
 
     private static @NonNull MessageEmbed createOverviewEmbed(@NonNull Plugin plugin) {
@@ -99,11 +99,11 @@ public class PluginCommand implements SlashCommand, AutoCompletable, GuildIndepe
         if (plugin.repositoryUrl() != null) {
             response.addField("Repository", plugin.repositoryUrl(), true);
         }
-        if (plugin.getDependenciesAsString() != null) {
-            response.addField("Dependencies", plugin.getDependenciesAsString(), false);
+        if (!plugin.dependencies().isEmpty()) {
+            response.addField("Dependencies", String.join(", ", plugin.dependencies()), false);
         }
-        if (plugin.getDiscordInviteUrl() != null) {
-            response.addField("Discord", plugin.getDiscordInviteUrl(), false);
+        if (plugin.discordInviteUrl() != null) {
+            response.addField("Discord", plugin.discordInviteUrl(), false);
         }
         return response.build();
     }

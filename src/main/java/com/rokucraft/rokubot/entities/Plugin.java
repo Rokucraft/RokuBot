@@ -18,16 +18,9 @@ public record Plugin(
         @Nullable String discordInviteCode,
         @NonNull List<String> dependencies
 ) {
-
-    public @Nullable String getDiscordInviteUrl() {
+    public @Nullable String discordInviteUrl() {
         if (this.discordInviteCode == null)
             return null;
         return "https://discord.gg/" + this.discordInviteCode;
-    }
-
-    public @Nullable String getDependenciesAsString() {
-        if (!this.dependencies.isEmpty()) {
-            return String.join(", ", this.dependencies);
-        } else return null;
     }
 }
