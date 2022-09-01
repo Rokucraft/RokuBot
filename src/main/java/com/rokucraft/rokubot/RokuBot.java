@@ -50,7 +50,7 @@ public class RokuBot {
 
         EventWaiter waiter = new EventWaiter();
 
-        jda = JDABuilder.createDefault(config.getBotToken())
+        this.jda = JDABuilder.createDefault(this.config.getBotToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
                 .addEventListeners(waiter)
                 .addEventListeners(new EasterEggListener(waiter))
@@ -66,7 +66,7 @@ public class RokuBot {
 
         try {
             CommentedConfigurationNode root = loader.load();
-            config = root.get(Settings.class);
+            this.config = root.get(Settings.class);
         } catch (IOException e) {
             logger.error("An error occurred while loading settings:", e);
             System.exit(1);
@@ -74,40 +74,40 @@ public class RokuBot {
     }
 
     public void applySettings() {
-        if (config.getBotActivity() != null) {
-            jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
+        if (this.config.getBotActivity() != null) {
+            this.jda.getPresence().setActivity(Activity.playing(this.config.getBotActivity()));
         }
-        if (joinListener != null) {
-            jda.removeEventListener(joinListener);
+        if (this.joinListener != null) {
+            this.jda.removeEventListener(this.joinListener);
         }
-        joinListener = new JoinListener(config.getWelcomeChannelMap(), config.getWelcomeEmbeds());
-        jda.addEventListener(joinListener);
+        this.joinListener = new JoinListener(this.config.getWelcomeChannelMap(), this.config.getWelcomeEmbeds());
+        this.jda.addEventListener(this.joinListener);
 
         initGitHub();
         initCommands();
     }
 
     private void initCommands() {
-        if (commandManager == null) {
-            commandManager = new CommandManager(jda);
+        if (this.commandManager == null) {
+            this.commandManager = new CommandManager(this.jda);
         } else {
-            commandManager.clearAll();
+            this.commandManager.clearAll();
         }
-        CommandManager commandManager = new CommandManager(jda);
-        commandManager.addCommands(new RuleCommand(config.getRules(), config.getRulesFooter()));
+        CommandManager commandManager = new CommandManager(this.jda);
+        commandManager.addCommands(new RuleCommand(this.config.getRules(), this.config.getRulesFooter()));
 
-        List<DiscordInvite> publicInvites = config.getPublicInvites();
-        List<DiscordInvite> privateInvites = config.getPrivateInvites();
+        List<DiscordInvite> publicInvites = this.config.getPublicInvites();
+        List<DiscordInvite> privateInvites = this.config.getPrivateInvites();
         if (!publicInvites.isEmpty()) {
             commandManager.addCommands(new InviteCommand("invite", publicInvites, publicInvites.get(0), true));
         }
-        commandManager.addCommands(config.getRootTags().stream().map(RootTagCommand::new).toList());
+        commandManager.addCommands(this.config.getRootTags().stream().map(RootTagCommand::new).toList());
 
-        List<Tag> tags = new ArrayList<>(config.getPrivateTags());
-        tags.addAll(config.getMarkdownSections().stream()
+        List<Tag> tags = new ArrayList<>(this.config.getPrivateTags());
+        tags.addAll(this.config.getMarkdownSections().stream()
                 .map(section -> {
                     try {
-                        return section.toTag(github);
+                        return section.toTag(this.github);
                     } catch (IOException e) {
                         logger.error("Unable to get contents for " + section, e);
                         return null;
@@ -117,21 +117,21 @@ public class RokuBot {
                 .toList());
 
         try {
-            jda.awaitReady();
-            config.getTrustedServerIds().stream()
-                    .map(jda::getGuildById)
+            this.jda.awaitReady();
+            this.config.getTrustedServerIds().stream()
+                    .map(this.jda::getGuildById)
                     .filter(Objects::nonNull)
                     .forEach(guild -> {
                                 commandManager.addGuildCommands(guild,
-                                        new PluginCommand(config.getPlugins()),
+                                        new PluginCommand(this.config.getPlugins()),
                                         new ReloadCommand(this),
-                                        new IssueCommand(github, repositoryCache, config.getDefaultRepoName()),
+                                        new IssueCommand(this.github, this.repositoryCache, this.config.getDefaultRepoName()),
                                         new TagCommand(tags)
                                 );
                                 if (!privateInvites.isEmpty()) {
                                     commandManager.addCommands(new InviteCommand("discord", privateInvites, null, false));
                                 }
-                                List<Repository> repositories = config.getRepositories();
+                                List<Repository> repositories = this.config.getRepositories();
                                 if (!repositories.isEmpty()) {
                                     commandManager.addCommands(new RepoCommand(repositories, repositories.get(0)));
                                 }
@@ -144,14 +144,14 @@ public class RokuBot {
     }
 
     private void initGitHub() {
-        if (config.getGithubAppId() == null || config.getGithubOrganization() == null) return;
+        if (this.config.getGithubAppId() == null || this.config.getGithubOrganization() == null) return;
 
         try {
-            var jwtAuth = new JWTTokenProvider(config.getGithubAppId(), Path.of("github-app.private-key.pem"));
-            var orgAppAuth = new OrgAppInstallationAuthorizationProvider(config.getGithubOrganization(), jwtAuth);
-            github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
+            var jwtAuth = new JWTTokenProvider(this.config.getGithubAppId(), Path.of("github-app.private-key.pem"));
+            var orgAppAuth = new OrgAppInstallationAuthorizationProvider(this.config.getGithubOrganization(), jwtAuth);
+            this.github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
 
-            repositoryCache = github.getOrganization(config.getGithubOrganization())
+            this.repositoryCache = this.github.getOrganization(this.config.getGithubOrganization())
                     .listRepositories().toList().stream()
                     .sorted(Comparator.comparing((GHRepository r) -> {
                         try {
