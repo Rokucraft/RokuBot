@@ -14,15 +14,17 @@ import static com.rokucraft.rokubot.util.ColorConstants.GREEN;
 
 public class ReloadCommand implements SlashCommand, GuildIndependentCommand {
     private final @NonNull CommandData data;
+    private final @NonNull RokuBot bot;
 
-    public ReloadCommand() {
+    public ReloadCommand(@NonNull RokuBot bot) {
+        this.bot = bot;
         this.data = Commands.slash("reload", "Reload the bot configuration")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED);
     }
 
     @Override
     public void execute(@NonNull SlashCommandInteractionEvent event) {
-        RokuBot.reloadSettings();
+        this.bot.reloadSettings();
         event.replyEmbeds(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build())
                 .setEphemeral(true)
                 .queue();

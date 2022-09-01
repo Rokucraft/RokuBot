@@ -34,14 +34,18 @@ import java.util.Objects;
 
 public class RokuBot {
     private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
-    private static JDA jda;
-    private static GitHub github;
-    private static Settings config;
-    private static List<GHRepository> repositoryCache = new ArrayList<>();
-    private static CommandManager commandManager;
-    private static JoinListener joinListener;
+    private final JDA jda;
+    private GitHub github;
+    private Settings config;
+    private List<GHRepository> repositoryCache = new ArrayList<>();
+    private CommandManager commandManager;
+    private JoinListener joinListener;
 
     public static void main(String[] arguments) throws LoginException {
+        new RokuBot();
+    }
+
+    private RokuBot() throws LoginException {
         loadSettings();
 
         EventWaiter waiter = new EventWaiter();
@@ -55,7 +59,7 @@ public class RokuBot {
         applySettings();
     }
 
-    public static void loadSettings() {
+    public void loadSettings() {
         final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                 .path(Path.of("settings.yml"))
                 .build();
@@ -69,7 +73,7 @@ public class RokuBot {
         }
     }
 
-    public static void applySettings() {
+    public void applySettings() {
         if (config.getBotActivity() != null) {
             jda.getPresence().setActivity(Activity.playing(config.getBotActivity()));
         }
@@ -83,7 +87,7 @@ public class RokuBot {
         initCommands();
     }
 
-    private static void initCommands() {
+    private void initCommands() {
         if (commandManager == null) {
             commandManager = new CommandManager(jda);
         } else {
@@ -120,7 +124,7 @@ public class RokuBot {
                     .forEach(guild -> {
                                 commandManager.addGuildCommands(guild,
                                         new PluginCommand(config.getPlugins()),
-                                        new ReloadCommand(),
+                                        new ReloadCommand(this),
                                         new IssueCommand(github, repositoryCache, config.getDefaultRepoName()),
                                         new TagCommand(tags)
                                 );
@@ -139,7 +143,7 @@ public class RokuBot {
         commandManager.registerCommands();
     }
 
-    private static void initGitHub() {
+    private void initGitHub() {
         if (config.getGithubAppId() == null || config.getGithubOrganization() == null) return;
 
         try {
@@ -162,7 +166,7 @@ public class RokuBot {
         }
     }
 
-    public static void reloadSettings() {
+    public void reloadSettings() {
         loadSettings();
         applySettings();
     }
