@@ -12,7 +12,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
-import org.spongepowered.configurate.objectmapping.meta.Setting;
 import org.spongepowered.configurate.util.CheckedSupplier;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -28,12 +27,8 @@ public class Settings {
     private String githubAppId;
     private String githubOrganization;
     private String botActivity;
-    private String prefix;
-    @Setting("staff-category-ids")
-    private List<String> staffCategoryIDs;
     private String defaultRepoName;
     private String rulesFooter;
-    private Map<String, String> voiceChannelRoleMap;
     private Map<String, String> welcomeChannelMap;
     private List<String> trustedServerIds;
 
@@ -148,14 +143,6 @@ public class Settings {
         return this.botActivity;
     }
 
-    public String getPrefix() {
-        return this.prefix;
-    }
-
-    public List<String> getStaffCategoryIDs() {
-        return this.staffCategoryIDs;
-    }
-
     public String getGithubAppId() {
         return this.githubAppId;
     }
@@ -170,10 +157,6 @@ public class Settings {
 
     public String getRulesFooter() {
         return this.rulesFooter;
-    }
-
-    public Map<String, String> getVoiceChannelRoleMap() {
-        return this.voiceChannelRoleMap;
     }
 
     public Map<String, String> getWelcomeChannelMap() {
