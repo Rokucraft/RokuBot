@@ -129,11 +129,17 @@ public class RokuBot {
                                         new TagCommand(tags)
                                 );
                                 if (!privateInvites.isEmpty()) {
-                                    commandManager.addCommands(new InviteCommand("discord", privateInvites, null, false));
+                                    commandManager.addGuildCommands(
+                                            guild,
+                                            new InviteCommand("discord", privateInvites, null, false)
+                                    );
                                 }
                                 List<Repository> repositories = this.config.getRepositories();
                                 if (!repositories.isEmpty()) {
-                                    commandManager.addCommands(new RepoCommand(repositories, repositories.get(0)));
+                                    commandManager.addGuildCommands(
+                                            guild,
+                                            new RepoCommand(repositories, repositories.get(0))
+                                    );
                                 }
                             }
                     );
