@@ -24,10 +24,16 @@ public class ReloadCommand implements SlashCommand, GuildIndependentCommand {
 
     @Override
     public void execute(@NonNull SlashCommandInteractionEvent event) {
+        event.deferReply(true).queue();
         this.bot.reloadSettings();
-        event.replyEmbeds(new EmbedBuilder().setColor(GREEN).setTitle("Successfully reloaded!").build())
+        event.getHook()
                 .setEphemeral(true)
-                .queue();
+                .sendMessageEmbeds(
+                        new EmbedBuilder()
+                                .setColor(GREEN)
+                                .setTitle("Successfully reloaded!")
+                                .build()
+                ).queue();
     }
 
     @Override

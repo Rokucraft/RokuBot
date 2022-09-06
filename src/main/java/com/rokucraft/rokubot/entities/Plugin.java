@@ -23,4 +23,16 @@ public record Plugin(
             return null;
         return "https://discord.gg/" + this.discordInviteCode;
     }
+
+    public @Nullable DiscordInvite discordInvite() {
+        if (this.discordInviteCode == null)
+            return null;
+        return new DiscordInvite(this.name, this.discordInviteCode);
+    }
+
+    public @Nullable Repository repository() {
+        if (this.repositoryUrl == null)
+            return null;
+        return new Repository(this.name, this.repositoryUrl);
+    }
 }
