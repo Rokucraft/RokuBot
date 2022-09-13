@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RokuBot {
-    private static final Logger logger = LoggerFactory.getLogger(RokuBot.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RokuBot.class);
     private final JDA jda;
     private GitHub github;
     private final RecordConfigurationLoader configLoader;
@@ -48,7 +48,12 @@ public class RokuBot {
 
     private RokuBot() throws LoginException {
         this.configLoader = new RecordConfigurationLoader();
-        loadSettings();
+        try {
+            loadSettings();
+        } catch (ConfigurateException e) {
+            LOGGER.error("An error occurred while loading settings:", e);
+            System.exit(1);
+        }
 
         EventWaiter waiter = new EventWaiter();
 
@@ -61,13 +66,8 @@ public class RokuBot {
         applySettings();
     }
 
-    public void loadSettings() {
-        try {
-            this.config = this.configLoader.load(Config.class);
-        } catch (ConfigurateException e) {
-            logger.error("An error occurred while loading settings:", e);
-            System.exit(1);
-        }
+    public void loadSettings() throws ConfigurateException {
+        this.config = this.configLoader.load(Config.class);
     }
 
     public void applySettings() {
@@ -110,7 +110,7 @@ public class RokuBot {
                     try {
                         return section.toTag(this.github);
                     } catch (IOException e) {
-                        logger.error("Unable to get contents for " + section, e);
+                        LOGGER.error("Unable to get contents for " + section, e);
                         return null;
                     }
                 })
@@ -145,7 +145,7 @@ public class RokuBot {
                             }
                     );
         } catch (InterruptedException e) {
-            logger.error("Thread was interrupted while waiting for JDA to be ready", e);
+            LOGGER.error("Thread was interrupted while waiting for JDA to be ready", e);
         }
         commandManager.registerCommands();
     }
@@ -169,12 +169,13 @@ public class RokuBot {
                     }).reversed())
                     .toList();
         } catch (IOException | GeneralSecurityException | RuntimeException e) {
-            logger.error("An error occurred while loading GitHub settings", e);
+            LOGGER.error("An error occurred while loading GitHub settings", e);
         }
     }
 
-    public void reloadSettings() {
+    public void reloadSettings() throws ConfigurateException {
         loadSettings();
         applySettings();
+        LOGGER.info("The bot has been reloaded.");
     }
 }
