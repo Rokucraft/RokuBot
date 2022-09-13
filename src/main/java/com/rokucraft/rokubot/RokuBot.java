@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.ConfigurateException;
 
-import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -42,11 +41,11 @@ public class RokuBot {
     private CommandManager commandManager;
     private JoinListener joinListener;
 
-    public static void main(String[] arguments) throws LoginException {
+    public static void main(String[] arguments) {
         new RokuBot();
     }
 
-    private RokuBot() throws LoginException {
+    private RokuBot() {
         this.configLoader = new RecordConfigurationLoader();
         try {
             loadSettings();
