@@ -1,26 +1,33 @@
 plugins {
-    id("application")
+    application
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-mainClassName = "com.rokucraft.rokubot.RokuBot"
+application {
+    mainClass.set("com.rokucraft.rokubot.RokuBot")
+}
 
-version "2.0-SNAPSHOT"
+version = "2.0-SNAPSHOT"
 
-sourceCompatibility = targetCompatibility = 17
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 
 repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = "https://m2.dv8tion.net/releases"
+        url = uri("https://m2.dv8tion.net/releases")
         name = "m2-dv8tion"
     }
 }
 
 dependencies {
     implementation("net.dv8tion:JDA:5.0.0-alpha.19") {
-        exclude(module: "opus-java")
+        exclude(module = "opus-java")
     }
     implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("org.kohsuke:github-api:1.314")
@@ -31,12 +38,18 @@ dependencies {
     implementation("com.jagrosh:jda-utilities-commons:3.0.5")
 }
 
-shadowJar {
-    archiveClassifier.set(null)
-    minimize {
-        exclude(dependency("io.jsonwebtoken:jjwt-impl:.*"))
-        exclude(dependency("io.jsonwebtoken:jjwt-jackson:.*"))
+
+
+tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+
+    }
+    shadowJar {
+        archiveClassifier.set("")
+        minimize {
+            exclude(dependency("io.jsonwebtoken:jjwt-impl:.*"))
+            exclude(dependency("io.jsonwebtoken:jjwt-jackson:.*"))
+        }
     }
 }
-
-compileJava.options.encoding = "UTF-8"
