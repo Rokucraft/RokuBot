@@ -53,7 +53,7 @@ public class RokuBot {
         }
 
         this.jda = JDABuilder.createDefault(this.config.botToken())
-                .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
 
         applySettings();
