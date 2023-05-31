@@ -17,7 +17,6 @@ java {
 
 
 repositories {
-    jcenter()
     mavenCentral()
     maven {
         url = uri("https://m2.dv8tion.net/releases")
@@ -35,7 +34,6 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
-    implementation("com.jagrosh:jda-utilities-commons:3.0.5")
 }
 
 

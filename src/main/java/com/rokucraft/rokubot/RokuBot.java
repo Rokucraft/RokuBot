@@ -1,6 +1,5 @@
 package com.rokucraft.rokubot;
 
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.rokucraft.rokubot.command.CommandManager;
 import com.rokucraft.rokubot.command.commands.*;
 import com.rokucraft.rokubot.config.Config;
@@ -8,7 +7,6 @@ import com.rokucraft.rokubot.config.RecordConfigurationLoader;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.entities.Tag;
-import com.rokucraft.rokubot.listeners.EasterEggListener;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -54,12 +52,8 @@ public class RokuBot {
             System.exit(1);
         }
 
-        EventWaiter waiter = new EventWaiter();
-
         this.jda = JDABuilder.createDefault(this.config.botToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
-                .addEventListeners(waiter)
-                .addEventListeners(new EasterEggListener(waiter))
                 .build();
 
         applySettings();
