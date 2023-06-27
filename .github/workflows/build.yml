@@ -1,8 +1,9 @@
-name: Java CI with Gradle
+name: Build with Gradle
 
 on:
   push:
-    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,9 +18,5 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: shadowJar
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: RokuBot
-        path: build/libs/*.jar
+        cache-read-only: ${{ github.event_name == 'pull_request' }} # don't write to the cache from PRs
+        arguments: build
