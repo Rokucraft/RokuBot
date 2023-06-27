@@ -51,8 +51,8 @@ public class RokuBot {
             LOGGER.error("An error occurred while loading settings:", e);
             System.exit(1);
         }
-
-        this.jda = JDABuilder.createDefault(this.config.botToken())
+        String botToken = System.getenv("DISCORD_TOKEN");
+        this.jda = JDABuilder.createDefault(botToken != null ? botToken : this.config.botToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
 
@@ -150,7 +150,10 @@ public class RokuBot {
         if (this.config.githubAppId() == null || this.config.githubOrganization() == null) return;
 
         try {
-            var jwtAuth = new JWTTokenProvider(this.config.githubAppId(), Path.of("github-app.private-key.pem"));
+            String privateKey = System.getenv("GITHUB_PRIVATE_KEY");
+            JWTTokenProvider jwtAuth = (privateKey != null )
+                    ? new JWTTokenProvider(this.config.githubAppId(), privateKey)
+                    : new JWTTokenProvider(this.config.githubAppId(), Path.of("github-app.private-key.pem"));
             var orgAppAuth = new OrgAppInstallationAuthorizationProvider(this.config.githubOrganization(), jwtAuth);
             this.github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
 
