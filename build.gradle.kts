@@ -1,5 +1,6 @@
 plugins {
     application
+    id("com.google.cloud.tools.jib") version "3.3.2"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -36,7 +37,7 @@ dependencies {
     implementation("org.spongepowered:configurate-yaml:4.1.2")
 }
 
-
+jib.to.image = "ghcr.io/rokucraft/rokubot:latest"
 
 tasks {
     compileJava {
