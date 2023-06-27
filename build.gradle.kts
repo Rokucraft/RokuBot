@@ -1,7 +1,6 @@
 plugins {
     application
     id("com.google.cloud.tools.jib") version "3.3.2"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 application {
@@ -42,13 +41,5 @@ jib.to.image = "ghcr.io/rokucraft/rokubot:latest"
 tasks {
     compileJava {
         options.encoding = "UTF-8"
-
-    }
-    shadowJar {
-        archiveClassifier.set("")
-        minimize {
-            exclude(dependency("io.jsonwebtoken:jjwt-impl:.*"))
-            exclude(dependency("io.jsonwebtoken:jjwt-jackson:.*"))
-        }
     }
 }
