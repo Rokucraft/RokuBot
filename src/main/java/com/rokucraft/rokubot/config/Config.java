@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@ConfigSerializable @Source("settings.yml")
+@ConfigSerializable
+@Source("settings.yml")
 public record Config(
         @Source("secrets.yml") String botToken,
         String githubAppId,
@@ -30,8 +31,6 @@ public record Config(
         @Source("welcome-embeds.yml") List<MessageEmbed> welcomeEmbeds
 ) {
     public Config {
-        privateInvites = new ArrayList<>(privateInvites);
-        repositories = new ArrayList<>(repositories);
         repositories.addAll(
                 plugins.stream()
                         .map(Plugin::repository)
