@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class RokuBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(RokuBot.class);
@@ -133,10 +134,15 @@ public class RokuBot {
                                     );
                                 }
 
-                                if (!repositories.isEmpty()) {
+                                if (!repositories.isEmpty() || !this.repositoryCache.isEmpty()) {
+                                    List<Repository> repos = Stream.concat(
+                                                    repositoryCache.stream().map(Repository::of),
+                                                    repositories.stream()
+                                            )
+                                            .toList();
                                     commandManager.addGuildCommands(
                                             guild,
-                                            new RepoCommand(repositories, repositories.get(0))
+                                            new RepoCommand(repos, repositories.get(0))
                                     );
                                 }
                             }
@@ -152,7 +158,7 @@ public class RokuBot {
 
         try {
             String privateKey = System.getenv("GITHUB_PRIVATE_KEY");
-            JWTTokenProvider jwtAuth = (privateKey != null )
+            JWTTokenProvider jwtAuth = (privateKey != null)
                     ? new JWTTokenProvider(this.config.githubAppId(), privateKey)
                     : new JWTTokenProvider(this.config.githubAppId(), Path.of("github-app.private-key.pem"));
             var orgAppAuth = new AppInstallationAuthorizationProvider(

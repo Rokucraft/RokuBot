@@ -18,13 +18,13 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndependentCommand {
-    private final @NonNull Set<Repository> repositories;
+    private final @NonNull List<Repository> repositories;
     private final @Nullable Repository defaultRepository;
     private final @NonNull SlashCommandData data;
 
@@ -32,7 +32,7 @@ public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndepend
             @NonNull Collection<? extends Repository> repositories,
             @Nullable Repository defaultRepository
     ) {
-        this.repositories = new HashSet<>(repositories);
+        this.repositories = new ArrayList<>(repositories);
         this.defaultRepository = defaultRepository;
 
         boolean nameRequired = defaultRepository == null; // A name is required when no default is provided
@@ -60,6 +60,7 @@ public class RepoCommand implements SlashCommand, AutoCompletable, GuildIndepend
     public void autoComplete(@NonNull CommandAutoCompleteInteractionEvent event) {
         event.replyChoiceStrings(
             AutoCompletable.filterCollectionByQueryString(this.repositories, Repository::name, event)
+                    .stream().distinct().limit(OptionData.MAX_CHOICES).toList()
         ).queue();
     }
 
