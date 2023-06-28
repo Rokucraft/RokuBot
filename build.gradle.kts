@@ -15,13 +15,8 @@ java {
     }
 }
 
-
 repositories {
     mavenCentral()
-    maven {
-        url = uri("https://m2.dv8tion.net/releases")
-        name = "m2-dv8tion"
-    }
 }
 
 dependencies {
