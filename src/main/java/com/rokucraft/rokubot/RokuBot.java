@@ -15,7 +15,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
-import org.kohsuke.github.authorization.OrgAppInstallationAuthorizationProvider;
+import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
 import org.kohsuke.github.extras.authorization.JWTTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,7 +154,9 @@ public class RokuBot {
             JWTTokenProvider jwtAuth = (privateKey != null )
                     ? new JWTTokenProvider(this.config.githubAppId(), privateKey)
                     : new JWTTokenProvider(this.config.githubAppId(), Path.of("github-app.private-key.pem"));
-            var orgAppAuth = new OrgAppInstallationAuthorizationProvider(this.config.githubOrganization(), jwtAuth);
+            var orgAppAuth = new AppInstallationAuthorizationProvider(
+                    app -> app.getInstallationByOrganization(this.config.githubOrganization()),
+                    jwtAuth);
             this.github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
 
             this.repositoryCache = this.github.getOrganization(this.config.githubOrganization())
