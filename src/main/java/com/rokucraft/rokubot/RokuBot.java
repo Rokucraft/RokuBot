@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class RokuBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(RokuBot.class);
@@ -161,6 +162,7 @@ public class RokuBot {
 
             this.repositoryCache = this.github.getOrganization(this.config.githubOrganization())
                     .listRepositories().toList().stream()
+                    .filter(Predicate.not(GHRepository::isArchived))
                     .sorted(Comparator.comparing((GHRepository r) -> {
                         try {
                             return r.getUpdatedAt();
