@@ -1,8 +1,6 @@
 package com.rokucraft.rokubot.command.commands
 
-import com.rokucraft.rokubot.command.AutoCompletable
-import com.rokucraft.rokubot.command.GuildIndependentCommand
-import com.rokucraft.rokubot.command.SlashCommand
+import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.entities.Plugin
 import com.rokucraft.rokubot.util.ColorConstants
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
@@ -12,13 +10,22 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions
 import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.Commands
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder
 import net.dv8tion.jda.api.utils.messages.MessageCreateData
 
-class PluginCommand(private val plugins: List<Plugin>) : SlashCommand, AutoCompletable, GuildIndependentCommand {
+class PluginCommand(private val plugins: List<Plugin>) : AbstractCommand() {
+    override val data = Commands.slash("plugin", "Get information about a plugin")
+        .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
+        .addOption(OptionType.STRING, "name", "The name of the plugin", true, true)
+        .addOptions(
+            OptionData(OptionType.STRING, "info", "The type of information you want")
+                .addChoice("docs", "docs")
+                .addChoice("download", "download")
+                .addChoice("discord", "discord")
+        )
+
     override fun execute(event: SlashCommandInteractionEvent) {
         val name = event.getOption("name") { it.asString }
         val info = event.getOption("info") { it.asString }
@@ -37,20 +44,8 @@ class PluginCommand(private val plugins: List<Plugin>) : SlashCommand, AutoCompl
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
-            AutoCompletable.filterCollectionByQueryString(plugins, { it.name }, event)
+            filterCollectionByQueryString(plugins, { it.name }, event)
         ).queue()
-    }
-
-    override fun getData(): CommandData {
-        return Commands.slash("plugin", "Get information about a plugin")
-            .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
-            .addOption(OptionType.STRING, "name", "The name of the plugin", true, true)
-            .addOptions(
-                OptionData(OptionType.STRING, "info", "The type of information you want")
-                    .addChoice("docs", "docs")
-                    .addChoice("download", "download")
-                    .addChoice("discord", "discord")
-            )
     }
 }
 

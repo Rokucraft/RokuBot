@@ -1,8 +1,6 @@
 package com.rokucraft.rokubot.command.commands
 
-import com.rokucraft.rokubot.command.AutoCompletable
-import com.rokucraft.rokubot.command.GuildIndependentCommand
-import com.rokucraft.rokubot.command.SlashCommand
+import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.entities.Repository
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent
@@ -18,11 +16,12 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData
 class RepoCommand(
     private val repositories: List<Repository>,
     private val defaultRepository: Repository?
-) : SlashCommand, AutoCompletable, GuildIndependentCommand {
+) : AbstractCommand() {
+    override val data = createCommandData()
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
-            AutoCompletable.filterCollectionByQueryString(repositories, Repository::name, event)
+            filterCollectionByQueryString(repositories, Repository::name, event)
         ).queue()
     }
 
@@ -37,7 +36,7 @@ class RepoCommand(
         event.reply(repo.repositoryUrl).queue()
     }
 
-    override fun getData(): CommandData {
+    private fun createCommandData(): CommandData {
         val nameRequired = defaultRepository == null // A name is required when no default is provided
         val useAutocomplete = this.repositories.size > OptionData.MAX_CHOICES
         val nameOption = OptionData(

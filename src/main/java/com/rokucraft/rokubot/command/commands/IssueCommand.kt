@@ -1,8 +1,6 @@
 package com.rokucraft.rokubot.command.commands
 
-import com.rokucraft.rokubot.command.AutoCompletable
-import com.rokucraft.rokubot.command.GuildIndependentCommand
-import com.rokucraft.rokubot.command.SlashCommand
+import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.util.ColorConstants.ISSUE_CLOSED_COLOR
 import com.rokucraft.rokubot.util.ColorConstants.ISSUE_OPEN_COLOR
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
@@ -13,7 +11,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.Command
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions
 import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.Commands
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.kohsuke.github.GHIssue
@@ -27,7 +24,13 @@ class IssueCommand(
     private val github: GitHub,
     private val repositoryCache: List<GHRepository> = emptyList(),
     private val defaultRepoName: String?
-) : SlashCommand, AutoCompletable, GuildIndependentCommand {
+) : AbstractCommand() {
+
+    override val data = Commands.slash("issue", "Preview an issue")
+        .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
+        .addOptions(OptionData(OptionType.INTEGER, "number", "The issue number").setMinValue(1))
+        .addOption(OptionType.STRING, "repo", "The repository the issue belongs to", false, true)
+
     override fun execute(event: SlashCommandInteractionEvent) {
         try {
             val number = event.getOption("number") { it.asInt }
@@ -51,13 +54,6 @@ class IssueCommand(
                 .take(25)
                 .map { Command.Choice(it.name, it.fullName) }
         ).queue()
-    }
-
-    override fun getData(): CommandData {
-        return Commands.slash("issue", "Preview an issue")
-            .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
-            .addOptions(OptionData(OptionType.INTEGER, "number", "The issue number").setMinValue(1))
-            .addOption(OptionType.STRING, "repo", "The repository the issue belongs to", false, true)
     }
 }
 

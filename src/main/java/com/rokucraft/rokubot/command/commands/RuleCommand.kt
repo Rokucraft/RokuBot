@@ -1,7 +1,6 @@
 package com.rokucraft.rokubot.command.commands
 
-import com.rokucraft.rokubot.command.GuildIndependentCommand
-import com.rokucraft.rokubot.command.SlashCommand
+import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.entities.Rule
 import com.rokucraft.rokubot.util.ColorConstants
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
@@ -10,14 +9,21 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.Command
 import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.Commands
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 
 class RuleCommand(
     private val rules: List<Rule>,
     private val rulesFooter: String?
-) : GuildIndependentCommand, SlashCommand {
+) : AbstractCommand() {
+    override val data = Commands.slash("rule", "Shows the requested rule")
+        .addOptions(
+            OptionData(OptionType.INTEGER, "number", "The rule to show", true)
+                .addChoices(this.rules.map {
+                    val number = rules.indexOf(it) + 1
+                    Command.Choice("$number. ${it.name}", number.toLong())
+                })
+        )
 
     override fun execute(event: SlashCommandInteractionEvent) {
         try {
@@ -48,17 +54,6 @@ class RuleCommand(
             .setThumbnail(SCROLL_ICON)
             .setColor(ColorConstants.FUCHSIA)
             .build()
-    }
-
-    override fun getData(): CommandData {
-        return Commands.slash("rule", "Shows the requested rule")
-            .addOptions(
-                OptionData(OptionType.INTEGER, "number", "The rule to show", true)
-                    .addChoices(this.rules.map {
-                        val number = rules.indexOf(it) + 1
-                        Command.Choice("$number. ${it.name}", number.toLong())
-                    })
-            )
     }
 }
 

@@ -8,30 +8,28 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload
-import kotlin.reflect.KClass
-import kotlin.reflect.cast
 
 class CommandManager(private val jda: JDA) : ListenerAdapter() {
-    private val globalCommands: MutableSet<GuildIndependentCommand> = mutableSetOf()
-    private val guildCommands: MutableMap<Guild?, MutableSet<Command>> = mutableMapOf()
+    private val globalCommands: MutableSet<AbstractCommand> = mutableSetOf()
+    private val guildCommands: MutableMap<Guild?, MutableSet<AbstractCommand>> = mutableMapOf()
 
     init {
         jda.addEventListener(this)
     }
 
-    fun addGuildCommands(guild: Guild, vararg commands: Command) {
+    fun addGuildCommands(guild: Guild, vararg commands: AbstractCommand) {
         addGuildCommands(guild, commands.asList())
     }
 
-    fun addGuildCommands(guild: Guild, commands: List<Command>) {
+    fun addGuildCommands(guild: Guild, commands: List<AbstractCommand>) {
         guildCommands.computeIfAbsent(guild) { mutableSetOf() }.addAll(commands)
     }
 
-    fun addCommands(vararg commands: GuildIndependentCommand) {
+    fun addCommands(vararg commands: AbstractCommand) {
         addCommands(commands.asList())
     }
 
-    fun addCommands(commands: Collection<GuildIndependentCommand>) {
+    fun addCommands(commands: Collection<AbstractCommand>) {
         globalCommands.addAll(commands)
     }
 
@@ -49,49 +47,44 @@ class CommandManager(private val jda: JDA) : ListenerAdapter() {
     }
 
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
-        findFirstMatchingCommand(SlashCommand::class, event)?.execute(event)
+        handleInteraction(event) { it.execute(event) }
     }
 
     override fun onCommandAutoCompleteInteraction(event: CommandAutoCompleteInteractionEvent) {
-        findFirstMatchingCommand(AutoCompletable::class, event)?.autoComplete(event)
+        handleInteraction(event) { it.autoComplete(event) }
     }
 
     override fun onUserContextInteraction(event: UserContextInteractionEvent) {
-        findFirstMatchingCommand(UserContextCommand::class, event)?.execute(event)
+        handleInteraction(event) { it.execute(event) }
     }
 
     override fun onMessageContextInteraction(event: MessageContextInteractionEvent) {
-        findFirstMatchingCommand(MessageContextCommand::class, event)?.execute(event)
+        handleInteraction(event) { it.execute(event) }
     }
 
-    private fun <T : Any> findFirstMatchingCommand(clazz: KClass<T>, event: CommandInteractionPayload): T? {
-        return findFirstMatchingCommand(clazz, event.name, event.guild)
-    }
-
-    private fun <T : Any> findFirstMatchingCommand(
-        clazz: KClass<T>,
+    private fun findMatchingCommands(
         name: String,
         guild: Guild?
-    ): T? {
-        val commandsInGuild: Set<Command> = guildCommands.computeIfAbsent(guild) { mutableSetOf() }
-        return commandsInGuild.asSequence()
+    ): List<AbstractCommand> {
+        return guildCommands.getOrDefault(guild, mutableSetOf())
             .plus(globalCommands)
-            .filter(clazz::isInstance)
-            .filter {
-                if (guild != null)
-                    it.getData(guild).name == name
-                else
-                    it is GuildIndependentCommand && it.getData().name == name
-            }
-            .map(clazz::cast)
-            .firstOrNull()
+            .filter { it.data.name == name }
+    }
+
+    private fun findMatchingCommands(event: CommandInteractionPayload) = findMatchingCommands(event.name, event.guild)
+
+    private fun handleInteraction(
+        event: CommandInteractionPayload,
+        handler: (AbstractCommand) -> Unit
+    ) {
+        findMatchingCommands(event).forEach(handler)
     }
 
     fun registerCommands() {
-        jda.updateCommands().addCommands(globalCommands.map { it.getData() }).queue()
+        jda.updateCommands().addCommands(globalCommands.map { it.data }).queue()
         guildCommands.forEach { (guild, commands) ->
             if (guild == null) return
-            guild.updateCommands().addCommands(commands.map { it.getData(guild) }).queue()
+            guild.updateCommands().addCommands(commands.map { it.data }).queue()
         }
     }
 }

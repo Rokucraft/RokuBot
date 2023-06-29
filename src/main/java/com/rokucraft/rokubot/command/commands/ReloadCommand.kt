@@ -1,20 +1,21 @@
 package com.rokucraft.rokubot.command.commands
 
 import com.rokucraft.rokubot.RokuBot
-import com.rokucraft.rokubot.command.GuildIndependentCommand
-import com.rokucraft.rokubot.command.SlashCommand
+import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.util.ColorConstants.GREEN
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions
-import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.Commands
 import org.slf4j.LoggerFactory
 import org.spongepowered.configurate.ConfigurateException
 
-class ReloadCommand(private val bot: RokuBot) : SlashCommand, GuildIndependentCommand {
+class ReloadCommand(private val bot: RokuBot) : AbstractCommand() {
+
+    override val data = Commands.slash("reload", "Reload the bot configuration")
+        .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
 
     override fun execute(event: SlashCommandInteractionEvent) {
         event.deferReply(true).queue()
@@ -33,11 +34,6 @@ class ReloadCommand(private val bot: RokuBot) : SlashCommand, GuildIndependentCo
             .setEphemeral(true)
             .sendMessageEmbeds(response)
             .queue()
-    }
-
-    override fun getData(): CommandData {
-        return Commands.slash("reload", "Reload the bot configuration")
-            .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
     }
 
     companion object {
