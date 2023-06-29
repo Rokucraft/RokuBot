@@ -1,6 +1,7 @@
 package com.rokucraft.rokubot.command;
 
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Collection;
@@ -17,6 +18,8 @@ public interface AutoCompletable {
         return collection.stream()
                 .map(mapper)
                 .filter(string -> string.toLowerCase().contains(event.getFocusedOption().getValue().toLowerCase()))
+                .distinct()
+                .limit(OptionData.MAX_CHOICES)
                 .toList();
     }
 }
