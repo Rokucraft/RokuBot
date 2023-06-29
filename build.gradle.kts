@@ -30,6 +30,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
+    implementation("org.spongepowered:configurate-extra-kotlin:4.1.2")
 }
 
 jib.to.image = "ghcr.io/rokucraft/rokubot:latest"
