@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands
 
 class RootTagCommand @JvmOverloads constructor(
     private val tag: Tag,
-    defaultPermissions: DefaultMemberPermissions = DefaultMemberPermissions.DISABLED
+    defaultPermissions: DefaultMemberPermissions = DefaultMemberPermissions.ENABLED
 ) : AbstractCommand() {
     override val data = Commands.slash(tag.name, tag.description ?: tag.name)
         .setDefaultPermissions(defaultPermissions)
