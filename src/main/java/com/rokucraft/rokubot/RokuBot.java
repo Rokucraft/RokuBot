@@ -123,7 +123,6 @@ public class RokuBot {
                     .forEach(guild -> {
                                 commandManager.addGuildCommands(guild,
                                         new PluginCommand(this.config.plugins()),
-                                        new ReloadCommand(this),
                                         new IssueCommand(this.github, this.repositoryCache, this.config.defaultRepoName()),
                                         new TagCommand(tags)
                                 );
@@ -182,9 +181,4 @@ public class RokuBot {
         }
     }
 
-    public void reloadSettings() throws ConfigurateException {
-        loadSettings();
-        applySettings();
-        LOGGER.info("The bot has been reloaded.");
-    }
 }
