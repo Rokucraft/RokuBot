@@ -56,6 +56,7 @@ public class RokuBot {
         String botToken = System.getenv("DISCORD_TOKEN");
         this.jda = JDABuilder.createLight(botToken != null ? botToken : this.config.botToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .setRequestTimeoutRetry(false)
                 .build();
 
         applySettings();
