@@ -89,7 +89,8 @@ public class RokuBot {
         CommandManager commandManager = new CommandManager(this.jda);
         commandManager.addCommands(
                 new RuleCommand(this.config.rules(), this.config.rulesFooter()),
-                new RollCommand()
+                new RollCommand(),
+                new UUIDCommand()
         );
 
         List<DiscordInvite> publicInvites = this.config.publicInvites();
