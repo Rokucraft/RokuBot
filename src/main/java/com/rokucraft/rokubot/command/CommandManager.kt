@@ -29,19 +29,6 @@ class CommandManager : ListenerAdapter() {
         globalCommands.addAll(commands)
     }
 
-    fun clearCommands() {
-        globalCommands.clear()
-    }
-
-    fun clearGuildCommands() {
-        guildCommands.clear()
-    }
-
-    fun clearAll() {
-        clearCommands()
-        clearGuildCommands()
-    }
-
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
         handleInteraction(event) { it.execute(event) }
     }
