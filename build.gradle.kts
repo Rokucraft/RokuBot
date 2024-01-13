@@ -5,14 +5,14 @@ plugins {
 }
 
 application {
-    mainClass.set("com.rokucraft.rokubot.RokuBot")
+    mainClass = "com.rokucraft.rokubot.RokuBot"
 }
 
 version = "2.0-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
