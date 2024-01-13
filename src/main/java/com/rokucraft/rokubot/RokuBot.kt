@@ -24,35 +24,20 @@ class RokuBot @Inject constructor(
     private val github: GitHub,
     private val config: Config
 ) {
-    private var repositoryCache: List<GHRepository> = ArrayList()
-    private var commandManager: CommandManager? = null
-    private var joinListener: JoinListener? = null
+    private var repositoryCache: List<GHRepository> = mutableListOf()
+    private var commandManager: CommandManager = CommandManager(jda)
 
     init {
-        applySettings()
-    }
-
-    fun applySettings() {
         if (config.botActivity != null) {
             jda.presence.activity = Activity.playing(config.botActivity)
         }
-        if (this.joinListener != null) {
-            jda.removeEventListener(this.joinListener)
-        }
-        this.joinListener = JoinListener(config.welcomeChannelMap, config.welcomeEmbeds)
-        jda.addEventListener(this.joinListener)
+        jda.addEventListener(JoinListener(config.welcomeChannelMap, config.welcomeEmbeds))
 
-        initGitHub()
+        initRepoCache()
         initCommands()
     }
 
     private fun initCommands() {
-        if (this.commandManager == null) {
-            this.commandManager = CommandManager(this.jda)
-        } else {
-            commandManager!!.clearAll()
-        }
-        val commandManager = CommandManager(this.jda)
         commandManager.addCommands(
             RuleCommand(config.rules, config.rulesFooter),
             RollCommand(),
@@ -130,7 +115,7 @@ class RokuBot @Inject constructor(
         commandManager.registerCommands()
     }
 
-    private fun initGitHub() {
+    private fun initRepoCache() {
         if (config.githubAppId == null || config.githubOrganization == null) return
 
         try {
