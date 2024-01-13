@@ -3,6 +3,8 @@ package com.rokucraft.rokubot.command.commands
 import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.util.ColorConstants
 import com.rokucraft.rokubot.util.EmbedUtil
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.json.Json
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
@@ -57,7 +59,9 @@ class UUIDCommand : AbstractCommand() {
     }
 }
 
+@Serializable
 data class Profile(val name: String, val id: String) {
+    @Transient
     val uuid: UUID = UUID.fromString(fromTrimmed(id))
 
     private fun fromTrimmed(trimmedUUID: String): String {
