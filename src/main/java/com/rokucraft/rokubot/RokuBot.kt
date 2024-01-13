@@ -23,7 +23,10 @@ class RokuBot @Inject constructor(
     private val github: GitHub,
     private val config: Config
 ) {
-    private var repositoryCache: List<GHRepository> = mutableListOf()
+    private val repositoryCache: List<GHRepository> = github.getOrganization(config.githubOrganization)
+        .listRepositories().toList()
+        .filterNot { it.isArchived }
+        .sortedByDescending { it.updatedAt }
     private var commandManager: CommandManager = CommandManager(jda)
 
     init {
@@ -32,7 +35,6 @@ class RokuBot @Inject constructor(
         }
         jda.addEventListener(JoinListener(config.welcomeChannelMap, config.welcomeEmbeds))
 
-        initRepoCache()
         initCommands()
     }
 
@@ -112,13 +114,6 @@ class RokuBot @Inject constructor(
             LOGGER.error("Thread was interrupted while waiting for JDA to be ready", e)
         }
         commandManager.registerCommands()
-    }
-
-    private fun initRepoCache() {
-        this.repositoryCache = github.getOrganization(config.githubOrganization)
-            .listRepositories().toList()
-            .filterNot { it.isArchived }
-            .sortedByDescending { it.updatedAt }
     }
 
     companion object {
