@@ -3,7 +3,6 @@ package com.rokucraft.rokubot;
 import com.rokucraft.rokubot.command.CommandManager;
 import com.rokucraft.rokubot.command.commands.*;
 import com.rokucraft.rokubot.config.Config;
-import com.rokucraft.rokubot.config.RecordConfigurationLoader;
 import com.rokucraft.rokubot.entities.DiscordInvite;
 import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.entities.Tag;
@@ -17,7 +16,6 @@ import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
 import org.kohsuke.github.extras.authorization.JWTTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.spongepowered.configurate.ConfigurateException;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -34,30 +32,20 @@ public class RokuBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(RokuBot.class);
     private final JDA jda;
     private GitHub github;
-    private final RecordConfigurationLoader configLoader;
-    private Config config;
+    private final Config config;
     private List<GHRepository> repositoryCache = new ArrayList<>();
     private CommandManager commandManager;
     private JoinListener joinListener;
 
     @Inject
     public RokuBot(
-            JDA jda
+            JDA jda,
+            Config config
     ) {
-        this.configLoader = new RecordConfigurationLoader();
-        try {
-            loadSettings();
-        } catch (ConfigurateException e) {
-            LOGGER.error("An error occurred while loading settings:", e);
-            System.exit(1);
-        }
+        this.config = config;
         this.jda = jda;
 
         applySettings();
-    }
-
-    public void loadSettings() throws ConfigurateException {
-        this.config = this.configLoader.load(Config.class);
     }
 
     public void applySettings() {
@@ -131,7 +119,7 @@ public class RokuBot {
 
                                 if (!repositories.isEmpty() || !this.repositoryCache.isEmpty()) {
                                     List<Repository> repos = Stream.concat(
-                                                    repositoryCache.stream().map(Repository::of),
+                                                    this.repositoryCache.stream().map(Repository::of),
                                                     repositories.stream()
                                             )
                                             .toList();

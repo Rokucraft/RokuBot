@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [JdaModule::class]
+    modules = [JdaModule::class, ConfigModule::class]
 )
 interface RokuBotComponent {
     fun bot(): RokuBot
