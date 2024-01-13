@@ -8,14 +8,10 @@ import com.rokucraft.rokubot.entities.Tag
 import com.rokucraft.rokubot.listeners.JoinListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
-import net.dv8tion.jda.api.entities.Guild
 import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GitHub
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.IOException
-import java.util.*
-import java.util.stream.Stream
 import javax.inject.Inject
 
 class RokuBot @Inject constructor(
@@ -27,7 +23,6 @@ class RokuBot @Inject constructor(
         .listRepositories().toList()
         .filterNot { it.isArchived }
         .sortedByDescending { it.updatedAt }
-    private val commandManager: CommandManager = CommandManager()
 
     init {
         if (config.botActivity != null) {
@@ -35,10 +30,12 @@ class RokuBot @Inject constructor(
         }
         jda.addEventListener(JoinListener(config.welcomeChannelMap, config.welcomeEmbeds))
 
-        initCommands()
+        val commandManager = CommandManager()
+        initCommands(commandManager)
+        commandManager.register(jda)
     }
 
-    private fun initCommands() {
+    private fun initCommands(commandManager: CommandManager) {
         commandManager.addCommands(
             RuleCommand(config.rules, config.rulesFooter),
             RollCommand(),
@@ -50,44 +47,21 @@ class RokuBot @Inject constructor(
         if (publicInvites.isNotEmpty()) {
             commandManager.addCommands(InviteCommand("invite", publicInvites, publicInvites[0], true))
         }
-        commandManager.addCommands(config.rootTagCommands.stream().map { tag: Tag? ->
-            RootTagCommand(
-                tag!!
-            )
-        }.toList())
+        commandManager.addCommands(config.rootTagCommands.map { RootTagCommand(it) }.toList())
 
         val privateInvites = config.privateInvites
 
         val repositories = config.repositories
 
-        val tags: MutableList<Tag> = ArrayList(
-            config.privateTags
-        )
-        tags.addAll(
-            config.markdownSections
-                .map { section ->
-                    try {
-                        return@map section.toTag(this.github)
-                    } catch (e: IOException) {
-                        LOGGER.error("Unable to get contents for $section", e)
-                        return@map null
-                    }
-                }
-                .filterNotNull()
-        )
+        val tags: MutableList<Tag> = config.privateTags.toMutableList()
+        tags.addAll(config.markdownSections.map { it.toTag(this.github) })
 
         try {
             jda.awaitReady()
-            config.trustedServerIds.stream()
-                .map<Guild?> { id: String? ->
-                    jda.getGuildById(
-                        id!!
-                    )
-                }
-                .filter { obj: Guild? -> Objects.nonNull(obj) }
-                .forEach { guild: Guild? ->
+            config.trustedServerIds.mapNotNull { jda.getGuildById(it) }
+                .forEach { guild ->
                     commandManager.addGuildCommands(
-                        guild!!,
+                        guild,
                         PluginCommand(config.plugins),
                         IssueCommand(this.github, this.repositoryCache, config.defaultRepoName),
                         TagCommand(tags)
@@ -99,11 +73,8 @@ class RokuBot @Inject constructor(
                         )
                     }
                     if (repositories.isNotEmpty() || repositoryCache.isNotEmpty()) {
-                        val repos = Stream.concat(
-                            repositoryCache.stream().map { Repository.of(it) },
-                            repositories.stream()
-                        )
-                            .toList()
+                        val repos = repositories + repositoryCache.map { Repository.of(it) }
+
                         commandManager.addGuildCommands(
                             guild,
                             RepoCommand(repos, repositories[0])
@@ -113,7 +84,6 @@ class RokuBot @Inject constructor(
         } catch (e: InterruptedException) {
             LOGGER.error("Thread was interrupted while waiting for JDA to be ready", e)
         }
-        commandManager.register(jda)
     }
 
     companion object {
