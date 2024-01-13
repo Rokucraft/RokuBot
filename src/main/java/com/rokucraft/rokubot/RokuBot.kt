@@ -12,8 +12,6 @@ import com.rokucraft.rokubot.listeners.JoinListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import org.kohsuke.github.GitHub
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 class RokuBot @Inject constructor(
@@ -55,37 +53,30 @@ class RokuBot @Inject constructor(
         val tags: MutableList<Tag> = config.privateTags.toMutableList()
         tags.addAll(config.markdownSections.map { it.toTag(this.github) })
 
-        try {
-            jda.awaitReady()
-            config.trustedServerIds.mapNotNull { jda.getGuildById(it) }
-                .forEach { guild ->
+
+        jda.awaitReady()
+        config.trustedServerIds.mapNotNull { jda.getGuildById(it) }
+            .forEach { guild ->
+                commandManager.addGuildCommands(
+                    guild,
+                    PluginCommand(config.plugins),
+                    IssueCommand(this.github, this.repositoryCache, config.defaultRepoName),
+                    TagCommand(tags)
+                )
+                if (privateInvites.isNotEmpty()) {
                     commandManager.addGuildCommands(
                         guild,
-                        PluginCommand(config.plugins),
-                        IssueCommand(this.github, this.repositoryCache, config.defaultRepoName),
-                        TagCommand(tags)
+                        InviteCommand("discord", privateInvites, null, false)
                     )
-                    if (privateInvites.isNotEmpty()) {
-                        commandManager.addGuildCommands(
-                            guild,
-                            InviteCommand("discord", privateInvites, null, false)
-                        )
-                    }
-                    if (repositories.isNotEmpty() || repositoryCache.repositories.isNotEmpty()) {
-                        val repos = repositories + repositoryCache.repositories.map { Repository.of(it) }
-
-                        commandManager.addGuildCommands(
-                            guild,
-                            RepoCommand(repos, repositories[0])
-                        )
-                    }
                 }
-        } catch (e: InterruptedException) {
-            LOGGER.error("Thread was interrupted while waiting for JDA to be ready", e)
-        }
-    }
+                if (repositories.isNotEmpty() || repositoryCache.repositories.isNotEmpty()) {
+                    val repos = repositories + repositoryCache.repositories.map { Repository.of(it) }
 
-    companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(RokuBot::class.java)
+                    commandManager.addGuildCommands(
+                        guild,
+                        RepoCommand(repos, repositories[0])
+                    )
+                }
+            }
     }
 }
