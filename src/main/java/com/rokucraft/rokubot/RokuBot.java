@@ -9,9 +9,7 @@ import com.rokucraft.rokubot.entities.Repository;
 import com.rokucraft.rokubot.entities.Tag;
 import com.rokucraft.rokubot.listeners.JoinListener;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -21,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.configurate.ConfigurateException;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -41,11 +40,10 @@ public class RokuBot {
     private CommandManager commandManager;
     private JoinListener joinListener;
 
-    public static void main(String[] arguments) {
-        new RokuBot();
-    }
-
-    private RokuBot() {
+    @Inject
+    public RokuBot(
+            JDA jda
+    ) {
         this.configLoader = new RecordConfigurationLoader();
         try {
             loadSettings();
@@ -53,11 +51,7 @@ public class RokuBot {
             LOGGER.error("An error occurred while loading settings:", e);
             System.exit(1);
         }
-        String botToken = System.getenv("DISCORD_TOKEN");
-        this.jda = JDABuilder.createLight(botToken != null ? botToken : this.config.botToken())
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .setRequestTimeoutRetry(false)
-                .build();
+        this.jda = jda;
 
         applySettings();
     }
