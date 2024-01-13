@@ -5,6 +5,7 @@ import dagger.Provides
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
@@ -20,3 +21,8 @@ object JdaModule {
     @BotToken
     fun provideBotToken(): String = System.getenv("DISCORD_TOKEN")
 }
+
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+private annotation class BotToken
