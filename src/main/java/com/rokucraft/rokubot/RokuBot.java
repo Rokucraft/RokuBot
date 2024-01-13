@@ -11,16 +11,11 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
-import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
-import org.kohsuke.github.extras.authorization.JWTTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,7 +26,7 @@ import java.util.stream.Stream;
 public class RokuBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(RokuBot.class);
     private final JDA jda;
-    private GitHub github;
+    private final GitHub github;
     private final Config config;
     private List<GHRepository> repositoryCache = new ArrayList<>();
     private CommandManager commandManager;
@@ -40,10 +35,12 @@ public class RokuBot {
     @Inject
     public RokuBot(
             JDA jda,
+            GitHub gitHub,
             Config config
     ) {
         this.config = config;
         this.jda = jda;
+        this.github = gitHub;
 
         applySettings();
     }
@@ -140,15 +137,6 @@ public class RokuBot {
         if (this.config.githubAppId() == null || this.config.githubOrganization() == null) return;
 
         try {
-            String privateKey = System.getenv("GITHUB_PRIVATE_KEY");
-            JWTTokenProvider jwtAuth = (privateKey != null)
-                    ? new JWTTokenProvider(this.config.githubAppId(), privateKey)
-                    : new JWTTokenProvider(this.config.githubAppId(), Path.of("github-app.private-key.pem"));
-            var orgAppAuth = new AppInstallationAuthorizationProvider(
-                    app -> app.getInstallationByOrganization(this.config.githubOrganization()),
-                    jwtAuth);
-            this.github = new GitHubBuilder().withAuthorizationProvider(orgAppAuth).build();
-
             this.repositoryCache = this.github.getOrganization(this.config.githubOrganization())
                     .listRepositories().toList().stream()
                     .filter(Predicate.not(GHRepository::isArchived))
@@ -160,7 +148,7 @@ public class RokuBot {
                         }
                     }).reversed())
                     .toList();
-        } catch (IOException | GeneralSecurityException | RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             LOGGER.error("An error occurred while loading GitHub settings", e);
         }
     }
