@@ -9,13 +9,9 @@ import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEven
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload
 
-class CommandManager(private val jda: JDA) : ListenerAdapter() {
+class CommandManager : ListenerAdapter() {
     private val globalCommands: MutableSet<AbstractCommand> = mutableSetOf()
     private val guildCommands: MutableMap<Guild?, MutableSet<AbstractCommand>> = mutableMapOf()
-
-    init {
-        jda.addEventListener(this)
-    }
 
     fun addGuildCommands(guild: Guild, vararg commands: AbstractCommand) {
         addGuildCommands(guild, commands.asList())
@@ -80,11 +76,14 @@ class CommandManager(private val jda: JDA) : ListenerAdapter() {
         findMatchingCommands(event).forEach(handler)
     }
 
-    fun registerCommands() {
+    fun register(jda: JDA) {
         jda.updateCommands().addCommands(globalCommands.map { it.data }).queue()
         guildCommands.forEach { (guild, commands) ->
             if (guild == null) return
             guild.updateCommands().addCommands(commands.map { it.data }).queue()
         }
+
+
+        jda.addEventListener(this)
     }
 }

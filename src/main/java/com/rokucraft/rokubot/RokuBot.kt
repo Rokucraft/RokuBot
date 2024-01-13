@@ -27,7 +27,7 @@ class RokuBot @Inject constructor(
         .listRepositories().toList()
         .filterNot { it.isArchived }
         .sortedByDescending { it.updatedAt }
-    private var commandManager: CommandManager = CommandManager(jda)
+    private val commandManager: CommandManager = CommandManager()
 
     init {
         if (config.botActivity != null) {
@@ -113,7 +113,7 @@ class RokuBot @Inject constructor(
         } catch (e: InterruptedException) {
             LOGGER.error("Thread was interrupted while waiting for JDA to be ready", e)
         }
-        commandManager.registerCommands()
+        commandManager.register(jda)
     }
 
     companion object {
