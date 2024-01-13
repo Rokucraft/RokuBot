@@ -7,10 +7,10 @@ import com.rokucraft.rokubot.command.commands.*
 import com.rokucraft.rokubot.config.Config
 import com.rokucraft.rokubot.entities.Repository
 import com.rokucraft.rokubot.entities.Tag
+import com.rokucraft.rokubot.github.RepositoryCache
 import com.rokucraft.rokubot.listeners.JoinListener
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
-import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GitHub
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,12 +19,9 @@ import javax.inject.Inject
 class RokuBot @Inject constructor(
     private val jda: JDA,
     private val github: GitHub,
-    private val config: Config
+    private val config: Config,
+    private val repositoryCache: RepositoryCache
 ) {
-    private val repositoryCache: List<GHRepository> = github.getOrganization(config.githubOrganization)
-        .listRepositories().toList()
-        .filterNot { it.isArchived }
-        .sortedByDescending { it.updatedAt }
 
     init {
         if (config.botActivity != null) {
@@ -74,8 +71,8 @@ class RokuBot @Inject constructor(
                             InviteCommand("discord", privateInvites, null, false)
                         )
                     }
-                    if (repositories.isNotEmpty() || repositoryCache.isNotEmpty()) {
-                        val repos = repositories + repositoryCache.map { Repository.of(it) }
+                    if (repositories.isNotEmpty() || repositoryCache.repositories.isNotEmpty()) {
+                        val repos = repositories + repositoryCache.repositories.map { Repository.of(it) }
 
                         commandManager.addGuildCommands(
                             guild,

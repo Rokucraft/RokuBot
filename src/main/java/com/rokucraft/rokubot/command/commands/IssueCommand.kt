@@ -1,6 +1,7 @@
 package com.rokucraft.rokubot.command.commands
 
 import com.rokucraft.rokubot.command.AbstractCommand
+import com.rokucraft.rokubot.github.RepositoryCache
 import com.rokucraft.rokubot.util.ColorConstants.ISSUE_CLOSED_COLOR
 import com.rokucraft.rokubot.util.ColorConstants.ISSUE_OPEN_COLOR
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
@@ -15,14 +16,13 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.kohsuke.github.GHIssue
 import org.kohsuke.github.GHIssueState
-import org.kohsuke.github.GHRepository
 import org.kohsuke.github.GitHub
 import java.io.IOException
 import java.util.*
 
 class IssueCommand(
     private val github: GitHub,
-    private val repositoryCache: List<GHRepository> = emptyList(),
+    private val repositoryCache: RepositoryCache,
     private val defaultRepoName: String?
 ) : AbstractCommand() {
 
@@ -48,7 +48,7 @@ class IssueCommand(
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         val query = event.focusedOption.value.lowercase()
         event.replyChoices(
-            repositoryCache
+            repositoryCache.repositories
                 .filter { it.hasIssues() }
                 .filter { it.name.lowercase().contains(query) }
                 .take(25)
@@ -83,4 +83,3 @@ private const val ICON_ISSUE_OPEN =
     "https://cdn.discordapp.com/attachments/786216721065050112/787721554992824360/issue-opened72px.png"
 private const val ICON_ISSUE_CLOSED =
     "https://cdn.discordapp.com/attachments/786216721065050112/787721551285059614/issue-closed72px.png"
-
