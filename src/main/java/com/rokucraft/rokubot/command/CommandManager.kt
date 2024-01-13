@@ -9,40 +9,16 @@ import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEven
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload
 
-class CommandManager : ListenerAdapter() {
+class CommandManager {
     private val globalCommands: MutableSet<AbstractCommand> = mutableSetOf()
     private val guildCommands: MutableMap<Guild?, MutableSet<AbstractCommand>> = mutableMapOf()
-
-    fun addGuildCommands(guild: Guild, vararg commands: AbstractCommand) {
-        addGuildCommands(guild, commands.asList())
-    }
 
     fun addGuildCommands(guild: Guild, commands: List<AbstractCommand>) {
         guildCommands.computeIfAbsent(guild) { mutableSetOf() }.addAll(commands)
     }
 
-    fun addCommands(vararg commands: AbstractCommand) {
-        addCommands(commands.asList())
-    }
-
     fun addCommands(commands: Collection<AbstractCommand>) {
         globalCommands.addAll(commands)
-    }
-
-    override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
-        handleInteraction(event) { it.execute(event) }
-    }
-
-    override fun onCommandAutoCompleteInteraction(event: CommandAutoCompleteInteractionEvent) {
-        handleInteraction(event) { it.autoComplete(event) }
-    }
-
-    override fun onUserContextInteraction(event: UserContextInteractionEvent) {
-        handleInteraction(event) { it.execute(event) }
-    }
-
-    override fun onMessageContextInteraction(event: MessageContextInteractionEvent) {
-        handleInteraction(event) { it.execute(event) }
     }
 
     private fun findMatchingCommands(
@@ -70,7 +46,32 @@ class CommandManager : ListenerAdapter() {
             guild.updateCommands().addCommands(commands.map { it.data }).queue()
         }
 
-
-        jda.addEventListener(this)
+        jda.addEventListener(Listener())
     }
+
+    private inner class Listener : ListenerAdapter() {
+        override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
+            handleInteraction(event) { it.execute(event) }
+        }
+
+        override fun onCommandAutoCompleteInteraction(event: CommandAutoCompleteInteractionEvent) {
+            handleInteraction(event) { it.autoComplete(event) }
+        }
+
+        override fun onUserContextInteraction(event: UserContextInteractionEvent) {
+            handleInteraction(event) { it.execute(event) }
+        }
+
+        override fun onMessageContextInteraction(event: MessageContextInteractionEvent) {
+            handleInteraction(event) { it.execute(event) }
+        }
+    }
+}
+
+fun CommandManager.addCommands(vararg commands: AbstractCommand) {
+    addCommands(commands.asList())
+}
+
+fun CommandManager.addGuildCommands(guild: Guild, vararg commands: AbstractCommand) {
+    addGuildCommands(guild, commands.asList())
 }

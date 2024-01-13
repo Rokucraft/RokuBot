@@ -1,6 +1,8 @@
 package com.rokucraft.rokubot
 
 import com.rokucraft.rokubot.command.CommandManager
+import com.rokucraft.rokubot.command.addCommands
+import com.rokucraft.rokubot.command.addGuildCommands
 import com.rokucraft.rokubot.command.commands.*
 import com.rokucraft.rokubot.config.Config
 import com.rokucraft.rokubot.entities.Repository
