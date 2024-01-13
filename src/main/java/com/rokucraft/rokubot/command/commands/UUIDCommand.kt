@@ -1,10 +1,9 @@
 package com.rokucraft.rokubot.command.commands
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.util.ColorConstants
 import com.rokucraft.rokubot.util.EmbedUtil
+import kotlinx.serialization.json.Json
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions
@@ -17,7 +16,6 @@ import java.util.*
 
 class UUIDCommand : AbstractCommand() {
     private val httpClient = OkHttpClient()
-    private val objectMapper = jacksonObjectMapper()
 
     override val data = Commands.slash("uuid", "Get the UUID of a Minecraft player by their username")
         .addOption(OptionType.STRING, "username", "The username of the player", true)
@@ -54,7 +52,7 @@ class UUIDCommand : AbstractCommand() {
                 return null
             }
             val body = response.body!!.string()
-            return objectMapper.readValue(body)
+            return Json.decodeFromString(body)
         }
     }
 }
