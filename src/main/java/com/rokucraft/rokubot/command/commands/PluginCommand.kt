@@ -64,13 +64,13 @@ private fun createOverviewEmbed(plugin: Plugin): MessageEmbed {
         .setTitle(plugin.name, plugin.resourceUrl)
         .setDescription(plugin.description)
     if (plugin.downloadUrl != null) {
-        response.addField("Download Link", plugin.downloadUrl!!, false)
+        response.addField("Download Link", plugin.downloadUrl, false)
     }
     if (plugin.docsUrl != null) {
-        response.addField("Documentation", plugin.docsUrl!!, true)
+        response.addField("Documentation", plugin.docsUrl, true)
     }
     if (plugin.repositoryUrl != null) {
-        response.addField("Repository", plugin.repositoryUrl!!, true)
+        response.addField("Repository", plugin.repositoryUrl, true)
     }
     if (plugin.dependencies.isNotEmpty()) {
         response.addField("Dependencies", java.lang.String.join(", ", plugin.dependencies), false)
