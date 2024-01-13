@@ -1,6 +1,7 @@
 package com.rokucraft.rokubot.command.commands
 
 import com.rokucraft.rokubot.command.AbstractCommand
+import com.rokucraft.rokubot.command.commands.util.filterByQueryString
 import com.rokucraft.rokubot.entities.DiscordInvite
 import com.rokucraft.rokubot.util.EmbedUtil
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent
@@ -19,10 +20,9 @@ class InviteCommand(
     defaultEnabled: Boolean
 ) : AbstractCommand() {
     override val data: CommandData
-    private val invites: Set<DiscordInvite>
+    private val invites: Set<DiscordInvite> = HashSet(invites)
 
     init {
-        this.invites = HashSet(invites)
         val nameRequired = defaultInvite == null // A name is required when no default is provided
         val useAutocomplete = this.invites.size > OptionData.MAX_CHOICES
         val nameOption = OptionData(
@@ -53,7 +53,7 @@ class InviteCommand(
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
-            filterCollectionByQueryString(invites, DiscordInvite::name, event)
+            invites.filterByQueryString(event) { it.name }
         ).queue()
     }
 }

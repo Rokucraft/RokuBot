@@ -1,6 +1,7 @@
 package com.rokucraft.rokubot.command.commands
 
 import com.rokucraft.rokubot.command.AbstractCommand
+import com.rokucraft.rokubot.command.commands.util.filterByQueryString
 import com.rokucraft.rokubot.entities.Plugin
 import com.rokucraft.rokubot.util.ColorConstants
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
@@ -44,7 +45,7 @@ class PluginCommand(private val plugins: List<Plugin>) : AbstractCommand() {
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
-            filterCollectionByQueryString(plugins, { it.name }, event)
+            plugins.filterByQueryString(event) { it.name }
         ).queue()
     }
 }

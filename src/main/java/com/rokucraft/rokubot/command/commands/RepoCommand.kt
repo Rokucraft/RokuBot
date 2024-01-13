@@ -1,6 +1,7 @@
 package com.rokucraft.rokubot.command.commands
 
 import com.rokucraft.rokubot.command.AbstractCommand
+import com.rokucraft.rokubot.command.commands.util.filterByQueryString
 import com.rokucraft.rokubot.entities.Repository
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent
@@ -21,7 +22,7 @@ class RepoCommand(
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
-            filterCollectionByQueryString(repositories, Repository::name, event)
+            repositories.filterByQueryString(event) { it.name }
         ).queue()
     }
 
