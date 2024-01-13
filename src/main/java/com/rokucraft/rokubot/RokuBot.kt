@@ -15,7 +15,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.util.*
-import java.util.function.Predicate
 import java.util.stream.Stream
 import javax.inject.Inject
 
@@ -116,25 +115,10 @@ class RokuBot @Inject constructor(
     }
 
     private fun initRepoCache() {
-        if (config.githubAppId == null || config.githubOrganization == null) return
-
-        try {
-            this.repositoryCache = github.getOrganization(config.githubOrganization)
-                .listRepositories().toList().stream()
-                .filter(Predicate.not { obj: GHRepository -> obj.isArchived })
-                .sorted(Comparator.comparing { r: GHRepository ->
-                    try {
-                        return@comparing r.updatedAt
-                    } catch (e: IOException) {
-                        throw RuntimeException(e)
-                    }
-                }.reversed())
-                .toList()
-        } catch (e: IOException) {
-            LOGGER.error("An error occurred while loading GitHub settings", e)
-        } catch (e: RuntimeException) {
-            LOGGER.error("An error occurred while loading GitHub settings", e)
-        }
+        this.repositoryCache = github.getOrganization(config.githubOrganization)
+            .listRepositories().toList()
+            .filterNot { it.isArchived }
+            .sortedByDescending { it.updatedAt }
     }
 
     companion object {
