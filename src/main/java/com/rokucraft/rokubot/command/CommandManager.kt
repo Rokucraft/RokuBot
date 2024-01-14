@@ -1,7 +1,6 @@
 package com.rokucraft.rokubot.command
 
 import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
@@ -11,10 +10,10 @@ import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload
 
 class CommandManager {
     private val globalCommands: MutableSet<AbstractCommand> = mutableSetOf()
-    private val guildCommands: MutableMap<Guild?, MutableSet<AbstractCommand>> = mutableMapOf()
+    private val guildCommands: MutableMap<String, MutableSet<AbstractCommand>> = mutableMapOf()
 
-    fun addGuildCommands(guild: Guild, commands: List<AbstractCommand>) {
-        guildCommands.computeIfAbsent(guild) { mutableSetOf() }.addAll(commands)
+    fun addGuildCommands(guildId: String, commands: List<AbstractCommand>) {
+        guildCommands.computeIfAbsent(guildId) { mutableSetOf() }.addAll(commands)
     }
 
     fun addCommands(commands: Collection<AbstractCommand>) {
@@ -23,14 +22,15 @@ class CommandManager {
 
     private fun findMatchingCommands(
         name: String,
-        guild: Guild?
+        guild: String?
     ): List<AbstractCommand> {
         return guildCommands.getOrDefault(guild, mutableSetOf())
             .plus(globalCommands)
             .filter { it.data.name == name }
     }
 
-    private fun findMatchingCommands(event: CommandInteractionPayload) = findMatchingCommands(event.name, event.guild)
+    private fun findMatchingCommands(event: CommandInteractionPayload) =
+        findMatchingCommands(event.name, event.guild?.id)
 
     private fun handleInteraction(
         event: CommandInteractionPayload,
@@ -41,8 +41,10 @@ class CommandManager {
 
     fun register(jda: JDA) {
         jda.updateCommands().addCommands(globalCommands.map { it.data }).queue()
-        guildCommands.forEach { (guild, commands) ->
-            if (guild == null) return
+
+        jda.awaitReady()
+        guildCommands.forEach { (guildId, commands) ->
+            val guild = jda.getGuildById(guildId) ?: return@forEach
             guild.updateCommands().addCommands(commands.map { it.data }).queue()
         }
 
