@@ -8,17 +8,10 @@ import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEven
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.interactions.commands.CommandInteractionPayload
 
-class CommandManager {
-    private val globalCommands: MutableSet<AbstractCommand> = mutableSetOf()
-    private val guildCommands: MutableMap<String, MutableSet<AbstractCommand>> = mutableMapOf()
-
-    fun addGuildCommands(guildId: String, commands: List<AbstractCommand>) {
-        guildCommands.computeIfAbsent(guildId) { mutableSetOf() }.addAll(commands)
-    }
-
-    fun addCommands(commands: Collection<AbstractCommand>) {
-        globalCommands.addAll(commands)
-    }
+class CommandManager(
+    private val globalCommands: Set<AbstractCommand> = emptySet(),
+    private val guildCommands: Map<String, Set<AbstractCommand>> = emptyMap()
+) {
 
     private fun findMatchingCommands(
         name: String,

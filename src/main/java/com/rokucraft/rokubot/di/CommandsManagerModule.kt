@@ -16,14 +16,13 @@ object CommandsManagerModule {
         @GlobalCommand globalCommands: Set<@JvmSuppressWildcards AbstractCommand>,
         @GuildCommand guildCommands: Set<@JvmSuppressWildcards AbstractCommand>
     ): CommandManager {
-        val commandManager = CommandManager()
-        commandManager.addCommands(globalCommands.filter { it.shouldBeRegistered })
-
-        config.trustedServerIds
-            .forEach { id ->
-                commandManager.addGuildCommands(id, guildCommands.filter { it.shouldBeRegistered })
+        val registrableGuildCommands = guildCommands.filter { it.shouldBeRegistered }.toSet()
+        return CommandManager(
+            globalCommands = globalCommands.filter { it.shouldBeRegistered }.toSet(),
+            guildCommands = config.trustedServerIds.associate {
+                (it to registrableGuildCommands)
             }
-        return commandManager
+        )
     }
 }
 
