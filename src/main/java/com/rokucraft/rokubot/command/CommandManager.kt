@@ -50,20 +50,16 @@ class CommandManager {
     }
 
     private inner class Listener : ListenerAdapter() {
-        override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
+        override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) =
             handleInteraction(event) { it.execute(event) }
-        }
 
-        override fun onCommandAutoCompleteInteraction(event: CommandAutoCompleteInteractionEvent) {
+        override fun onCommandAutoCompleteInteraction(event: CommandAutoCompleteInteractionEvent) =
             handleInteraction(event) { it.autoComplete(event) }
-        }
 
-        override fun onUserContextInteraction(event: UserContextInteractionEvent) {
+        override fun onUserContextInteraction(event: UserContextInteractionEvent) =
             handleInteraction(event) { it.execute(event) }
-        }
 
-        override fun onMessageContextInteraction(event: MessageContextInteractionEvent) {
+        override fun onMessageContextInteraction(event: MessageContextInteractionEvent) =
             handleInteraction(event) { it.execute(event) }
-        }
     }
 }
