@@ -67,11 +67,3 @@ class CommandManager {
         }
     }
 }
-
-fun CommandManager.addCommands(vararg commands: AbstractCommand) {
-    addCommands(commands.asList())
-}
-
-fun CommandManager.addGuildCommands(guild: Guild, vararg commands: AbstractCommand) {
-    addGuildCommands(guild, commands.asList())
-}
