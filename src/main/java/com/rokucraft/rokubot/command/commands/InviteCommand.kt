@@ -20,6 +20,7 @@ class InviteCommand(
     defaultEnabled: Boolean
 ) : AbstractCommand() {
     override val data: CommandData
+    override val shouldBeRegistered = invites.isNotEmpty()
     private val invites: Set<DiscordInvite> = HashSet(invites)
 
     init {

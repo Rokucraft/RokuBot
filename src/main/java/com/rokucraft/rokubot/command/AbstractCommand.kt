@@ -10,6 +10,8 @@ abstract class AbstractCommand {
 
     abstract val data: CommandData
 
+    open val shouldBeRegistered = true
+
     open fun autoComplete(event: CommandAutoCompleteInteractionEvent) {}
 
     open fun execute(event: SlashCommandInteractionEvent) {}

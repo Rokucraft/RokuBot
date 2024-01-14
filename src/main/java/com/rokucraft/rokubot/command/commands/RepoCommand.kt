@@ -19,6 +19,7 @@ class RepoCommand(
     private val defaultRepository: Repository?
 ) : AbstractCommand() {
     override val data = createCommandData()
+    override val shouldBeRegistered = repositories.isNotEmpty()
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
