@@ -1,10 +1,11 @@
 package com.rokucraft.rokubot.command.commands
 
 import com.rokucraft.rokubot.command.AbstractCommand
-import com.rokucraft.rokubot.command.commands.util.filterByQueryString
+import com.rokucraft.rokubot.data.PluginRepository
 import com.rokucraft.rokubot.entities.Plugin
 import com.rokucraft.rokubot.util.ColorConstants
 import com.rokucraft.rokubot.util.EmbedUtil.createErrorEmbed
+import com.rokucraft.rokubot.util.replyError
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent
@@ -15,8 +16,11 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder
 import net.dv8tion.jda.api.utils.messages.MessageCreateData
+import javax.inject.Inject
 
-class PluginCommand(private val plugins: List<Plugin>) : AbstractCommand() {
+class PluginCommand @Inject constructor(
+    private val pluginRepository: PluginRepository
+) : AbstractCommand() {
     override val data = Commands.slash("plugin", "Get information about a plugin")
         .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
         .addOption(OptionType.STRING, "name", "The name of the plugin", true, true)
@@ -30,9 +34,13 @@ class PluginCommand(private val plugins: List<Plugin>) : AbstractCommand() {
     override fun execute(event: SlashCommandInteractionEvent) {
         val name = event.getOption("name") { it.asString }
         val info = event.getOption("info") { it.asString }
-        val plugin = plugins.firstOrNull { it.name == name }
+        if (name == null) {
+            event.replyError("You must provide a name")
+            return
+        }
+        val plugin = pluginRepository.getByName(name)
         if (plugin == null) {
-            event.replyEmbeds(createNotFoundEmbed(name)).setEphemeral(true).queue()
+            event.replyError("Plugin `$name` not found")
             return
         }
         when (info) {
@@ -45,7 +53,7 @@ class PluginCommand(private val plugins: List<Plugin>) : AbstractCommand() {
 
     override fun autoComplete(event: CommandAutoCompleteInteractionEvent) {
         event.replyChoiceStrings(
-            plugins.filterByQueryString(event) { it.name }
+            pluginRepository.getNamesContaining(event.focusedOption.value)
         ).queue()
     }
 }
@@ -112,8 +120,4 @@ private fun createDownloadEmbed(plugin: Plugin): MessageEmbed {
                 """.trimIndent()
         )
         .build()
-}
-
-private fun createNotFoundEmbed(name: String?): MessageEmbed {
-    return createErrorEmbed("Plugin `$name` not found")
 }

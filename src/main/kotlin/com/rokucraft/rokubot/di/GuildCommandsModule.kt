@@ -5,19 +5,22 @@ import com.rokucraft.rokubot.command.commands.*
 import com.rokucraft.rokubot.config.Config
 import com.rokucraft.rokubot.entities.Repository
 import com.rokucraft.rokubot.github.RepositoryCache
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
 import org.kohsuke.github.GitHub
 
 @Module
-object GuildCommandsModule {
-    @Provides
+interface GuildCommandsBindsModule {
+    @Binds
     @IntoSet
     @GuildCommand
-    fun providePluginCommand(config: Config): AbstractCommand =
-        PluginCommand(config.plugins)
+    fun bindPluginCommand(command: PluginCommand): AbstractCommand
+}
 
+@Module
+object GuildCommandsModule {
     @Provides
     @IntoSet
     @GuildCommand
