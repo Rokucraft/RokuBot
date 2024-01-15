@@ -12,10 +12,8 @@ application {
 
 version = "2.0-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 repositories {
@@ -40,9 +38,3 @@ dependencies {
 }
 
 jib.to.image = "ghcr.io/rokucraft/rokubot:latest"
-
-tasks {
-    compileJava {
-        options.encoding = "UTF-8"
-    }
-}
