@@ -1,7 +1,7 @@
 package com.rokucraft.rokubot.di
 
 import com.rokucraft.rokubot.config.Config
-import com.rokucraft.rokubot.config.RecordConfigurationLoader
+import com.rokucraft.rokubot.config.loadConfig
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -11,5 +11,5 @@ object ConfigModule {
 
     @Provides
     @Singleton
-    fun provideConfig(): Config = RecordConfigurationLoader().load(Config::class.java)
+    fun provideConfig(): Config = loadConfig()
 }
