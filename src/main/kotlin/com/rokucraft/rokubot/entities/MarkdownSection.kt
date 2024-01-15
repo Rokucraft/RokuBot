@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets
 import java.util.stream.Collectors
 
 @ConfigSerializable
-@JvmRecord
 data class MarkdownSection(
     @Required val name: String,
     @Required val title: String,

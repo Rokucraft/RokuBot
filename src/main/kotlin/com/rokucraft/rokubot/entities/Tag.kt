@@ -5,7 +5,6 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Required
 
 @ConfigSerializable
-@JvmRecord
 data class Tag(
     @Required val name: String,
     val description: String?,

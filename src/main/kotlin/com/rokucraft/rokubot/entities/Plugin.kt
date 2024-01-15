@@ -4,7 +4,6 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Required
 
 @ConfigSerializable
-@JvmRecord
 data class Plugin(
     @Required val name: String,
     val resourceUrl: String?,
