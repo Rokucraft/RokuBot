@@ -12,7 +12,6 @@ import java.util.Objects;
 @ConfigSerializable
 @Source("settings.yml")
 public record Config(
-        @Source("secrets.yml") String botToken,
         String githubAppId,
         String githubOrganization,
         String botActivity,
