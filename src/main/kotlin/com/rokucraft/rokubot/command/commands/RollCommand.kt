@@ -14,7 +14,7 @@ class RollCommand : AbstractCommand() {
             EmbedBuilder()
                 .setColor(ColorConstants.GREEN)
                 .addField("Roll", "1d20", true)
-                .addField("Result", (1..21).random().toString(), true)
+                .addField("Result", (1..20).random().toString(), true)
                 .build()
         ).queue()
     }
