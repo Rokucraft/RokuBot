@@ -3,6 +3,7 @@ package com.rokucraft.rokubot.di
 import com.rokucraft.rokubot.command.AbstractCommand
 import com.rokucraft.rokubot.command.commands.*
 import com.rokucraft.rokubot.config.Config
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ElementsIntoSet
@@ -40,4 +41,12 @@ object GlobalCommandsModule {
     @GlobalCommand
     fun provideRootTagCommands(config: Config): Set<AbstractCommand> =
         config.rootTagCommands.map { RootTagCommand(it) }.toSet()
+}
+
+@Module
+interface GlobalCommandsBindsModule {
+    @Binds
+    @IntoSet
+    @GlobalCommand
+    fun bindEightBallCommand(command: EightBallCommand): AbstractCommand
 }

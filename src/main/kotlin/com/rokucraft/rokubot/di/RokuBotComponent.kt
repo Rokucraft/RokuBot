@@ -12,6 +12,7 @@ import javax.inject.Singleton
         GitHubModule::class,
         CommandsManagerModule::class,
         GlobalCommandsModule::class,
+        GlobalCommandsBindsModule::class,
         GuildCommandsModule::class,
         GuildCommandsBindsModule::class,
         DataModules::class
