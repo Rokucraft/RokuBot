@@ -39,7 +39,7 @@ class UUIDCommand : AbstractCommand() {
         event.replyEmbeds(
             EmbedBuilder()
                 .setColor(ColorConstants.GREEN)
-                .setAuthor(profile.name, null, "https://crafatar.com/avatars/${profile.uuid}?overlay=true")
+                .setAuthor(profile.name, null, "https://crafthead.net/helm/${profile.uuid}")
                 .addField("UUID", "`${profile.uuid}`", false)
                 .build()
         ).queue()
