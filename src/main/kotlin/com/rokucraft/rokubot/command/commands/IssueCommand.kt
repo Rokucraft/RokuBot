@@ -61,7 +61,7 @@ class IssueCommand(
 private fun createIssueEmbed(issue: GHIssue): MessageEmbed {
     val open = issue.state == GHIssueState.OPEN
     val author = issue.user
-    val authorName = if (author.name != null) author.name else author.login
+    val authorName = author.name ?: author.login
     var issueBody = issue.body
         .replace(Regex("(?s)<!--.*?-->"), "") // Removes HTML comments
         .trim()
