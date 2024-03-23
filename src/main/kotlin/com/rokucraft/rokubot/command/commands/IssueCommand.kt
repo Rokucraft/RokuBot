@@ -64,7 +64,6 @@ private fun createIssueEmbed(issue: GHIssue): MessageEmbed {
     val authorName = if (author.name != null) author.name else author.login
     var issueBody = issue.body
         .replace(Regex("(?s)<!--.*?-->"), "") // Removes HTML comments
-        .replace(Regex("###(.*)"), "**$1**") //Makes Markdown titles bold
         .trim()
     if (issueBody.length > MessageEmbed.DESCRIPTION_MAX_LENGTH) {
         issueBody = issueBody.substring(0, MessageEmbed.DESCRIPTION_MAX_LENGTH - 1) + "…"
