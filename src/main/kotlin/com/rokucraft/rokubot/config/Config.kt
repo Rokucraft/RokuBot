@@ -24,9 +24,6 @@ data class Config(
     val welcomeEmbeds: List<MessageEmbed>
 ) {
     init {
-        repositories.addAll(
-            plugins.mapNotNull { obj: Plugin -> obj.repository() }
-        )
         privateInvites.addAll(
             plugins.mapNotNull { obj: Plugin -> obj.discordInvite() }
         )
