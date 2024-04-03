@@ -16,7 +16,7 @@ class JoinListener(
     }
 
     override fun onGuildMemberJoin(event: GuildMemberJoinEvent) {
-        LOGGER.info("Received join event for user {}", event.member)
+        LOGGER.debug("Received join event for user {}", event.member)
         if (welcomeEmbeds.isEmpty()) return
         val welcomeChannel = welcomeChannelMap[event.guild.id]?.let { event.guild.getTextChannelById(it) } ?: return
         var welcomeEmbed = welcomeEmbeds.random()
@@ -28,6 +28,6 @@ class JoinListener(
         }
         welcomeChannel.sendMessage("<:ds_join:884026626046828585>  Welcome, ${event.member.asMention}!")
             .setEmbeds(welcomeEmbed)
-            .queue { LOGGER.info("Sent join message for user {}", event.member) }
+            .queue { LOGGER.debug("Sent join message for user {}", event.member) }
     }
 }
