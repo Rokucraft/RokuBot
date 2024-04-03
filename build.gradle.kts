@@ -10,6 +10,7 @@ application {
     mainClass = "com.rokucraft.rokubot.MainKt"
 }
 
+group = "com.rokucraft"
 version = "2.0-SNAPSHOT"
 
 kotlin {
