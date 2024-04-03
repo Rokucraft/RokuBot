@@ -2,7 +2,7 @@ plugins {
     application
     kotlin("jvm") version "1.9.23"
     kotlin("plugin.serialization") version "1.9.23"
-    id("com.google.cloud.tools.jib") version "3.4.0"
+    id("com.google.cloud.tools.jib") version "3.4.2"
     id("com.google.devtools.ksp") version "1.9.23-1.0.19"
 }
 
@@ -14,7 +14,7 @@ group = "com.rokucraft"
 version = "2.0-SNAPSHOT"
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 repositories {
