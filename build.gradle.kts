@@ -22,20 +22,20 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.0-beta.19") {
+    implementation("net.dv8tion:JDA:5.0.0-beta.21") {
         exclude(module = "opus-java")
     }
-    implementation("ch.qos.logback:logback-classic:1.4.14")
-    implementation("org.kohsuke:github-api:1.318")
-    implementation("io.jsonwebtoken:jjwt-api:0.12.3")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
+    implementation("ch.qos.logback:logback-classic:1.5.3")
+    implementation("org.kohsuke:github-api:1.321")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
     implementation("org.spongepowered:configurate-extra-kotlin:4.1.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    implementation("com.google.dagger:dagger:2.50")
-    ksp("com.google.dagger:dagger-compiler:2.50")
+    implementation("com.google.dagger:dagger:2.51.1")
+    ksp("com.google.dagger:dagger-compiler:2.51.1")
 }
 
 jib.to.image = "ghcr.io/rokucraft/rokubot:latest"
