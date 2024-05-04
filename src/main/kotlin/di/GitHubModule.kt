@@ -32,7 +32,7 @@ object GitHubModule {
     ): AuthorizationProvider =
         AppInstallationAuthorizationProvider(
             { it.getInstallationByOrganization(config.githubOrganization) },
-            JWTTokenProvider(config.githubAppId, gitHubKey)
+            JWTTokenProvider(config.githubClientId, gitHubKey)
         )
 
 }

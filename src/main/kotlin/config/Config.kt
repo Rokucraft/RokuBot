@@ -6,7 +6,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
 @ConfigSerializable
 data class Config(
-    val githubAppId: String,
+    val githubClientId: String,
     val githubOrganization: String,
     val botActivity: String?,
     val defaultRepoName: String,
