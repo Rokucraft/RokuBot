@@ -32,7 +32,6 @@ private val defaultOptions = ConfigurationOptions.defaults()
     }
     .implicitInitialization(true)
 
-@OptIn(ExperimentalPathApi::class)
 fun loadConfig(): Config = try {
     Path.of("").walk()
         .filter { it.isReadable() && it.isRegularFile() && it.isYaml() }

@@ -1,9 +1,9 @@
 plugins {
     application
-    kotlin("jvm") version "2.0.20"
-    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("jvm") version "2.1.10"
+    kotlin("plugin.serialization") version "2.1.10"
     id("com.google.cloud.tools.jib") version "3.4.3"
-    id("com.google.devtools.ksp") version "2.0.20-1.0.25"
+    id("com.google.devtools.ksp") version "2.1.10-1.0.29"
 }
 
 application {
